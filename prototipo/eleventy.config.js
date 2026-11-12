@@ -15,15 +15,31 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy({ 'node_modules/@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-*.woff2': 'fonts' });
   }
 
+  // Foto de la portada: versiones ligeras hechas desde identidad/fotos/malecon-original.webp
+  eleventyConfig.addPassthroughCopy({ '../identidad/fotos/malecon-1600.webp': 'img/malecon-1600.webp', '../identidad/fotos/malecon-1200.webp': 'img/malecon-1200.webp' });
+
   const CSS = ['tokens.css', 'base.css', 'components.css', 'movimiento.css', 'movil.css'];
   eleventyConfig.addShortcode('estilos', () => {
     if (artifact) return '<style>\n' + CSS.map((f) => readFileSync(join('src/css', f), 'utf8')).join('\n') + '\n</style>';
     return ['fonts.css', ...CSS].map((f) => `<link rel="stylesheet" href="css/${f}">`).join('\n');
   });
 
+  // Logo de la usuaria (Illustrator), leído tal cual de identidad/logo: si cambia el archivo, cambia el sitio.
+  // Se pinta con currentColor para que tome el color del sitio (vino en blanco, blanco o beige sobre vino).
+  const LOGOS = new URL('../identidad/logo/', import.meta.url);
+  eleventyConfig.addWatchTarget('../identidad/logo/');
+  eleventyConfig.addShortcode('logo', (nombre, clase = '', etiqueta = '') => {
+    const svg = readFileSync(new URL(`${nombre}.svg`, LOGOS), 'utf8');
+    const vb = svg.match(/viewBox="([^"]+)"/)[1];
+    const trazos = [...svg.matchAll(/<path\b[^>]*?\sd="([^"]+)"/g)].map((m) => `<path d="${m[1]}"/>`).join('');
+    const a11y = etiqueta ? `role="img" aria-label="${etiqueta}"` : 'aria-hidden="true"';
+    return `<svg class="${clase}" viewBox="${vb}" fill="currentColor" ${a11y} focusable="false">${trazos}</svg>`;
+  });
+
   const fmt = (iso, opts) => new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', ...opts }).format(new Date(`${iso}T00:00:00Z`));
   eleventyConfig.addFilter('fecha', (iso) => (iso ? fmt(iso, { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
   eleventyConfig.addFilter('fechaCorta', (iso) => (iso ? fmt(iso, { day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '') : ''));
+  eleventyConfig.addFilter('diaMes', (iso) => (iso ? fmt(iso, { day: 'numeric', month: 'short' }).replace('.', '') : ''));
   eleventyConfig.addFilter('dia', (iso) => fmt(iso, { day: 'numeric' }));
   eleventyConfig.addFilter('mesAnio', (iso) => fmt(iso, { month: 'long', year: 'numeric' }));
   const DIA = 86400000;

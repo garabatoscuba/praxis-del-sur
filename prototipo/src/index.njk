@@ -9,27 +9,50 @@ cabeceraSobreHeroe: true
 {#- data-movil-*: cómo se ven en el móvil las secciones largas (opciones en _data/movil.json; script en movil.njk). -#}
 <div class="page_index_journal" data-movil-ejes="{{ movil.ejes }}" data-movil-mod="{{ movil.modGrupos }}" data-movil-desc="{{ movil.modDesc }}" data-movil-compacto="{{ movil.compacto }}">
 
-  <section class="ps-hero ps-on-dark" aria-labelledby="hero-titulo">
-    <div class="ps-wrap ps-hero-grid">
-      <div class="ps-hero-text">
-        <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span><span data-cal-corto>Convocatoria abierta · {{ c.volumen }}</span></p>
-        <h1 id="hero-titulo" class="ps-hero-title">{{ c.tituloHtml | safe }}</h1>
-        <p class="ps-hero-lead">{{ c.tema }}</p>
+  {#- Portada con la foto del Malecón (elegida en identidad/portada-foto.html, «1 + 3»): la foto a pantalla completa con un velo
+      de arriba abajo; el nombre a la izquierda, centrado en el alto del cielo; abajo, sobre la calle, la convocatoria en una línea.
+      La foto y su texto alternativo, en revista.portadaFoto; lo esencial, en revista.esenciales. -#}
+  {%- set iconos = {
+    abierto: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.8"/><path d="M12 15v2.2"/>',
+    ciego: '<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/><path d="M4.5 19.5L19.5 4.5"/>',
+    continua: '<path d="M2.5 12H19"/><path d="M15.5 8.5L19 12l-3.5 3.5"/><circle cx="5.5" cy="12" r="1.3"/><circle cx="10.5" cy="12" r="1.3"/>'
+  } -%}
+  {%- set foto = revista.portadaFoto -%}
+  <section class="ps-hero ps-hero--foto ps-on-dark" aria-labelledby="hero-nombre">
+    <picture>
+      <source media="(max-width: 760px)" srcset="{{ foto.movil }}">
+      <img class="ps-hero-foto" src="{{ foto.grande }}" width="{{ foto.ancho }}" height="{{ foto.alto }}" alt="{{ foto.alt }}" fetchpriority="high">
+    </picture>
+    <div class="ps-hero-velo" aria-hidden="true"></div>
+    <div class="ps-wrap ps-hero-cont">
+      <div class="ps-hero-cielo">
+        <div class="ps-hero-marca">
+          <h1 id="hero-nombre" class="ps-hero-nombre">{% logo "praxis-del-sur", "ps-hero-logo", revista.nombre %}</h1>
+          <p class="ps-hero-firma">{{ revista.firma }}</p>
+          <p class="ps-hero-lema">{{ revista.lema }}</p>
+        </div>
+        <ul class="ps-esenciales">
+          {%- for e in revista.esenciales %}
+          <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{{ iconos[e.icono] | safe }}</svg>{{ e.titulo }}</li>
+          {%- endfor %}
+        </ul>
+      </div>
+      <div class="ps-hero-pie">
+        <div class="ps-hero-conv">
+          <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span><span data-cal-corto>Convocatoria abierta · {{ c.volumen }}</span></p>
+          <h2 id="hero-titulo" class="ps-hero-title">{{ c.tituloHtml | safe }}</h2>
+        </div>
+        <dl class="ps-hero-fechas">
+          <div><dt>Recepción</dt><dd>{{ c.apertura | diaMes }} – {{ c.cierre | fechaCorta }}</dd></div>
+          <div><dt>Primer número</dt><dd>{{ c.lanzamiento | fechaCorta }}</dd></div>
+        </dl>
         <div class="ps-actions">
           <a class="ps-btn ps-btn--gold" href="envios.html">Enviar contribución</a>
           <a class="ps-btn ps-btn--ghost" href="convocatoria.html">Leer la convocatoria</a>
         </div>
       </div>
-      <div class="ps-hero-lado">
-      {% include "brujula-viva.njk" %}
-      <dl class="ps-hero-fechas">
-        <div><dt>Recepción de contribuciones</dt><dd>{{ c.apertura | fechaCorta }} – {{ c.cierre | fechaCorta }}</dd></div>
-        <div><dt>Lanzamiento del primer número</dt><dd>{{ c.lanzamiento | fecha }}</dd></div>
-        <div><dt>Costo para autores y lectores</dt><dd>Ninguno: acceso abierto</dd></div>
-      </dl>
-      </div>
+      <p class="ps-borrador">{{ c.estado }}</p>
     </div>
-    <p class="ps-wrap ps-borrador">{{ c.estado }}</p>
   </section>
 
   <section class="homepage_about ps-section" aria-labelledby="homepageAbout">
@@ -40,12 +63,14 @@ cabeceraSobreHeroe: true
         <p>{{ revista.descripcion }}</p>
         <p><a class="ps-link-arrow" href="acerca.html">Enfoque, valores y equipo</a></p>
       </div>
-      <dl class="ps-hechos">
-        <div><dt>Doble ciego</dt><dd>Dos revisores externos evalúan cada texto arbitrado sin conocer su autoría.</dd></div>
-        <div><dt>Acceso abierto diamante</dt><dd>Sin cobros a autores ni a lectores.</dd></div>
-        <div><dt>Publicación continua</dt><dd>Cada artículo sale al terminar su proceso y luego se agrupa en el número.</dd></div>
-        <div><dt>{{ revista.licencia.corta }}</dt><dd>Se puede compartir y adaptar con atribución y sin fines comerciales.</dd></div>
-      </dl>
+      {#- Para qué existe y hacia dónde va, sin los rótulos «misión» y «visión» (la usuaria pidió quitarlos). -#}
+      <div class="ps-manifiesto">
+        <p class="ps-manifiesto-frase">{{ revista.manifiestoHtml | safe }}</p>
+        <div class="ps-rumbo">
+          <h3>Hacia dónde vamos</h3>
+          <ul>{% for v in revista.vision %}<li>{{ v }}</li>{% endfor %}</ul>
+        </div>
+      </div>
     </div>
   </section>
 

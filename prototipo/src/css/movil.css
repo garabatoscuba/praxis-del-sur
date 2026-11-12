@@ -12,22 +12,36 @@
 @media (max-width: 760px) {
   /* ---------- Más ajustado: portada, «Sobre la revista», encabezados de sección y pie ---------- */
   html:not([data-movil-compacto="no"]) .ps-hero { padding-top: calc(var(--ps-head-h) + 26px); padding-bottom: 26px; }
-  html:not([data-movil-compacto="no"]) .ps-hero-title { margin-top: 14px; }
+  html:not([data-movil-compacto="no"]) .ps-hero-text > .ps-hero-title { margin-top: 14px; }
   html:not([data-movil-compacto="no"]) .ps-hero-lead { margin-top: 14px; font-size: 1.0625rem; line-height: 1.5; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions { margin-top: 22px; gap: 10px; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions .ps-btn { min-height: 42px; padding: 9px 18px; font-size: 0.9375rem; }
-  html:not([data-movil-compacto="no"]) .ps-hero-fechas div { padding-block: 10px; }
-  html:not([data-movil-compacto="no"]) .ps-hero-fechas dt { font-size: 0.6875rem; letter-spacing: 0.06em; }
-  html:not([data-movil-compacto="no"]) .ps-hero-fechas dd { margin-top: 2px; font-size: 1.2rem; }
   html:not([data-movil-compacto="no"]) .ps-borrador { margin-top: 16px; }
+  /* Portada con foto: el nombre y la convocatoria arriba, en el cielo; lo esencial y los botones abajo, sobre la calle;
+     las dos personas en medio, libres. La foto se encuadra sobre ellas. */
+  html .ps-hero.ps-hero--foto { padding: 0; }
+  .ps-hero-foto { object-position: 78% 50%; }
+  .ps-hero-velo { background: linear-gradient(180deg, rgb(22 18 15 / 0.86) 0%, rgb(22 18 15 / 0.72) 30%, rgb(22 18 15 / 0.56) 50%, rgb(22 18 15 / 0.14) 60%,
+    rgb(22 18 15 / 0.08) 70%, rgb(22 18 15 / 0.72) 86%, rgb(22 18 15 / 0.84) 100%); }
+  .ps-hero-cont { grid-template-rows: auto auto auto 1fr auto auto auto; padding-top: calc(var(--ps-head-h) + 6px); padding-bottom: 20px; }
+  .ps-hero-cielo, .ps-hero-pie { display: contents; }
+  .ps-hero-marca { grid-row: 1; }
+  .ps-hero-logo { width: 100%; }
+  .ps-hero-lema { font-size: 1.0625rem; }
+  .ps-hero-conv { grid-row: 2; margin-top: 22px; }
+  .ps-hero--foto .ps-hero-title { font-size: 1.5rem; }
+  .ps-hero-fechas { grid-row: 3; margin-top: 12px; }
+  .ps-hero-fechas dd { font-size: 1.0625rem; }
+  .ps-esenciales { grid-row: 5; margin: 0; gap: 6px 16px; }
+  .ps-esenciales li { font-size: 0.8125rem; }
+  html .ps-hero.ps-hero--foto .ps-actions { grid-row: 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; width: 100%; margin-top: 14px; justify-self: stretch; }
+  html .ps-hero.ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 8px 10px; font-size: 0.9375rem; text-align: center; }
+  html .ps-hero.ps-hero--foto .ps-borrador { grid-row: 7; margin-top: 14px; }
   html:not([data-movil-compacto="no"]) .ps-section { padding-block: 44px; }
   html:not([data-movil-compacto="no"]) .ps-sec-head { gap: 10px; margin-bottom: 24px; }
   html:not([data-movil-compacto="no"]) .ps-sec-head p:not(.ps-eyebrow) { font-size: 1.0625rem; }
   html:not([data-movil-compacto="no"]) .ps-about-grid { gap: 28px; }
-  html:not([data-movil-compacto="no"]) .ps-hechos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
-  html:not([data-movil-compacto="no"]) .ps-hechos div { padding-block: 14px; gap: 2px; align-content: start; }
-  html:not([data-movil-compacto="no"]) .ps-hechos dt { font-size: 1.15rem; }
-  html:not([data-movil-compacto="no"]) .ps-hechos dd { font-size: 0.875rem; line-height: 1.45; }
+  html:not([data-movil-compacto="no"]) .ps-rumbo li { font-size: 0.9375rem; }
   html:not([data-movil-compacto="no"]) .pkp_structure_footer { padding-top: 40px; }
   html:not([data-movil-compacto="no"]) .pkp_footer_content { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 20px; }
   html:not([data-movil-compacto="no"]) .ps-footer-brand, html:not([data-movil-compacto="no"]) .pkp_footer_content > :last-child { grid-column: 1 / -1; }
@@ -108,4 +122,9 @@
   [data-movil-desc="tocar"] .ps-mod-list li:not(.is-abierto) > p, [data-movil-desc="ocultas"] .ps-mod-list li > p { display: none; }
   [data-movil-desc="tocar"] .ps-mod-list li.is-abierto > p { animation: ps-asoma 0.35s var(--ps-mov-e, ease-out); }
   [data-movil-desc="tocar"] .ps-mod-list b, [data-movil-desc="ocultas"] .ps-mod-list b { font-size: 1.15rem; }
+}
+
+@media (max-width: 380px) {
+  /* teléfonos estrechos: los dos botones de la portada siguen uno al lado del otro y en una línea */
+  html .ps-hero.ps-hero--foto .ps-actions .ps-btn { padding-inline: 6px; font-size: 0.875rem; }
 }

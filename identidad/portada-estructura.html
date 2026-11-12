@@ -1,0 +1,538 @@
+<title>Portada: elige estructura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: arriba, el selector de estructura y de pantalla; en medio, la portada dibujada (se adapta al ancho con consultas de contenedor);
+   debajo, qué tiene la estructura y en qué orden van las secciones. */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"EB Garamond",Garamond,serif;
+  --wine:#662426;--gold:#B6A160;--beige:#DED8C7;--olive:#4B483D;--paper:#FFFFFF;--tint:#F3F0E8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;line-height:1.55;padding-inline:max(16px, env(safe-area-inset-left, 0px));-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin-inline:auto}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.intro{padding-block:40px 18px;display:grid;gap:10px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-family:var(--serif);font-size:clamp(32px,4.4vw,52px);line-height:1.05}
+.lead{max-width:70ch;font-size:17px;color:var(--muted)}
+.controles{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:12px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.escenario{display:grid;justify-items:center;padding:clamp(10px,2vw,22px);border-radius:16px;background:#D8D2C4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .escenario{background:#0E0C0A}}
+.ficha{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px 36px;padding-block:22px 64px}
+@media (max-width:820px){.ficha{grid-template-columns:minmax(0,1fr)}}
+.ficha h2{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.1;margin-bottom:8px}
+.ficha p{color:var(--muted)}
+.ficha .vig{margin-top:10px}
+.ficha .vig b{color:var(--fg);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-right:6px}
+.orden{list-style:none;margin:0;padding:0;counter-reset:o;border-top:1px solid var(--line)}
+.orden li{counter-increment:o;display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600}
+.orden li::before{content:counter(o);min-width:1.4em;font-family:var(--serif);font-weight:500;color:var(--muted)}
+.orden-t{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+
+/* ---------- La portada dibujada ---------- */
+.marco{position:relative;overflow:hidden;border-radius:10px;background:#fff;box-shadow:0 24px 60px -30px rgba(0,0,0,.5)}
+.marco.movil{border-radius:26px;box-shadow:0 0 0 8px #1F1B18,0 30px 70px -30px rgba(0,0,0,.6)}
+.pantalla{transform-origin:0 0;overflow-y:auto;overflow-x:hidden;background:#fff;overscroll-behavior:contain}
+.pie-marco{margin-top:12px;font-size:13.5px;color:#3A352E;text-align:center}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pie-marco{color:#BEB6A8}}
+.mock{container-type:inline-size;width:100%;background:#fff;color:#1F1B18;font-family:var(--ui)}
+/* margen a los lados como en el sitio: el contenido se centra con 1240 px de ancho como máximo */
+.op{--pad:max(clamp(18px,5cqi,64px), calc((100cqi - 1240px) / 2))}
+.mock[data-alto="si"] .h{min-height:var(--alto, 100vh)}
+.mock[data-alto="si"] .h-b{align-content:center}
+.op{display:none}
+.op.activa{display:block}
+.m-head{position:absolute;z-index:2;top:0;left:0;right:0;display:flex;align-items:center;gap:26px;padding:18px var(--pad);color:#fff}
+.m-head.claro{position:static;background:#fff;color:#1F1B18;border-bottom:1px solid #E4DFD3}
+.m-a{display:flex;align-items:center}
+.m-a svg{height:26px;width:auto;display:block;color:var(--beige)}
+.m-head.claro .m-a svg{color:var(--wine)}
+.m-nav{display:flex;gap:22px;margin-left:auto;font-size:15px;font-weight:600}
+.m-nav .act{box-shadow:inset 0 -2px 0 var(--gold);padding-bottom:3px}
+.m-head.claro .m-nav .act{box-shadow:inset 0 -2px 0 var(--wine)}
+.m-cta{padding:9px 18px;border-radius:999px;background:var(--gold);color:#1F1B18;font-weight:600;font-size:14.5px;white-space:nowrap}
+.m-head.claro .m-cta{background:var(--wine);color:#fff}
+.m-menu{display:none;margin-left:auto;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(222,216,199,.6);font-weight:600;font-size:14px}
+.m-head.claro .m-menu{border-color:#C9C2B3}
+@container (max-width: 760px){
+  .m-nav,.m-cta{display:none}
+  .m-menu{display:inline-flex}
+  .m-a svg{height:24px}
+}
+.h{position:relative;background:var(--wine);color:var(--beige);padding:104px var(--pad) clamp(36px,5cqi,64px)}
+.h .logo svg{display:block;height:auto;color:#fff}
+.firma{font-size:11.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--beige)}
+.lema{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2cqi,21px);line-height:1.35}
+.eye{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.eye::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none}
+.tit{font-family:var(--serif);font-weight:400;color:#fff;line-height:1.1;font-size:clamp(24px,3cqi,34px)}
+.tit em{color:var(--gold)}
+.fechas{display:flex;flex-wrap:wrap;gap:6px 26px}
+.fechas div{display:grid;gap:1px}
+.fechas dt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.fechas dd{margin:0;font-family:var(--serif);font-size:18px;color:#fff}
+.acc{display:flex;flex-wrap:wrap;gap:10px}
+.b{display:inline-flex;align-items:center;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14.5px;border:1.5px solid transparent;white-space:nowrap}
+.b.oro{background:var(--gold);color:#1F1B18}
+.b.lin{border-color:rgba(222,216,199,.6);color:#fff}
+.b.vino{background:var(--wine);color:#fff}
+.b.lin-osc{border-color:var(--wine);color:var(--wine)}
+.brj{display:block;width:100%;height:auto;overflow:visible}
+.debajo{background:var(--tint);padding:clamp(26px,4cqi,44px) var(--pad);display:grid;gap:14px}
+.debajo .eyeb{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--olive)}
+.debajo h3{font-family:var(--serif);font-size:clamp(22px,2.6cqi,30px);line-height:1.15}
+.tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tarjetas span{background:#fff;border-top:3px solid var(--olive);padding:14px 16px;font-family:var(--serif);font-size:17px;line-height:1.25}
+.tarjetas span:first-child{background:var(--wine);color:#fff;border-top-color:var(--gold);font-style:italic}
+@container (max-width: 760px){ .tarjetas{grid-template-columns:minmax(0,1fr)} .tarjetas span:nth-child(n+4){display:none} }
+.sobre{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px clamp(32px,5cqi,72px);align-items:start;background:#fff}
+.sobre-txt{display:grid;gap:12px}
+.sobre-desc{font-size:clamp(15.5px,1.4cqi,17px);line-height:1.6;color:#57524A}
+.sobre-lnk{font-weight:600;color:var(--wine)}
+.sv{display:none}
+.mock[data-sobre="preguntas"] .sv-preguntas,.mock[data-sobre="manifiesto"] .sv-manifiesto,.mock[data-sobre="rumbo"] .sv-rumbo,.mock[data-sobre="verbos"] .sv-verbos{display:grid}
+.sv{gap:18px}
+.sv h4{margin:0;font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.2;color:var(--wine)}
+.sv p,.sv li{font-size:15px;line-height:1.55;color:#57524A}
+.sv ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.sv-preguntas > div,.sv-manifiesto > div{padding-top:12px;border-top:2px solid var(--olive);display:grid;gap:6px}
+.sv .frase{font-family:var(--serif);font-size:clamp(22px,2.3cqi,30px);line-height:1.25;color:#1F1B18}
+.sv .frase em{color:var(--wine)}
+.ruta{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;counter-reset:r}
+.ruta li{counter-increment:r;position:relative;display:grid;gap:3px;padding:14px 0 0 30px;border-top:1.5px dashed #C9C2B3}
+.ruta li::before{content:counter(r);position:absolute;left:0;top:10px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--olive);display:grid;place-items:center;font-family:var(--serif);font-size:13px;color:var(--olive);background:#fff}
+.ruta b{font-family:var(--serif);font-weight:500;font-size:17px;line-height:1.25;color:#1F1B18}
+.ruta span{font-size:14px;color:#57524A;line-height:1.45}
+.sv-verbos{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.sv-verbos > div{padding-top:12px;border-top:2px solid var(--wine);display:grid;gap:6px;align-content:start}
+.sv-verbos h4{font-size:24px}
+@container (max-width: 760px){ .ruta,.sv-verbos{grid-template-columns:minmax(0,1fr)} }
+.mv{margin:0;display:grid;gap:18px}
+.mv div{padding-top:12px;border-top:2px solid var(--olive);display:grid;gap:6px}
+.mv dt{font-family:var(--serif);font-size:21px;color:var(--wine)}
+.mv dd{margin:0;font-size:15px;line-height:1.55;color:#57524A}
+.mv ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+@container (max-width: 760px){ .sobre{grid-template-columns:minmax(0,1fr)} }
+
+/* A · El nombre al centro */
+.h-a{display:grid;justify-items:center;text-align:center;gap:12px}
+.h-a .brj{width:min(230px,52cqi);margin-bottom:6px}
+.h-a .logo svg{width:min(600px,86cqi)}
+.h-a .conv{margin-top:16px;padding-top:22px;border-top:1px solid rgba(222,216,199,.3);display:grid;gap:12px;justify-items:center;width:min(680px,100%)}
+.h-a .fechas{justify-content:center}
+.h-a .acc{justify-content:center}
+
+/* B · Nombre y convocatoria a la izquierda, brújula a la derecha */
+.h-b{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:clamp(24px,5cqi,64px)}
+.h-b .col{display:grid;gap:12px;justify-items:start}
+.h-b .logo svg{width:min(clamp(300px,34cqi,580px),100%)}
+.h-b .conv{margin-top:clamp(22px,3cqi,34px);display:grid;gap:12px;justify-items:start;width:100%}
+.h-b .lado{display:grid;gap:clamp(14px,2cqi,22px);justify-items:stretch;width:100%;max-width:clamp(300px,34cqi,500px);justify-self:center}
+.h-b .lado .brj{max-width:clamp(240px,30cqi,460px);justify-self:center}
+.h-b .tit{font-size:clamp(24px,2.4cqi,40px)}
+.bajo{display:none}
+.mock[data-bajo="hoy"] .b-hoy,.mock[data-bajo="fechas"] .b-fechas,.mock[data-bajo="esencial"] .b-esencial{display:grid}
+.mock[data-bajo="hoy"] .f-izq,.mock[data-bajo="fechas"] .f-izq{display:none}
+.b-hoy{gap:12px;padding-top:14px;border-top:1px solid rgba(222,216,199,.3)}
+.estado{font-size:15.5px;line-height:1.45;color:#fff}
+.estado b{color:var(--gold);font-weight:600}
+.linea-t{position:relative;height:52px;margin-inline:6px}
+.linea-t::before{content:"";position:absolute;left:0;right:0;top:20px;border-top:1.5px dashed rgba(222,216,199,.45)}
+.linea-t .hecho{position:absolute;left:0;top:19.5px;height:1.5px;background:var(--beige)}
+.linea-t .pt{position:absolute;top:14px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;border:1.5px solid var(--beige);background:var(--wine)}
+.linea-t .pt.meta{background:var(--beige)}
+.linea-t .pt span{position:absolute;top:18px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--beige)}
+.linea-t .hoy{position:absolute;top:15px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px var(--wine),0 0 0 4px var(--gold)}
+.linea-t .hoy span{position:absolute;bottom:17px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.b-fechas{border-top:1px solid rgba(222,216,199,.3)}
+.b-fechas div{padding-block:10px;border-bottom:1px solid rgba(222,216,199,.3)}
+.b-fechas dt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.b-fechas dd{margin:2px 0 0;font-family:var(--serif);font-size:19px;color:#fff}
+.b-esencial{list-style:none;margin:0;padding:0;border-top:1px solid rgba(222,216,199,.3)}
+.b-esencial li{display:grid;gap:1px;padding-block:10px;border-bottom:1px solid rgba(222,216,199,.3)}
+.b-esencial b{font-family:var(--serif);font-weight:500;font-size:19px;color:#fff}
+.b-esencial span{font-size:14px}
+.ess{display:none}
+.mock[data-bajo="esencial"] .b-esencial{display:none}
+.mock[data-bajo="esencial"][data-ess="anotada"] .e-anotada{display:block}
+.mock[data-bajo="esencial"][data-ess="anotada"] .brj-solo{display:none}
+.mock[data-bajo="esencial"][data-ess="iconos"] .e-iconos,.mock[data-bajo="esencial"][data-ess="cifras"] .e-cifras{display:grid}
+.mock[data-bajo="esencial"][data-ess="pie"] .e-pie,.mock[data-bajo="esencial"][data-ess="pastillas"] .e-pastillas{display:flex}
+/* 1 · anotada: la brújula en el centro y tres notas con líneas finas que la señalan */
+.e-anotada{position:relative;width:100%;aspect-ratio:1.6/1}
+.e-anotada .brj{position:absolute;left:20%;top:21%;width:60%;max-width:none}
+.e-anotada .guias{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.e-anotada .guias path{fill:none;stroke:rgba(222,216,199,.6);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.e-anotada .guias circle{fill:var(--gold)}
+.nota{position:absolute;display:grid;gap:1px;max-width:34%;line-height:1.25}
+.nota b{font-family:var(--serif);font-weight:500;font-size:clamp(15px,1.25cqi,18px);color:#fff}
+.nota span{font-size:12.5px}
+.n1{left:0;top:0}
+.n2{right:0;top:34%;text-align:right;max-width:24%}
+.n3{left:0;bottom:0}
+/* 2 · con iconos de línea, en el trazo de la brújula */
+.e-iconos{list-style:none;margin:0;padding:16px 0 0;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border-top:1px solid rgba(222,216,199,.3)}
+.e-iconos li{display:grid;gap:4px;justify-items:start;align-content:start}
+.e-iconos svg{width:30px;height:30px;fill:none;stroke:var(--gold);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px}
+.e-iconos b{font-family:var(--serif);font-weight:500;font-size:17px;line-height:1.2;color:#fff}
+.e-iconos span{font-size:13px}
+/* 3 · en cifras */
+.e-cifras{margin:0;padding-top:16px;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border-top:1px solid rgba(222,216,199,.3)}
+.e-cifras div{display:grid;gap:4px;align-content:start}
+.e-cifras dt{font-family:var(--serif);font-size:clamp(30px,3cqi,44px);line-height:1;color:var(--gold)}
+.e-cifras dd{margin:0;font-size:13.5px;line-height:1.35}
+/* 4 · pie de grabado */
+.e-pie{justify-content:center;flex-wrap:wrap;gap:4px 0;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--beige)}
+.e-pie span{white-space:nowrap}
+.e-pie span + span::before{content:"·";color:var(--gold);margin-inline:10px}
+/* 5 · pastillas */
+.e-pastillas{justify-content:center;flex-wrap:wrap;gap:8px}
+.e-pastillas span{padding:6px 14px;border:1px solid rgba(222,216,199,.55);border-radius:999px;font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap}
+@container (max-width: 760px){ .h-b{grid-template-columns:minmax(0,1fr)} .h-b .lado{max-width:none} .h-b .lado .brj{max-width:260px}
+  .e-anotada .brj{max-width:none}
+  .e-iconos,.e-cifras{grid-template-columns:minmax(0,1fr);gap:10px}
+  .e-iconos li{grid-template-columns:30px minmax(0,1fr);column-gap:12px;align-items:center}
+  .e-iconos li svg{grid-row:span 2;margin:0}
+  .e-cifras div{grid-template-columns:4.2em minmax(0,1fr);align-items:baseline;column-gap:12px}
+  .nota span{display:none}
+}
+
+/* C · La brújula al centro, el nombre arriba y la convocatoria en una banda */
+.h-c{display:grid;justify-items:center;text-align:center;gap:8px;padding-bottom:0}
+.h-c .logo svg{width:min(360px,74cqi)}
+.h-c .brj{width:min(460px,88cqi);margin-block:14px 26px}
+.h-c .banda{justify-self:stretch;margin-inline:calc(-1 * var(--pad));padding:22px var(--pad);background:rgba(0,0,0,.16);border-top:1px solid rgba(222,216,199,.22);
+  display:grid;grid-template-columns:minmax(0,1.3fr) auto auto;gap:18px 36px;align-items:center;text-align:left}
+.h-c .banda .tit{font-size:clamp(21px,2.4cqi,27px)}
+.h-c .banda .t{display:grid;gap:6px}
+@container (max-width: 760px){ .h-c .banda{grid-template-columns:minmax(0,1fr)} }
+
+/* D · Portada clara de revista académica y la convocatoria en una banda vino */
+.h-d{background:#fff;color:#1F1B18;padding-top:clamp(36px,5cqi,64px);padding-inline:var(--pad);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);align-items:center;gap:clamp(24px,5cqi,64px)}
+.h-d .col{display:grid;gap:12px;justify-items:start}
+.h-d .logo svg{width:min(560px,100%);color:var(--wine)}
+.h-d .firma{color:var(--olive)}
+.h-d .desc{font-size:clamp(15.5px,1.6cqi,17.5px);color:#57524A;max-width:58ch;line-height:1.55}
+.h-d .lnk{font-weight:600;color:var(--wine)}
+.h-d .brj{max-width:300px;justify-self:center}
+.banda-conv{background:var(--wine);color:var(--beige);padding:26px var(--pad);display:grid;grid-template-columns:minmax(0,1.3fr) auto auto;gap:18px 36px;align-items:center}
+.banda-conv .t{display:grid;gap:6px}
+.banda-conv .tit{font-size:clamp(21px,2.4cqi,27px)}
+@container (max-width: 760px){ .h-d{grid-template-columns:minmax(0,1fr)} .h-d .brj{order:-1;max-width:200px} .banda-conv{grid-template-columns:minmax(0,1fr)} }
+</style>
+
+<header class="intro wrap">
+  <p class="eyebrow">Praxis del Sur · Portada</p>
+  <h1>La portada B: cómo presentar lo esencial</h1>
+  <p class="lead">Con tu logo y tu «a» de verdad: en la barra de arriba, solo la «a». El marco tiene el tamaño real de la pantalla, sin la barra del navegador: lo que ves en él es lo que se ve al abrir la web, sin bajar. Puedes bajar dentro del marco. Bajo la brújula va lo esencial de la revista; elige cómo presentarlo.</p>
+</header>
+
+<div class="controles wrap">
+  <div class="seg" role="group" aria-label="Estructura">
+    <button type="button" data-op="b" aria-pressed="true">B · Dos columnas</button>
+    <button type="button" data-op="a" aria-pressed="false">A · El nombre al centro</button>
+    <button type="button" data-op="c" aria-pressed="false">C · La brújula al centro</button>
+    <button type="button" data-op="d" aria-pressed="false">D · Revista clara</button>
+  </div>
+  <div class="seg" role="group" aria-label="Pantalla">
+    <button type="button" data-pant="portatil" aria-pressed="true">Portátil</button>
+    <button type="button" data-pant="monitor" aria-pressed="false">Monitor grande</button>
+    <button type="button" data-pant="movil" aria-pressed="false">Móvil</button>
+  </div>
+  <div class="seg" role="group" aria-label="Lo esencial, presentado como (estructura B)">
+    <button type="button" data-ess="iconos" aria-pressed="true">Lo esencial: con iconos</button>
+    <button type="button" data-ess="anotada" aria-pressed="false">Anotada</button>
+    <button type="button" data-ess="cifras" aria-pressed="false">En cifras</button>
+    <button type="button" data-ess="pie" aria-pressed="false">Pie de grabado</button>
+    <button type="button" data-ess="pastillas" aria-pressed="false">Pastillas</button>
+  </div>
+  <div class="seg" role="group" aria-label="Sobre la revista, sin misión ni visión">
+    <button type="button" data-sobre="preguntas" aria-pressed="true">Abajo: dos preguntas</button>
+    <button type="button" data-sobre="manifiesto" aria-pressed="false">Manifiesto</button>
+    <button type="button" data-sobre="rumbo" aria-pressed="false">Nuestro rumbo</button>
+    <button type="button" data-sobre="verbos" aria-pressed="false">Tres verbos</button>
+  </div>
+  <div class="seg" role="group" aria-label="Alto de la portada">
+    <button type="button" data-alto="no" aria-pressed="true">Portada a su medida</button>
+    <button type="button" data-alto="si" aria-pressed="false">A pantalla completa</button>
+  </div>
+</div>
+
+<div class="wrap"><div class="escenario" id="escenario"><div class="marco" id="marco"><div class="pantalla" id="pantalla"><div class="mock" id="mock" data-bajo="esencial" data-ess="iconos" data-sobre="preguntas" data-alto="no">
+
+  <div class="op" data-op="a">
+    <section class="h h-a">
+      <header class="m-head"><span class="m-a" aria-label="Praxis del Sur, inicio"><svg viewBox="0 0 25.83 30.71" aria-hidden="true"><path fill="currentColor" d="M25.67,24.38c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92C13.8-.24,11.73,0,10.91.1c-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07C1.01,6.89-.29,9.34.06,10.89c.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/></svg></span><nav class="m-nav"><span class="act">Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></nav><span class="m-cta">Enviar contribución</span><span class="m-menu">Menú</span></header>
+      <svg class="brj" data-brj="oscuro" viewBox="-150 -96 300 180" aria-hidden="true"></svg>
+      <div class="logo"><svg viewBox="0 0 380.44 49.14" role="img" aria-label="Praxis del Sur"><path fill="currentColor" d="M.21,2.53c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-.82-.58-2.08-1.08-3.77-1.47-1.7-.4-3.01-.6-3.95-.6-2.9,0-4.62.21-5.16.63l-.04.49.11,3.97-.04.7c-.05.63-.07,1.6-.07,2.92,0,4.78.07,7.75.21,8.92.02,1.85.05,3.7.09,5.56.11,6.05.27,12.04.48,17.97,2.65.67,4.26,1.05,4.92,1.16.23.04.47.12.96.27.53.17.75.27.84.49.06.14.07.31.02.45-.21.53-1.53.47-1.87.46-4.94-.18-9.89-.04-14.82-.36-.37-.02-1.59-.1-1.64-.42,0-.04,0-.18.65-.54.83-.46,1.56-.64,1.59-.64,2.69-.65,2.93-.78,3.08-1.04.06-.1.08-.56.11-1.47.02-.59.02-1.04.04-1.37.02-.49.04-1.17.04-2.04,0-2.76-.12-8.65-.35-17.67-.09-4.21-.14-8.5-.14-12.86v-.6c0-1.69-.26-2.75-.77-3.2-.87-.77-3.04-1.4-6.5-1.9-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path fill="currentColor" d="M40.73,47.28c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M358.1,47.23c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M91.7,42.8c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92-2.23-1.03-4.3-.79-5.11-.69-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07-1.73,1.98-3.04,4.43-2.69,5.99.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/><path fill="currentColor" d="M93.48,21.09c-.05-.31-.07-.58-.07-.79v-.47c.37-.1.79-.14,1.23-.14h1.3c2.02.07,3.28.11,3.8.11,1.62,0,3.26-.02,4.92-.07,1.03-.02,1.66-.04,1.9-.04h.84c.16.33.25.57.25.74,0,.12-.05.28-.14.49l-.52.07c-1.7.17-2.77.38-3.22.64-.19.12-.28.27-.28.46,0,.38.28.94.84,1.67,2.73,3.56,4.58,5.85,5.56,6.88,2.22-2.95,3.55-4.84,3.97-5.68s.64-1.49.64-1.96c0-.54-.21-1-.63-1.36-.42-.36-1.45-.67-3.09-.9-.19-.28-.28-.52-.28-.7l.11-.35.91-.04c.23,0,.64.01,1.23.04,1.01.07,2.02.11,3.02.11.52,0,1.41-.02,2.67-.05s2.23-.05,2.88-.05h1.62c.3.14.46.33.46.56,0,.12-.02.27-.07.46-.38.09-.83.19-1.37.28-1.27.19-2.5.65-3.69,1.38-.89.54-1.77,1.41-2.64,2.59l-4.97,6.73,5.07,6.39c2.33,3.16,3.76,5.02,4.29,5.58.53.56,1.1,1.02,1.71,1.37s1.5.68,2.68.98c.02.28.04.53.04.74,0,.16-.05.39-.14.67-.42,0-2.56-.06-6.42-.18-.23,0-1.36.02-3.38.07-.63.02-1.25.04-1.83.04-.54,0-1.21-.02-2.01-.07l.11-1.05c.35-.07.74-.15,1.17-.25,1.2-.23,2.06-.55,2.58-.95.31-.26.46-.54.46-.84,0-.51-1.58-2.68-4.75-6.49l-2.05-2.47c-.99.98-2.09,2.38-3.3,4.18-.69,1.05-1.24,1.84-1.67,2.36-.8.93-1.2,1.71-1.2,2.33,0,.21.14.42.42.64.28.22,1.1.48,2.46.78.91.19,1.56.34,1.93.45.07.31.11.55.11.72,0,.14-.02.37-.07.69-1.81-.09-3.56-.14-5.27-.14-2.16,0-3.72.03-4.69.09-.97.06-1.58.09-1.81.09-.28,0-.73-.02-1.34-.07-.09-.33-.14-.57-.14-.74l.07-.46c.33-.16.74-.27,1.23-.32,1.57-.16,2.96-.75,4.18-1.76,1.22-1.01,3.92-4.35,8.09-10.05l-4.68-5.64-4.96-5.97c-.14-.14-.32-.28-.53-.42-.38-.21-.88-.37-1.51-.49-.96-.19-1.64-.33-2.04-.42Z"/><path fill="currentColor" d="M127.48,22.43l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12-.11,10.72c-.02.87.12,1.47.42,1.81.3.34,1.21.72,2.71,1.14.94.26,1.64.48,2.11.67.07.16.11.3.11.42,0,.14-.06.32-.18.53-.91-.02-2.09-.08-3.52-.18-1.95-.16-3.23-.25-3.87-.25-.3,0-2.18.06-5.62.18-.7.02-1.38.08-2.04.18-.12,0-.3-.04-.56-.11-.12-.16-.18-.3-.18-.42,0-.33.22-.59.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM130.43,4.18c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path fill="currentColor" d="M146.99,38.46c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path fill="currentColor" d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.89,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path fill="currentColor" d="M250.03,28.83l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.41,27.56h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path fill="currentColor" d="M254,3.83v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54s-.3.16-.58.16c-.16,0-1.39-.04-3.69-.12l-4.61-.16-5.91.28c-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path fill="currentColor" d="M314.61,4.01c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path fill="currentColor" d="M322.31,19.79h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.01,1.38-.05,3.46-.19,5.98-.16,2.83-.45,6.4-.45,6.4-.46,5.62-.75,7.37.44,8.47.71.66,1.64.81,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/></svg></div>
+      <p class="firma">Revista del Centro de Investigaciones Psicológicas y Sociológicas</p>
+      <p class="lema">Ciencias sociales críticas desde el Sur Global, con anclaje en Cuba.</p>
+      <div class="conv">
+        <p class="eye">Convocatoria · abre el 1 de enero de 2027</p>
+        <h2 class="tit">Ciencias sociales en y desde <em>contextos de crisis</em></h2>
+        <dl class="fechas"><div><dt>Recepción</dt><dd>1 ene – 30 mar 2027</dd></div><div><dt>Primer número</dt><dd>10 de octubre de 2027</dd></div></dl>
+        <div class="acc"><span class="b oro">Enviar contribución</span><span class="b lin">Leer la convocatoria</span></div>
+      </div>
+    </section>
+    <section class="debajo"><p class="eyeb">Fechas</p><h3>Calendario del primer número</h3><div class="tarjetas"><span>1 de enero · abre la convocatoria</span><span>30 de marzo · cierra la recepción</span><span>10 de octubre · sale el primer número</span></div></section>
+  </div>
+
+  <div class="op activa" data-op="b">
+    <section class="h h-b">
+      <header class="m-head"><span class="m-a" aria-label="Praxis del Sur, inicio"><svg viewBox="0 0 25.83 30.71" aria-hidden="true"><path fill="currentColor" d="M25.67,24.38c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92C13.8-.24,11.73,0,10.91.1c-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07C1.01,6.89-.29,9.34.06,10.89c.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/></svg></span><nav class="m-nav"><span class="act">Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></nav><span class="m-cta">Enviar contribución</span><span class="m-menu">Menú</span></header>
+      <div class="col">
+        <div class="logo"><svg viewBox="0 0 380.44 49.14" role="img" aria-label="Praxis del Sur"><path fill="currentColor" d="M.21,2.53c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-.82-.58-2.08-1.08-3.77-1.47-1.7-.4-3.01-.6-3.95-.6-2.9,0-4.62.21-5.16.63l-.04.49.11,3.97-.04.7c-.05.63-.07,1.6-.07,2.92,0,4.78.07,7.75.21,8.92.02,1.85.05,3.7.09,5.56.11,6.05.27,12.04.48,17.97,2.65.67,4.26,1.05,4.92,1.16.23.04.47.12.96.27.53.17.75.27.84.49.06.14.07.31.02.45-.21.53-1.53.47-1.87.46-4.94-.18-9.89-.04-14.82-.36-.37-.02-1.59-.1-1.64-.42,0-.04,0-.18.65-.54.83-.46,1.56-.64,1.59-.64,2.69-.65,2.93-.78,3.08-1.04.06-.1.08-.56.11-1.47.02-.59.02-1.04.04-1.37.02-.49.04-1.17.04-2.04,0-2.76-.12-8.65-.35-17.67-.09-4.21-.14-8.5-.14-12.86v-.6c0-1.69-.26-2.75-.77-3.2-.87-.77-3.04-1.4-6.5-1.9-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path fill="currentColor" d="M40.73,47.28c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M358.1,47.23c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M91.7,42.8c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92-2.23-1.03-4.3-.79-5.11-.69-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07-1.73,1.98-3.04,4.43-2.69,5.99.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/><path fill="currentColor" d="M93.48,21.09c-.05-.31-.07-.58-.07-.79v-.47c.37-.1.79-.14,1.23-.14h1.3c2.02.07,3.28.11,3.8.11,1.62,0,3.26-.02,4.92-.07,1.03-.02,1.66-.04,1.9-.04h.84c.16.33.25.57.25.74,0,.12-.05.28-.14.49l-.52.07c-1.7.17-2.77.38-3.22.64-.19.12-.28.27-.28.46,0,.38.28.94.84,1.67,2.73,3.56,4.58,5.85,5.56,6.88,2.22-2.95,3.55-4.84,3.97-5.68s.64-1.49.64-1.96c0-.54-.21-1-.63-1.36-.42-.36-1.45-.67-3.09-.9-.19-.28-.28-.52-.28-.7l.11-.35.91-.04c.23,0,.64.01,1.23.04,1.01.07,2.02.11,3.02.11.52,0,1.41-.02,2.67-.05s2.23-.05,2.88-.05h1.62c.3.14.46.33.46.56,0,.12-.02.27-.07.46-.38.09-.83.19-1.37.28-1.27.19-2.5.65-3.69,1.38-.89.54-1.77,1.41-2.64,2.59l-4.97,6.73,5.07,6.39c2.33,3.16,3.76,5.02,4.29,5.58.53.56,1.1,1.02,1.71,1.37s1.5.68,2.68.98c.02.28.04.53.04.74,0,.16-.05.39-.14.67-.42,0-2.56-.06-6.42-.18-.23,0-1.36.02-3.38.07-.63.02-1.25.04-1.83.04-.54,0-1.21-.02-2.01-.07l.11-1.05c.35-.07.74-.15,1.17-.25,1.2-.23,2.06-.55,2.58-.95.31-.26.46-.54.46-.84,0-.51-1.58-2.68-4.75-6.49l-2.05-2.47c-.99.98-2.09,2.38-3.3,4.18-.69,1.05-1.24,1.84-1.67,2.36-.8.93-1.2,1.71-1.2,2.33,0,.21.14.42.42.64.28.22,1.1.48,2.46.78.91.19,1.56.34,1.93.45.07.31.11.55.11.72,0,.14-.02.37-.07.69-1.81-.09-3.56-.14-5.27-.14-2.16,0-3.72.03-4.69.09-.97.06-1.58.09-1.81.09-.28,0-.73-.02-1.34-.07-.09-.33-.14-.57-.14-.74l.07-.46c.33-.16.74-.27,1.23-.32,1.57-.16,2.96-.75,4.18-1.76,1.22-1.01,3.92-4.35,8.09-10.05l-4.68-5.64-4.96-5.97c-.14-.14-.32-.28-.53-.42-.38-.21-.88-.37-1.51-.49-.96-.19-1.64-.33-2.04-.42Z"/><path fill="currentColor" d="M127.48,22.43l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12-.11,10.72c-.02.87.12,1.47.42,1.81.3.34,1.21.72,2.71,1.14.94.26,1.64.48,2.11.67.07.16.11.3.11.42,0,.14-.06.32-.18.53-.91-.02-2.09-.08-3.52-.18-1.95-.16-3.23-.25-3.87-.25-.3,0-2.18.06-5.62.18-.7.02-1.38.08-2.04.18-.12,0-.3-.04-.56-.11-.12-.16-.18-.3-.18-.42,0-.33.22-.59.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM130.43,4.18c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path fill="currentColor" d="M146.99,38.46c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path fill="currentColor" d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.89,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path fill="currentColor" d="M250.03,28.83l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.41,27.56h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path fill="currentColor" d="M254,3.83v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54s-.3.16-.58.16c-.16,0-1.39-.04-3.69-.12l-4.61-.16-5.91.28c-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path fill="currentColor" d="M314.61,4.01c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path fill="currentColor" d="M322.31,19.79h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.01,1.38-.05,3.46-.19,5.98-.16,2.83-.45,6.4-.45,6.4-.46,5.62-.75,7.37.44,8.47.71.66,1.64.81,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/></svg></div>
+        <p class="firma">Revista del CIPS</p>
+        <p class="lema">Ciencias sociales críticas desde el Sur Global, con anclaje en Cuba.</p>
+        <div class="conv">
+          <p class="eye">Convocatoria del primer número · Vol. 1 (2027)</p>
+          <h2 class="tit">Ciencias sociales en y desde <em>contextos de crisis</em></h2>
+          <dl class="fechas f-izq"><div><dt>Recepción</dt><dd>1 ene – 30 mar 2027</dd></div><div><dt>Primer número</dt><dd>10 oct 2027</dd></div></dl>
+          <div class="acc"><span class="b oro">Enviar contribución</span><span class="b lin">Leer la convocatoria</span></div>
+        </div>
+      </div>
+      <div class="lado">
+        <svg class="brj brj-solo" data-brj="oscuro" viewBox="-150 -96 300 180" aria-hidden="true"></svg>
+        <div class="ess e-anotada">
+          <svg class="brj" data-brj="oscuro" viewBox="-150 -96 300 180" aria-hidden="true"></svg>
+          <svg class="guias" viewBox="0 0 100 62.5" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M18 9.5L35.9 22.1"/><path d="M78 29.2L70.5 29.2"/><path d="M18 55L35.9 39.4"/>
+            <circle cx="35.9" cy="22.1" r=".7"/><circle cx="70.5" cy="29.2" r=".7"/><circle cx="35.9" cy="39.4" r=".7"/>
+          </svg>
+          <p class="nota n1"><b>Acceso abierto diamante</b><span>Sin cobros a autores ni a lectores</span></p>
+          <p class="nota n2"><b>Doble ciego</b><span>Dos revisores externos</span></p>
+          <p class="nota n3"><b>Publicación continua</b><span>Cada artículo, al terminar su proceso</span></p>
+        </div>
+        <ul class="ess e-iconos">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.8"/><path d="M12 15v2.2"/></svg><b>Acceso abierto diamante</b><span>Sin cobros</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/><path d="M4.5 19.5L19.5 4.5"/></svg><b>Doble ciego</b><span>Dos revisores externos</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12H19"/><path d="M15.5 8.5L19 12l-3.5 3.5"/><circle cx="5.5" cy="12" r="1.3"/><circle cx="10.5" cy="12" r="1.3"/></svg><b>Publicación continua</b><span>Al terminar su proceso</span></li>
+        </ul>
+        <dl class="ess e-cifras">
+          <div><dt>0 €</dt><dd>de cobro a autores y lectores</dd></div>
+          <div><dt>2</dt><dd>revisores externos por texto, a doble ciego</dd></div>
+          <div><dt>DOI</dt><dd>en cada artículo, publicado al terminar su proceso</dd></div>
+        </dl>
+        <p class="ess e-pie"><span>Acceso abierto diamante</span><span>Doble ciego</span><span>Publicación continua</span></p>
+        <p class="ess e-pastillas"><span>Acceso abierto diamante</span><span>Doble ciego</span><span>Publicación continua</span></p>
+        <div class="bajo b-hoy">
+          <p class="estado" data-estado></p>
+          <div class="linea-t" data-linea></div>
+        </div>
+        <dl class="bajo b-fechas">
+          <div><dt>Recepción de contribuciones</dt><dd>1 ene 2027 – 30 mar 2027</dd></div>
+          <div><dt>Lanzamiento del primer número</dt><dd>10 de octubre de 2027</dd></div>
+          <div><dt>Costo para autores y lectores</dt><dd>Ninguno: acceso abierto</dd></div>
+        </dl>
+        <ul class="bajo b-esencial">
+          <li><b>Acceso abierto diamante</b><span>Sin cobros a autores ni a lectores.</span></li>
+          <li><b>Doble ciego</b><span>Dos revisores externos evalúan cada texto arbitrado.</span></li>
+          <li><b>Publicación continua</b><span>Cada artículo sale al terminar su proceso.</span></li>
+        </ul>
+      </div>
+    </section>
+    <section class="debajo sobre">
+      <div class="sobre-txt"><p class="eyeb">Sobre la revista</p><h3>Pensamiento crítico desde el Sur Global, con anclaje en Cuba</h3><p class="sobre-desc">Revista académica de acceso abierto del Centro de Investigaciones Psicológicas y Sociológicas (CIPS), dedicada a difundir investigaciones y a promover el debate del pensamiento crítico y descolonial desde la perspectiva del Sur Global, en particular para Cuba, América Latina y el Caribe.</p><p class="sobre-lnk">Enfoque, valores y equipo →</p></div>
+      <div class="sv sv-preguntas">
+        <div><h4>Por qué existimos</h4><p>Constituir un espacio abierto y riguroso para difundir conocimientos sobre la realidad social y promover el debate de temas relevantes desde la perspectiva del Sur Global, particularmente para Cuba, América Latina y el Caribe.</p></div>
+        <div><h4>Hacia dónde vamos</h4><ul><li>Ser el principal espacio de publicación de resultados científicos del CIPS.</li><li>Lograr amplia visibilidad en el ámbito de las ciencias sociales cubanas.</li><li>Estar indexada según la estrategia que se defina tras el primer número.</li><li>Tener presencia en redes como CLACSO, ALAS y la Asociación Latinoamericana de Psicología.</li></ul></div>
+      </div>
+      <div class="sv sv-manifiesto">
+        <p class="frase">Un espacio abierto y riguroso para difundir conocimiento sobre la realidad social y debatir <em>desde el Sur Global</em>.</p>
+        <div><h4>Hacia dónde vamos</h4><ul><li>Ser el principal espacio de publicación de resultados científicos del CIPS.</li><li>Lograr amplia visibilidad en el ámbito de las ciencias sociales cubanas.</li><li>Estar indexada según la estrategia que se defina tras el primer número.</li><li>Tener presencia en redes como CLACSO, ALAS y la Asociación Latinoamericana de Psicología.</li></ul></div>
+      </div>
+      <div class="sv sv-rumbo">
+        <p class="frase">Un espacio abierto y riguroso para difundir conocimiento sobre la realidad social y debatir <em>desde el Sur Global</em>.</p>
+        <h4>Nuestro rumbo</h4>
+        <ol class="ruta">
+          <li><b>La casa de la investigación del CIPS</b><span>El principal espacio para publicar sus resultados.</span></li>
+          <li><b>Visible en Cuba</b><span>Con amplia visibilidad en las ciencias sociales cubanas.</span></li>
+          <li><b>Indexada</b><span>Según la estrategia que se defina tras el primer número.</span></li>
+          <li><b>En las redes de la región</b><span>CLACSO, ALAS y la Asociación Latinoamericana de Psicología.</span></li>
+        </ol>
+      </div>
+      <div class="sv sv-verbos">
+        <div><h4>Difundir</h4><p>Conocimiento riguroso sobre la realidad social, en acceso abierto.</p></div>
+        <div><h4>Debatir</h4><p>Temas relevantes desde el Sur Global, en particular para Cuba, América Latina y el Caribe.</p></div>
+        <div><h4>Conectar</h4><p>Con las ciencias sociales cubanas y con redes como CLACSO, ALAS y la Asociación Latinoamericana de Psicología.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="op" data-op="c">
+    <section class="h h-c">
+      <header class="m-head"><span class="m-a" aria-label="Praxis del Sur, inicio"><svg viewBox="0 0 25.83 30.71" aria-hidden="true"><path fill="currentColor" d="M25.67,24.38c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92C13.8-.24,11.73,0,10.91.1c-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07C1.01,6.89-.29,9.34.06,10.89c.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/></svg></span><nav class="m-nav"><span class="act">Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></nav><span class="m-cta">Enviar contribución</span><span class="m-menu">Menú</span></header>
+      <div class="logo"><svg viewBox="0 0 380.44 49.14" role="img" aria-label="Praxis del Sur"><path fill="currentColor" d="M.21,2.53c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-.82-.58-2.08-1.08-3.77-1.47-1.7-.4-3.01-.6-3.95-.6-2.9,0-4.62.21-5.16.63l-.04.49.11,3.97-.04.7c-.05.63-.07,1.6-.07,2.92,0,4.78.07,7.75.21,8.92.02,1.85.05,3.7.09,5.56.11,6.05.27,12.04.48,17.97,2.65.67,4.26,1.05,4.92,1.16.23.04.47.12.96.27.53.17.75.27.84.49.06.14.07.31.02.45-.21.53-1.53.47-1.87.46-4.94-.18-9.89-.04-14.82-.36-.37-.02-1.59-.1-1.64-.42,0-.04,0-.18.65-.54.83-.46,1.56-.64,1.59-.64,2.69-.65,2.93-.78,3.08-1.04.06-.1.08-.56.11-1.47.02-.59.02-1.04.04-1.37.02-.49.04-1.17.04-2.04,0-2.76-.12-8.65-.35-17.67-.09-4.21-.14-8.5-.14-12.86v-.6c0-1.69-.26-2.75-.77-3.2-.87-.77-3.04-1.4-6.5-1.9-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path fill="currentColor" d="M40.73,47.28c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M358.1,47.23c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M91.7,42.8c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92-2.23-1.03-4.3-.79-5.11-.69-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07-1.73,1.98-3.04,4.43-2.69,5.99.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/><path fill="currentColor" d="M93.48,21.09c-.05-.31-.07-.58-.07-.79v-.47c.37-.1.79-.14,1.23-.14h1.3c2.02.07,3.28.11,3.8.11,1.62,0,3.26-.02,4.92-.07,1.03-.02,1.66-.04,1.9-.04h.84c.16.33.25.57.25.74,0,.12-.05.28-.14.49l-.52.07c-1.7.17-2.77.38-3.22.64-.19.12-.28.27-.28.46,0,.38.28.94.84,1.67,2.73,3.56,4.58,5.85,5.56,6.88,2.22-2.95,3.55-4.84,3.97-5.68s.64-1.49.64-1.96c0-.54-.21-1-.63-1.36-.42-.36-1.45-.67-3.09-.9-.19-.28-.28-.52-.28-.7l.11-.35.91-.04c.23,0,.64.01,1.23.04,1.01.07,2.02.11,3.02.11.52,0,1.41-.02,2.67-.05s2.23-.05,2.88-.05h1.62c.3.14.46.33.46.56,0,.12-.02.27-.07.46-.38.09-.83.19-1.37.28-1.27.19-2.5.65-3.69,1.38-.89.54-1.77,1.41-2.64,2.59l-4.97,6.73,5.07,6.39c2.33,3.16,3.76,5.02,4.29,5.58.53.56,1.1,1.02,1.71,1.37s1.5.68,2.68.98c.02.28.04.53.04.74,0,.16-.05.39-.14.67-.42,0-2.56-.06-6.42-.18-.23,0-1.36.02-3.38.07-.63.02-1.25.04-1.83.04-.54,0-1.21-.02-2.01-.07l.11-1.05c.35-.07.74-.15,1.17-.25,1.2-.23,2.06-.55,2.58-.95.31-.26.46-.54.46-.84,0-.51-1.58-2.68-4.75-6.49l-2.05-2.47c-.99.98-2.09,2.38-3.3,4.18-.69,1.05-1.24,1.84-1.67,2.36-.8.93-1.2,1.71-1.2,2.33,0,.21.14.42.42.64.28.22,1.1.48,2.46.78.91.19,1.56.34,1.93.45.07.31.11.55.11.72,0,.14-.02.37-.07.69-1.81-.09-3.56-.14-5.27-.14-2.16,0-3.72.03-4.69.09-.97.06-1.58.09-1.81.09-.28,0-.73-.02-1.34-.07-.09-.33-.14-.57-.14-.74l.07-.46c.33-.16.74-.27,1.23-.32,1.57-.16,2.96-.75,4.18-1.76,1.22-1.01,3.92-4.35,8.09-10.05l-4.68-5.64-4.96-5.97c-.14-.14-.32-.28-.53-.42-.38-.21-.88-.37-1.51-.49-.96-.19-1.64-.33-2.04-.42Z"/><path fill="currentColor" d="M127.48,22.43l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12-.11,10.72c-.02.87.12,1.47.42,1.81.3.34,1.21.72,2.71,1.14.94.26,1.64.48,2.11.67.07.16.11.3.11.42,0,.14-.06.32-.18.53-.91-.02-2.09-.08-3.52-.18-1.95-.16-3.23-.25-3.87-.25-.3,0-2.18.06-5.62.18-.7.02-1.38.08-2.04.18-.12,0-.3-.04-.56-.11-.12-.16-.18-.3-.18-.42,0-.33.22-.59.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM130.43,4.18c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path fill="currentColor" d="M146.99,38.46c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path fill="currentColor" d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.89,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path fill="currentColor" d="M250.03,28.83l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.41,27.56h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path fill="currentColor" d="M254,3.83v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54s-.3.16-.58.16c-.16,0-1.39-.04-3.69-.12l-4.61-.16-5.91.28c-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path fill="currentColor" d="M314.61,4.01c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path fill="currentColor" d="M322.31,19.79h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.01,1.38-.05,3.46-.19,5.98-.16,2.83-.45,6.4-.45,6.4-.46,5.62-.75,7.37.44,8.47.71.66,1.64.81,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/></svg></div>
+      <p class="firma">Revista del CIPS</p>
+      <svg class="brj" data-brj="oscuro" viewBox="-150 -96 300 180" aria-hidden="true"></svg>
+      <div class="banda">
+        <div class="t"><p class="eye">Convocatoria · abre el 1 de enero de 2027</p><h2 class="tit">Ciencias sociales en y desde <em>contextos de crisis</em></h2></div>
+        <dl class="fechas"><div><dt>Recepción</dt><dd>1 ene – 30 mar 2027</dd></div><div><dt>Primer número</dt><dd>10 oct 2027</dd></div></dl>
+        <div class="acc"><span class="b oro">Enviar contribución</span></div>
+      </div>
+    </section>
+    <section class="debajo"><p class="eyeb">Qué publicamos</p><h3>Tema central y ejes temáticos</h3><div class="tarjetas"><span>Ciencias sociales en y desde contextos de crisis</span><span>Estructura social, desigualdades y políticas sociales</span><span>Procesos psicosociales, comunitarios y organizacionales</span></div></section>
+  </div>
+
+  <div class="op" data-op="d">
+    <header class="m-head claro"><span class="m-a" aria-label="Praxis del Sur, inicio"><svg viewBox="0 0 25.83 30.71" aria-hidden="true"><path fill="currentColor" d="M25.67,24.38c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92C13.8-.24,11.73,0,10.91.1c-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07C1.01,6.89-.29,9.34.06,10.89c.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/></svg></span><nav class="m-nav"><span class="act">Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></nav><span class="m-cta">Enviar contribución</span><span class="m-menu">Menú</span></header>
+    <section class="h h-d">
+      <div class="col">
+        <div class="logo"><svg viewBox="0 0 380.44 49.14" role="img" aria-label="Praxis del Sur"><path fill="currentColor" d="M.21,2.53c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-.82-.58-2.08-1.08-3.77-1.47-1.7-.4-3.01-.6-3.95-.6-2.9,0-4.62.21-5.16.63l-.04.49.11,3.97-.04.7c-.05.63-.07,1.6-.07,2.92,0,4.78.07,7.75.21,8.92.02,1.85.05,3.7.09,5.56.11,6.05.27,12.04.48,17.97,2.65.67,4.26,1.05,4.92,1.16.23.04.47.12.96.27.53.17.75.27.84.49.06.14.07.31.02.45-.21.53-1.53.47-1.87.46-4.94-.18-9.89-.04-14.82-.36-.37-.02-1.59-.1-1.64-.42,0-.04,0-.18.65-.54.83-.46,1.56-.64,1.59-.64,2.69-.65,2.93-.78,3.08-1.04.06-.1.08-.56.11-1.47.02-.59.02-1.04.04-1.37.02-.49.04-1.17.04-2.04,0-2.76-.12-8.65-.35-17.67-.09-4.21-.14-8.5-.14-12.86v-.6c0-1.69-.26-2.75-.77-3.2-.87-.77-3.04-1.4-6.5-1.9-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path fill="currentColor" d="M40.73,47.28c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M358.1,47.23c-.1-.09-.16-.2-.19-.26-.01-.06-.02-.16,0-.28.05-.22.22-.34.26-.37.11-.08.22-.1.25-.11.53-.12,2.24-.38,3.18-.72.49-.18.89-.42,1.12-.6,1.06-.83,1.18-2.29,1.21-7.17.02-3.91-.06-2.66-.02-4.69.02-1.19-.06-2.35-.21-4.68-.08-1.26-.16-1.86-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-.66.52-1.45,1.57-2.39,3.16-.73,1.2-1.09,2.3-1.09,3.3l.18,5.81.07,6.98c.07.72.28,1.71.98,2.07.08.04.16.07,1,.16.89.1,1.44.13,2.02.19.35.03.86.09,1.48.19,1.51.16,2.62.36,2.85.49.17.1.25.24.25.24.05.09.08.21.07.29-.06.28-.83.35-1.12.37-1.37.11-2.51.09-2.69.08-.43,0-1.06-.02-1.85,0l-2.14.04-5.52.11s-2.74.06-5.09.09c-.14,0-.45,0-.69-.21Z"/><path fill="currentColor" d="M91.7,42.8c-.15-.1-.38,0-.48.05-.35.16-.5.42-.71.68-.13.16-.7.88-1.54,1.13-.33.1-.62.1-.69.1-.61,0-1.14-.23-1.58-.7-.58-.61-.64-1.48-.67-1.86-.09-1.3-.11-3.77.04-6.96l.11-5.59c0-3.16-.05-5-.14-5.52-.16-1.08-.62-2.07-1.37-2.99-.92-1.12-1.98-1.63-2.6-1.92-2.23-1.03-4.3-.79-5.11-.69-2.12.27-3.58,1.14-4.57,1.74-.4.24-1.97,1.21-3.6,3.07-1.73,1.98-3.04,4.43-2.69,5.99.12.52.37.74.45.8.71.53,1.91-.1,1.99-.14.88-.47,1.26-1.3,1.51-1.79.74-1.49,1.73-3.52,3.02-4.95.66-.73,1.91-2.13,3.82-2.29.29-.02,1.6-.13,2.83.68.15.1.66.45,1.14,1.12.31.44.99,1.54,1.01,5.77,0,.59,0,1.47-.07,2.53-1.05.42-2.58,1.07-4.4,1.93-5.86,2.77-7.52,4.29-8.37,5.19-2.11,2.22-2.38,3.78-2.45,4.26-.06.45-.26,2.07.67,3.68,1.25,2.16,3.62,2.68,4.36,2.85.33.07,5.04,1.03,7.4-2.19,1.44-1.96,2.03-5.49.05-7.07-1.97-1.56-5.62-.5-6.57,1.43-.04.08-.62,1.3,0,2.31.56.91,1.89,1.31,2.83.86.48-.23,1.02-.75,1.03-1.38,0-.46-.28-.91-.42-.89-.16.03,0,.62-.35,1.04-.3.35-.92.53-1.39.28-.32-.17-.5-.52-.54-.83-.1-.85.84-1.66,1.63-1.98.24-.1,1.11-.45,2-.01.74.36,1.04,1.05,1.11,1.25.49,1.28-.27,2.76-1.12,3.56-1.16,1.09-2.63,1.08-3.1,1.08-.25,0-2.92-.06-3.98-2.04-.46-.85-.41-1.69-.39-2.03.12-1.82,1.41-3.06,2.56-4.15.72-.67,1.64-1.42,4.25-2.89,1.27-.72,3-1.65,5.14-2.64,0,1.11,0,2.02-.03,2.64-.05,1.88-.17,3.51-.25,6.29-.03.95-.02,1.32.04,1.83.14,1.15.27,2.3,1.09,3.27,1.22,1.45,3.14,1.53,3.58,1.54.41.02,1.77.02,3.14-.86.84-.54,1.28-1.17,1.72-1.79,0,0,.81-1.16.84-2.26,0-.34-.07-.47-.16-.52Z"/><path fill="currentColor" d="M93.48,21.09c-.05-.31-.07-.58-.07-.79v-.47c.37-.1.79-.14,1.23-.14h1.3c2.02.07,3.28.11,3.8.11,1.62,0,3.26-.02,4.92-.07,1.03-.02,1.66-.04,1.9-.04h.84c.16.33.25.57.25.74,0,.12-.05.28-.14.49l-.52.07c-1.7.17-2.77.38-3.22.64-.19.12-.28.27-.28.46,0,.38.28.94.84,1.67,2.73,3.56,4.58,5.85,5.56,6.88,2.22-2.95,3.55-4.84,3.97-5.68s.64-1.49.64-1.96c0-.54-.21-1-.63-1.36-.42-.36-1.45-.67-3.09-.9-.19-.28-.28-.52-.28-.7l.11-.35.91-.04c.23,0,.64.01,1.23.04,1.01.07,2.02.11,3.02.11.52,0,1.41-.02,2.67-.05s2.23-.05,2.88-.05h1.62c.3.14.46.33.46.56,0,.12-.02.27-.07.46-.38.09-.83.19-1.37.28-1.27.19-2.5.65-3.69,1.38-.89.54-1.77,1.41-2.64,2.59l-4.97,6.73,5.07,6.39c2.33,3.16,3.76,5.02,4.29,5.58.53.56,1.1,1.02,1.71,1.37s1.5.68,2.68.98c.02.28.04.53.04.74,0,.16-.05.39-.14.67-.42,0-2.56-.06-6.42-.18-.23,0-1.36.02-3.38.07-.63.02-1.25.04-1.83.04-.54,0-1.21-.02-2.01-.07l.11-1.05c.35-.07.74-.15,1.17-.25,1.2-.23,2.06-.55,2.58-.95.31-.26.46-.54.46-.84,0-.51-1.58-2.68-4.75-6.49l-2.05-2.47c-.99.98-2.09,2.38-3.3,4.18-.69,1.05-1.24,1.84-1.67,2.36-.8.93-1.2,1.71-1.2,2.33,0,.21.14.42.42.64.28.22,1.1.48,2.46.78.91.19,1.56.34,1.93.45.07.31.11.55.11.72,0,.14-.02.37-.07.69-1.81-.09-3.56-.14-5.27-.14-2.16,0-3.72.03-4.69.09-.97.06-1.58.09-1.81.09-.28,0-.73-.02-1.34-.07-.09-.33-.14-.57-.14-.74l.07-.46c.33-.16.74-.27,1.23-.32,1.57-.16,2.96-.75,4.18-1.76,1.22-1.01,3.92-4.35,8.09-10.05l-4.68-5.64-4.96-5.97c-.14-.14-.32-.28-.53-.42-.38-.21-.88-.37-1.51-.49-.96-.19-1.64-.33-2.04-.42Z"/><path fill="currentColor" d="M127.48,22.43l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12-.11,10.72c-.02.87.12,1.47.42,1.81.3.34,1.21.72,2.71,1.14.94.26,1.64.48,2.11.67.07.16.11.3.11.42,0,.14-.06.32-.18.53-.91-.02-2.09-.08-3.52-.18-1.95-.16-3.23-.25-3.87-.25-.3,0-2.18.06-5.62.18-.7.02-1.38.08-2.04.18-.12,0-.3-.04-.56-.11-.12-.16-.18-.3-.18-.42,0-.33.22-.59.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM130.43,4.18c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path fill="currentColor" d="M146.99,38.46c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path fill="currentColor" d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.89,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path fill="currentColor" d="M250.03,28.83l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.41,27.56h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path fill="currentColor" d="M254,3.83v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54s-.3.16-.58.16c-.16,0-1.39-.04-3.69-.12l-4.61-.16-5.91.28c-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path fill="currentColor" d="M314.61,4.01c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path fill="currentColor" d="M322.31,19.79h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.01,1.38-.05,3.46-.19,5.98-.16,2.83-.45,6.4-.45,6.4-.46,5.62-.75,7.37.44,8.47.71.66,1.64.81,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/></svg></div>
+        <p class="firma">Revista del CIPS</p>
+        <p class="desc">Revista académica de acceso abierto del Centro de Investigaciones Psicológicas y Sociológicas (CIPS), dedicada a difundir investigaciones y a promover el debate del pensamiento crítico y descolonial desde la perspectiva del Sur Global, en particular para Cuba, América Latina y el Caribe.</p>
+        <p class="lnk">Enfoque, valores y equipo →</p>
+      </div>
+      <svg class="brj" data-brj="claro" viewBox="-150 -96 300 180" aria-hidden="true"></svg>
+    </section>
+    <section class="banda-conv">
+      <div class="t"><p class="eye">Convocatoria · abre el 1 de enero de 2027</p><h2 class="tit">Ciencias sociales en y desde <em>contextos de crisis</em></h2></div>
+      <dl class="fechas"><div><dt>Recepción</dt><dd>1 ene – 30 mar 2027</dd></div><div><dt>Primer número</dt><dd>10 oct 2027</dd></div></dl>
+      <div class="acc"><span class="b oro">Enviar contribución</span><span class="b lin">Leer la convocatoria</span></div>
+    </section>
+    <section class="debajo"><p class="eyeb">Qué publicamos</p><h3>Tema central y ejes temáticos</h3><div class="tarjetas"><span>Ciencias sociales en y desde contextos de crisis</span><span>Estructura social, desigualdades y políticas sociales</span><span>Procesos psicosociales, comunitarios y organizacionales</span></div></section>
+  </div>
+
+</div></div></div><p class="pie-marco" id="pie-marco"></p></div></div>
+
+<section class="ficha wrap" id="ficha" aria-live="polite"></section>
+
+<script>
+(function(){
+  var FICHAS = {
+    a: { t: 'A · El nombre al centro', d: 'El logo es el protagonista: la brújula encima, como un emblema, y debajo el nombre grande, la firma y el lema. La convocatoria va después, separada por una línea fina y con el título a un tamaño contenido. Todo centrado, como la portada de una revista impresa.',
+      v: 'Es la más solemne. En pantallas grandes deja aire a los lados; el texto de la convocatoria queda más abajo, aunque sigue en la primera pantalla.',
+      o: ['Portada: brújula, nombre y convocatoria', 'Calendario del primer número', 'Tema central y ejes', 'Modalidades y extensión', 'Sobre la revista', 'Avisos'] },
+    b: { t: 'B · Dos columnas, con lo esencial bajo la brújula', d: 'Debajo, «Sobre la revista» ya no repite lo esencial: dice qué es la revista, para qué existe y hacia dónde va, sin los rótulos «misión» y «visión» (los resúmenes son propuestas fieles al texto del equipo, para revisar con él). Lo esencial (acceso abierto diamante, doble ciego y publicación continua) va bajo la brújula, en una de estas cinco formas. Anotada: las tres notas alrededor de la brújula, con líneas finas que la señalan, como un grabado o un dibujo técnico anotado. Con iconos: tres iconos de línea en el mismo trazo que la brújula. En cifras: 0 €, 2 revisores, DOI. Pie de grabado: una sola línea en versalitas. Pastillas: tres etiquetas finas. Antes: El nombre y la convocatoria a la izquierda; a la derecha, la brújula y debajo lo que elijas. «Dónde estamos» (recomendado) dice en qué punto está la convocatoria según la fecha de hoy y lo marca en una línea de tiempo pequeña: la brújula orienta en el espacio y esto, en el tiempo. «Las fechas» lleva ahí la recepción, el lanzamiento y el costo, y deja el lado izquierdo más limpio. «Lo esencial» resume cómo trabaja la revista.',
+      v: 'Con «dónde estamos» y «las fechas», las fechas salen del lado izquierdo para no repetirse. «A pantalla completa» hace que la portada ocupe justo la primera pantalla.',
+      o: ['Portada: nombre, convocatoria y brújula', 'Sobre la revista', 'Tema central y ejes', 'Modalidades y extensión', 'Calendario del primer número', 'Avisos'] },
+    c: { t: 'C · La brújula al centro', d: 'La brújula grande en el centro de la portada, con el nombre encima como una cabecera, y la convocatoria en una banda al pie con el tema, las fechas y el botón. Es la más visual y la de menos texto.',
+      v: 'La brújula manda: si un día se cambia la ilustración, cambia la portada entera. En el móvil, la banda queda debajo de la brújula.',
+      o: ['Portada: nombre, brújula y banda de la convocatoria', 'Tema central y ejes', 'Modalidades y extensión', 'Calendario del primer número', 'Sobre la revista', 'Avisos'] },
+    d: { t: 'D · Revista clara', d: 'Portada en blanco, como las de las revistas académicas: el nombre grande en vino, la firma y una frase de qué es la revista, con la brújula en pequeño a un lado. La convocatoria va justo debajo, en una banda vino que se puede quitar cuando cierre.',
+      v: 'Es la más sobria y la que mejor envejece: cuando no haya convocatoria, la portada sigue igual y solo cambia la banda. Pierde la fuerza del vino a pantalla completa.',
+      o: ['Portada clara: nombre, firma y qué es la revista', 'Banda de la convocatoria', 'Tema central y ejes', 'Modalidades y extensión', 'Calendario del primer número', 'Sobre la revista', 'Avisos'] }
+  };
+  var ficha = document.getElementById('ficha'), esc = document.getElementById('escenario');
+  function mostrarFicha(op){
+    var x = FICHAS[op];
+    ficha.innerHTML = '<div><h2>' + x.t + '</h2><p>' + x.d + '</p><p class="vig"><b>A vigilar</b>' + x.v + '</p></div>'
+      + '<div><p class="orden-t">Orden de la portada</p><ol class="orden">' + x.o.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ol></div>';
+  }
+  document.querySelectorAll('[data-op]').forEach(function(b){
+    if (b.tagName !== 'BUTTON') return;
+    b.addEventListener('click', function(){
+      var op = b.getAttribute('data-op');
+      document.querySelectorAll('button[data-op]').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      document.querySelectorAll('.op').forEach(function(x){ x.classList.toggle('activa', x.getAttribute('data-op') === op); });
+      mostrarFicha(op); empujar();
+    });
+  });
+  // Pantallas: lo que se ve sin bajar, descontando la barra del navegador
+  var PANT = { portatil: [1366, 657, 'un portátil'], monitor: [1920, 937, 'un monitor grande'], movil: [390, 664, 'un móvil'] };
+  var pant = 'portatil', marco = document.getElementById('marco'), pantalla = document.getElementById('pantalla'), mock = document.getElementById('mock'), pie = document.getElementById('pie-marco');
+  function encajar(){
+    var p = PANT[pant], disp = esc.clientWidth - 2 * parseFloat(getComputedStyle(esc).paddingLeft);
+    var s = Math.min(1, disp / p[0], Math.max(320, window.innerHeight * 0.8) / p[1]);
+    pantalla.style.width = p[0] + 'px'; pantalla.style.height = p[1] + 'px'; pantalla.style.transform = 'scale(' + s + ')';
+    marco.style.width = (p[0] * s) + 'px'; marco.style.height = (p[1] * s) + 'px';
+    marco.classList.toggle('movil', pant === 'movil');
+    mock.style.setProperty('--alto', p[1] + 'px');
+    pie.textContent = 'Lo que se ve sin bajar en ' + p[2] + ' (' + p[0] + ' × ' + p[1] + ' px, sin la barra del navegador)' + (s < 1 ? ', aquí reducido al ' + Math.round(s * 100) + ' %' : '') + '. Puedes bajar dentro del marco.';
+  }
+  function grupo(attr, fn){
+    document.querySelectorAll('[' + attr + ']').forEach(function(b){
+      b.addEventListener('click', function(){
+        document.querySelectorAll('[' + attr + ']').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        fn(b.getAttribute(attr)); empujar();
+      });
+    });
+  }
+  grupo('data-pant', function(v){ pant = v; encajar(); pantalla.scrollTop = 0; });
+  grupo('data-bajo', function(v){ mock.setAttribute('data-bajo', v); });
+  grupo('data-ess', function(v){ mock.setAttribute('data-ess', v); });
+  grupo('data-sobre', function(v){ mock.setAttribute('data-sobre', v); var t = document.querySelector('.op.activa .sobre'); if (t) pantalla.scrollTop = t.offsetTop - 20; });
+  grupo('data-alto', function(v){ mock.setAttribute('data-alto', v); });
+  window.addEventListener('resize', encajar);
+  encajar();
+
+  // «Dónde estamos»: estado y línea de tiempo según la fecha de hoy
+  (function(){
+    var DIA = 86400000, d = function(s){ var p = s.split('-'); return Date.UTC(+p[0], p[1] - 1, +p[2]); };
+    var F = [d('2027-01-01'), d('2027-03-30'), d('2027-10-10')], n = new Date(), h = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
+    var cuenta = function(x, uno, varios){ return x === 1 ? uno : varios.replace('{n}', x); };
+    var est = document.querySelector('[data-estado]'), lin = document.querySelector('[data-linea]');
+    var dF = Math.round((F[0] - h) / DIA), dQ = Math.round((F[1] - h) / DIA), dL = Math.round((F[2] - h) / DIA);
+    est.innerHTML = h < F[0] ? 'La convocatoria abre el 1 de enero de 2027: <b>' + cuenta(dF, 'falta 1 día', 'faltan {n} días') + '</b>.'
+      : h <= F[1] ? 'Convocatoria abierta hasta el 30 de marzo de 2027: <b>' + (dQ ? cuenta(dQ, 'queda 1 día', 'quedan {n} días') : 'hoy es el último día') + '</b>.'
+      : h < F[2] ? 'Contribuciones en evaluación. El número sale el 10 de octubre: <b>' + cuenta(dL, 'falta 1 día', 'faltan {n} días') + '</b>.'
+      : 'El primer número salió el 10 de octubre de 2027.';
+    var ini = Math.min(h, F[0]) - 20 * DIA, fin = Math.max(h, F[2]) + 12 * DIA, pos = function(t){ return ((t - ini) / (fin - ini) * 100).toFixed(2) + '%'; };
+    var etq = ['1 ene', '30 mar', '10 oct'], html = '<div class="hecho" style="width:' + pos(h) + '"></div>';
+    F.forEach(function(t, i){ html += '<div class="pt' + (i === 2 ? ' meta' : '') + '" style="left:' + pos(t) + '"><span>' + etq[i] + '</span></div>'; });
+    html += '<div class="hoy" style="left:' + pos(h) + '"><span>Hoy</span></div>';
+    lin.innerHTML = html;
+  })();
+  mostrarFicha('b');
+
+  // ---------- Brújula de grabado (la misma del sitio): la caja gira con el ratón y la aguja vuelve al Sur ----------
+  var NS = 'http://www.w3.org/2000/svg', f = function(n){ return +n.toFixed(2); };
+  var K = 0.5, HZ = 0.866, R = 100, SUR = 112;
+  var COL = { oscuro: { t:'#DED8C7', fi:'rgba(222,216,199,.55)', s:'#B6A160', sm:'rgba(20,6,8,.30)' },
+              claro:  { t:'#4B483D', fi:'rgba(75,72,61,.45)', s:'#662426', sm:'rgba(31,27,24,.14)' } };
+  function el(tag, at, padre){ var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (padre) padre.appendChild(e); return e; }
+  function plano(g, z){ return el('g', { transform: 'translate(0 ' + f(-z * HZ) + ') scale(1 ' + K + ')' }, g); }
+  var NE = { 'vector-effect': 'non-scaling-stroke' }, brujulas = [];
+  document.querySelectorAll('[data-brj]').forEach(function(svg){
+    var c = COL[svg.getAttribute('data-brj')], yT = f(-18 * HZ), g = el('g', {}, svg);
+    var gl = el('g', { fill: 'none', stroke: c.t, 'stroke-width': 1.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, g);
+    el('path', Object.assign({ d: 'M' + (-R) + ' ' + yT + 'V0A' + R + ' ' + f(R * K) + ' 0 0 0 ' + R + ' 0V' + yT }, NE), gl);
+    el('ellipse', Object.assign({ cx: 0, cy: yT, rx: R, ry: f(R * K) }, NE), gl);
+    el('ellipse', Object.assign({ cx: 0, cy: yT, rx: 86, ry: f(86 * K), stroke: c.fi, 'stroke-width': 1.1 }, NE), gl);
+    var esf = el('g', {}, plano(g, 16)), d = '';
+    for (var a = 0; a < 360; a += 10){ var r1 = a % 30 === 0 ? 68 : 74, t = a * Math.PI / 180; d += 'M' + f(Math.cos(t) * r1) + ' ' + f(Math.sin(t) * r1) + 'L' + f(Math.cos(t) * 80) + ' ' + f(Math.sin(t) * 80); }
+    el('path', Object.assign({ d: d, stroke: c.fi, 'stroke-width': 1, fill: 'none' }, NE), esf);
+    el('circle', Object.assign({ r: 40, fill: 'none', stroke: c.fi, 'stroke-width': .9 }, NE), esf);
+    [['S', 0, true], ['O', 90], ['N', 180], ['E', 270]].forEach(function(L){
+      var t = (L[1] + SUR) * Math.PI / 180, x = Math.cos(t) * 55, y = Math.sin(t) * 55;
+      el('text', { x: f(x), y: f(y), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'EB Garamond, Garamond, serif', 'font-size': L[2] ? 30 : 21, 'font-weight': L[2] ? 600 : 500,
+        fill: L[2] ? c.s : c.t, transform: 'rotate(' + (L[1] + SUR + 90) + ' ' + f(x) + ' ' + f(y) + ')' }, esf).textContent = L[0];
+    });
+    var som = el('g', {}, plano(el('g', { transform: 'translate(5 3)' }, g), 16));
+    el('path', { d: 'M66 0L0 -9L-66 0L0 9Z', fill: c.sm }, som);
+    var ag = el('g', {}, plano(g, 24));
+    el('path', { d: 'M66 0L0 -9L0 9Z', fill: c.s }, ag);
+    el('path', Object.assign({ d: 'M-66 0L0 -9L0 9Z', fill: 'none', stroke: c.t, 'stroke-width': 1.3, 'stroke-linejoin': 'round' }, NE), ag);
+    el('circle', { r: 5, fill: c.t }, ag);
+    var a0 = 204 * Math.PI / 180, a1 = 236 * Math.PI / 180;
+    el('path', Object.assign({ d: 'M' + f(Math.cos(a0) * 83) + ' ' + f(Math.sin(a0) * 83) + 'A83 83 0 0 1 ' + f(Math.cos(a1) * 83) + ' ' + f(Math.sin(a1) * 83), fill: 'none', stroke: c.fi, 'stroke-width': 2, 'stroke-linecap': 'round' }, NE), plano(g, 16.5));
+    brujulas.push({ svg: svg, esf: esf, ag: ag, som: som });
+  });
+  // Ajustes que eligió la usuaria («Seca y viva»)
+  var A = { rapidez: 50, peso: 55, liquido: 12, arrastre: 35 };
+  var kb = 4 + A.rapidez * 0.36, cb = 2 * Math.sqrt(kb), kn = 4 + A.peso * 0.3, cn = 2 * (0.15 + A.liquido * 0.0105) * Math.sqrt(kn), ar = A.arrastre / 100;
+  var giro = 0, giroObj = 0, giroVel = 0, psi = SUR, psiVel = 0, corriendo = false, ult = 0;
+  var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function pintar(){ brujulas.forEach(function(b){ if (!b.svg.getClientRects().length) return; b.esf.setAttribute('transform', 'rotate(' + f(giro) + ')'); b.ag.setAttribute('transform', 'rotate(' + f(psi) + ')'); b.som.setAttribute('transform', 'rotate(' + f(psi) + ')'); }); }
+  function paso(t){
+    var dt = Math.min(0.05, ult ? (t - ult) / 1000 : 1 / 60); ult = t;
+    for (var n = Math.max(1, Math.round(dt * 240)), h = dt / n, i = 0; i < n; i++){ giroVel += (kb * (giroObj - giro) - cb * giroVel) * h; giro += giroVel * h; psiVel += (kn * (SUR - psi) - cn * (psiVel - ar * giroVel)) * h; psi += psiVel * h; }
+    pintar();
+    if (Math.abs(giroObj - giro) < 0.02 && Math.abs(giroVel) < 0.05 && Math.abs(psi - SUR) < 0.02 && Math.abs(psiVel) < 0.05){ corriendo = false; ult = 0; return; }
+    requestAnimationFrame(paso);
+  }
+  function mover(){ if (reducir) { pintar(); return; } if (!corriendo){ corriendo = true; requestAnimationFrame(paso); } }
+  function empujar(){ psiVel += 90; mover(); }
+  window.addEventListener('pointermove', function(e){ if (e.pointerType !== 'mouse') return; giroObj = (e.clientX / window.innerWidth - 0.5) * 150; mover(); }, { passive: true });
+  window.addEventListener('scroll', function(){ if (window.matchMedia('(hover: hover)').matches) return; giroObj = (window.scrollY || 0) * 0.35; mover(); }, { passive: true });
+  pintar(); setTimeout(empujar, 400);
+})();
+</script>

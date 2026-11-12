@@ -3,7 +3,7 @@
   <div class="ps-cover-in">
     <div class="ps-cover-top"><span>Vol. {{ numero.volumen }} · Núm. {{ numero.numero }}</span><span>{{ numero.anio }}</span></div>
     <div class="ps-cover-mark">{% set brujulaClase = "ps-cover-sym" %}{% include "brujula.njk" %}</div>
-    <div class="ps-cover-name">Praxis <i>del</i> Sur</div>
+    <div class="ps-cover-name">{% logo "praxis-del-sur" %}</div>
     <div class="ps-cover-tema">{{ numero.titulo }}</div>
   </div>
 </div>

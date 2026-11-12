@@ -24,8 +24,9 @@ permalink: acerca.html
       <div class="ps-doc">
         <section id="enfoque">
           <h2>Enfoque y alcance</h2>
-          <p><b>Misión.</b> {{ revista.mision }}</p>
-          <h3>Visión a cinco años</h3>
+          <h3>Por qué existimos</h3>
+          <p>{{ revista.mision }}</p>
+          <h3>Hacia dónde vamos en cinco años</h3>
           <ul>{% for v in revista.vision %}<li>{{ v }}</li>{% endfor %}</ul>
         </section>
         <section id="valores">

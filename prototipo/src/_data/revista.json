@@ -6,19 +6,56 @@
   "lema": "Ciencias sociales críticas desde el Sur Global, con anclaje en Cuba.",
   "descripcion": "Revista académica de acceso abierto del Centro de Investigaciones Psicológicas y Sociológicas (CIPS), dedicada a difundir investigaciones y a promover el debate del pensamiento crítico y descolonial desde la perspectiva del Sur Global, en particular para Cuba, América Latina y el Caribe.",
   "mision": "Constituir un espacio abierto y riguroso para difundir conocimientos sobre la realidad social y promover el debate de temas relevantes desde la perspectiva del Sur Global, particularmente para Cuba, América Latina y el Caribe.",
+  "manifiestoHtml": "Un espacio abierto y riguroso para difundir conocimiento sobre la realidad social y debatir <em>desde el Sur Global</em>.",
+  "manifiestoNota": "Resumen de la misión para la portada, sin el rótulo «misión»: propuesta para revisar con el equipo.",
   "vision": [
     "Ser el principal espacio de publicación de resultados científicos del CIPS.",
     "Lograr amplia visibilidad en el ámbito de las ciencias sociales cubanas.",
     "Estar indexada según la estrategia que se defina tras el primer número.",
     "Tener presencia en redes como CLACSO, ALAS y la Asociación Latinoamericana de Psicología."
   ],
+  "esenciales": [
+    {
+      "icono": "abierto",
+      "titulo": "Acceso abierto diamante",
+      "texto": "Sin cobros"
+    },
+    {
+      "icono": "ciego",
+      "titulo": "Doble ciego",
+      "texto": "Dos revisores externos"
+    },
+    {
+      "icono": "continua",
+      "titulo": "Publicación continua",
+      "texto": "Al terminar su proceso"
+    }
+  ],
   "valores": [
-    { "titulo": "Pensamiento crítico", "texto": "Entendido como herramienta de transformación social, con una posición crítica frente a las desigualdades, las relaciones de poder y los discursos hegemónicos." },
-    { "titulo": "Ciencia social abierta", "texto": "La ciudadanía tiene derecho a acceder a los resultados de investigación: sin cargos para autoras, autores ni lectores, y con revisión por pares transparente." },
-    { "titulo": "Desde el Sur", "texto": "Prioridad a teorías, metodologías y problemas formulados desde América Latina, el Caribe y otras regiones subalternizadas, en diálogo respetuoso con el Norte global." },
-    { "titulo": "Pluralismo y diálogo", "texto": "Diversidad temática con rigor argumental y ética de la investigación social. Se valoran los debates, las controversias y las aproximaciones interdisciplinarias." },
-    { "titulo": "Compromiso con Cuba", "texto": "De vocación regional y anclaje institucional en Cuba: análisis rigurosos de la realidad cubana en diálogo con el Caribe, América Latina y el Sur global." },
-    { "titulo": "Ética, transparencia y calidad", "texto": "Directrices de COPE, declaración de conflictos de interés, control de originalidad, dictamen en 45 a 60 días y trazabilidad de cada etapa del proceso editorial." }
+    {
+      "titulo": "Pensamiento crítico",
+      "texto": "Entendido como herramienta de transformación social, con una posición crítica frente a las desigualdades, las relaciones de poder y los discursos hegemónicos."
+    },
+    {
+      "titulo": "Ciencia social abierta",
+      "texto": "La ciudadanía tiene derecho a acceder a los resultados de investigación: sin cargos para autoras, autores ni lectores, y con revisión por pares transparente."
+    },
+    {
+      "titulo": "Desde el Sur",
+      "texto": "Prioridad a teorías, metodologías y problemas formulados desde América Latina, el Caribe y otras regiones subalternizadas, en diálogo respetuoso con el Norte global."
+    },
+    {
+      "titulo": "Pluralismo y diálogo",
+      "texto": "Diversidad temática con rigor argumental y ética de la investigación social. Se valoran los debates, las controversias y las aproximaciones interdisciplinarias."
+    },
+    {
+      "titulo": "Compromiso con Cuba",
+      "texto": "De vocación regional y anclaje institucional en Cuba: análisis rigurosos de la realidad cubana en diálogo con el Caribe, América Latina y el Sur global."
+    },
+    {
+      "titulo": "Ética, transparencia y calidad",
+      "texto": "Directrices de COPE, declaración de conflictos de interés, control de originalidad, dictamen en 45 a 60 días y trazabilidad de cada etapa del proceso editorial."
+    }
   ],
   "periodicidad": "Anual, con publicación continua",
   "periodicidadNota": "El proyecto menciona también números semestrales; pendiente de decidir.",
@@ -26,8 +63,14 @@
   "idiomasNota": "La convocatoria admite inglés y portugués; el equipo propone solo español en el primer número.",
   "issn": null,
   "indexacion": [
-    { "plazo": "Corto plazo (1 a 2 años)", "bases": "Colección de Revistas de CLACSO" },
-    { "plazo": "Mediano plazo (2 a 4 años)", "bases": "SciELO Citation Index, Latindex y DOAJ" }
+    {
+      "plazo": "Corto plazo (1 a 2 años)",
+      "bases": "Colección de Revistas de CLACSO"
+    },
+    {
+      "plazo": "Mediano plazo (2 a 4 años)",
+      "bases": "SciELO Citation Index, Latindex y DOAJ"
+    }
   ],
   "licencia": {
     "corta": "CC BY-NC 4.0",
@@ -36,5 +79,14 @@
   },
   "correo": null,
   "direccion": "Calle B No. 352, esquina 15, Vedado, Plaza de la Revolución, La Habana, Cuba",
-  "estadoContenido": "Contenidos en borrador del equipo editorial (noviembre de 2026)"
+  "estadoContenido": "Contenidos en borrador del equipo editorial (noviembre de 2026)",
+  "portadaFoto": {
+    "grande": "img/malecon-1600.webp",
+    "movil": "img/malecon-1200.webp",
+    "ancho": 1600,
+    "alto": 1147,
+    "alt": "Dos personas junto al muro del Malecón, frente al mar, bajo un cielo nublado",
+    "credito": null,
+    "nota": "Pendiente: autoría y permiso de la foto, y confirmar que es el Malecón. El original está en identidad/fotos."
+  }
 }
