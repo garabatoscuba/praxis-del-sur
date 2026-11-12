@@ -1,0 +1,70 @@
+---
+title: Acerca de la revista
+pkpPage: about
+permalink: acerca.html
+---
+{#- Equivale a pages/about.tpl (texto «Acerca de la revista» del panel de OJS). -#}
+<div class="page page_about ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Acerca de la revista" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Acerca de la revista</h1>
+    <p class="ps-page-lead">{{ revista.descripcion }}</p>
+
+    <div class="ps-with-toc">
+      <nav class="ps-toc" aria-label="En esta página">
+        <ol>
+          <li><a href="#enfoque">Enfoque y alcance</a></li>
+          <li><a href="#valores">Valores editoriales</a></li>
+          <li><a href="#ejes">Ejes temáticos</a></li>
+          <li><a href="#secciones">Secciones</a></li>
+          <li><a href="#datos">Periodicidad e idiomas</a></li>
+          <li><a href="#indexacion">Indexación e identificadores</a></li>
+        </ol>
+      </nav>
+      <div class="ps-doc">
+        <section id="enfoque">
+          <h2>Enfoque y alcance</h2>
+          <p><b>Misión.</b> {{ revista.mision }}</p>
+          <h3>Visión a cinco años</h3>
+          <ul>{% for v in revista.vision %}<li>{{ v }}</li>{% endfor %}</ul>
+        </section>
+        <section id="valores">
+          <h2>Valores editoriales</h2>
+          <dl class="ps-valores">
+            {%- for v in revista.valores %}<div><dt>{{ v.titulo }}</dt><dd>{{ v.texto }}</dd></div>{% endfor %}
+          </dl>
+        </section>
+        <section id="ejes">
+          <h2>Ejes temáticos</h2>
+          <dl class="ps-deflist">
+            {%- for e in ejes %}<div><dt><a href="eje-{{ e.slug }}.html">{{ e.nombre }}</a></dt><dd>{{ e.descripcion }}</dd></div>{% endfor %}
+          </dl>
+        </section>
+        <section id="secciones">
+          <h2>Secciones</h2>
+          <p>La revista combina secciones arbitradas, con evaluación doble ciego, y secciones de difusión y diálogo bajo curaduría del Comité Editorial. También publica dossieres temáticos coordinados por editoras y editores invitados.</p>
+          <ul class="ps-secciones">
+            {%- for s in secciones %}<li><span>{{ s.nombre }}</span>{% set badgeSeccion = s %}{% include "badge.njk" %}</li>{% endfor %}
+          </ul>
+          <p><a class="ps-link-arrow" href="envios.html">Normas y extensión de cada sección</a></p>
+        </section>
+        <section id="datos">
+          <h2>Periodicidad e idiomas</h2>
+          <dl class="ps-fechas-lista">
+            <div><dt>Periodicidad</dt><dd>{{ revista.periodicidad }} <span class="ps-pendiente">{{ revista.periodicidadNota }}</span></dd></div>
+            <div><dt>Idiomas</dt><dd>{{ revista.idiomas }} <span class="ps-pendiente">{{ revista.idiomasNota }}</span></dd></div>
+            <div><dt>Edita</dt><dd>{{ revista.institucion }}, La Habana</dd></div>
+          </dl>
+        </section>
+        <section id="indexacion">
+          <h2>Indexación e identificadores</h2>
+          <p>La estrategia de indexación se reevaluará tras el primer número. Metas previstas:</p>
+          <dl class="ps-fechas-lista">
+            {%- for i in revista.indexacion %}<div><dt>{{ i.plazo }}</dt><dd>{{ i.bases }}</dd></div>{% endfor %}
+          </dl>
+          <p>ISSN electrónico: <span class="ps-pendiente">en trámite</span>. DOI de cada artículo: <span class="ps-pendiente">registro por definir</span>.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

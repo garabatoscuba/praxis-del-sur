@@ -1,0 +1,75 @@
+---
+title: Envíos
+pkpPage: about
+pkpOp: submissions
+permalink: envios.html
+---
+{#- Equivale a pages/submissions.tpl (pkp-lib + ojs). -#}
+{%- set c = convocatoria -%}
+<div class="page page_submissions ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Envíos" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Envíos</h1>
+    <p class="ps-page-lead">Normas para preparar y enviar una contribución a {{ revista.nombre }}.</p>
+    <div class="cmp_notification">
+      <p>Para enviar una contribución necesitas una cuenta en la revista. <a href="acceso.html">Entra</a> o <a href="acceso.html">regístrate</a> y sigue el asistente de envío.</p>
+      <a class="ps-btn ps-btn--wine" href="acceso.html">Enviar contribución</a>
+    </div>
+
+    <div class="ps-with-toc">
+      <nav class="ps-toc" aria-label="En esta página">
+        <ol>
+          <li><a href="#authorGuidelines">Directrices para autores</a></li>
+          <li><a href="#lista">Lista de comprobación</a></li>
+          <li><a href="#secciones">Secciones</a></li>
+          <li><a href="#derechos">Derechos de autor</a></li>
+          <li><a href="#privacyStatement">Privacidad</a></li>
+        </ol>
+      </nav>
+      <div class="ps-doc">
+        <div class="author_guidelines" id="authorGuidelines">
+          <h2>Directrices para autores</h2>
+          <p><b>Idiomas:</b> {{ c.idiomas }} <span class="ps-pendiente">{{ c.idiomasNota }}</span></p>
+          <h3>Estructura del manuscrito</h3>
+          <dl class="ps-deflist">{% for e in c.estructura %}<div><dt>{{ e.t }}</dt><dd>{{ e.d }}</dd></div>{% endfor %}</dl>
+          <h3>Archivo de autoría</h3>
+          <p>{{ c.autoriaNota }} Debe incluir:</p>
+          <ul>{% for x in c.autoria %}<li>{{ x }}</li>{% endfor %}</ul>
+        </div>
+
+        <div class="submission_checklist" id="lista">
+          <h2>Lista de comprobación del envío</h2>
+          <p>Antes de enviar, comprueba que tu contribución cumple todo lo siguiente. El asistente de envío te lo pedirá.</p>
+          <ul class="ps-checklist">
+            <li>El texto es inédito y no está en evaluación en otra revista.</li>
+            <li>El manuscrito no contiene nombres ni datos que identifiquen a sus autores, tampoco en las propiedades del archivo.</li>
+            <li>Título, resumen de 150 a 250 palabras y de 3 a 5 palabras clave, en el idioma original y en inglés.</li>
+            <li>La extensión corresponde a la sección elegida.</li>
+            <li>Las referencias siguen las Normas APA (7.ª edición) y las digitales incluyen URL o DOI.</li>
+            <li>El archivo de autoría incluye filiación, ORCID, contribución CRediT, financiamiento y conflictos de interés.</li>
+          </ul>
+        </div>
+
+        <section id="secciones">
+          <h2>Secciones</h2>
+          {%- for s in secciones %}
+          <div class="section_policy">
+            <h3>{{ s.nombre }} {% set badgeSeccion = s %}{% include "badge.njk" %}</h3>
+            <p>{{ s.descripcion }} Extensión: {{ s.palabras }} palabras.{% if s.nota %} <span class="ps-pendiente">{{ s.nota }}</span>{% endif %}</p>
+          </div>
+          {%- endfor %}
+        </section>
+
+        <div class="copyright_notice" id="derechos">
+          <h2>Aviso de derechos de autor</h2>
+          <p>Las personas autoras conservan sus derechos y ceden a la revista el derecho de publicación no exclusiva. Los textos se publican bajo la licencia <a href="{{ revista.licencia.url }}">{{ revista.licencia.larga }} ({{ revista.licencia.corta }})</a>.</p>
+        </div>
+
+        <div class="privacy_statement" id="privacyStatement">
+          <h2>Declaración de privacidad</h2>
+          <p>Los nombres y las direcciones de correo electrónico registrados en la revista se usan solo para los fines declarados y no se ceden a terceros.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

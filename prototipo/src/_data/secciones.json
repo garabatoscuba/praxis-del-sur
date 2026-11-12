@@ -1,0 +1,9 @@
+[
+  { "slug": "articulos", "nombre": "Artículos de investigación", "arbitrada": true, "palabras": "6.000 a 8.000", "descripcion": "Resultados de investigación empírica o teórica, con discusión fundamentada." },
+  { "slug": "ensayos", "nombre": "Ensayos críticos", "arbitrada": true, "palabras": "5.000 a 7.000", "descripcion": "Fundamentación teórico-analítica sobre debates contemporáneos de las ciencias sociales." },
+  { "slug": "revisiones", "nombre": "Revisiones sistemáticas", "arbitrada": true, "palabras": "6.000 a 8.000", "descripcion": "Estados del arte y revisiones críticas de literatura especializada, con metodología rigurosa." },
+  { "slug": "debates", "nombre": "Debates metodológicos", "arbitrada": true, "palabras": "5.000 a 7.000", "descripcion": "Métodos, técnicas, procedimientos y dilemas éticos de la investigación social." },
+  { "slug": "experiencias", "nombre": "Experiencias de investigación aplicada", "arbitrada": false, "palabras": "3.000 a 4.500", "descripcion": "Sistematización de proyectos de intervención social y metodologías participativas.", "nota": "En discusión si pasa por arbitraje." },
+  { "slug": "resenas", "nombre": "Reseñas de libros", "arbitrada": false, "palabras": "1.500 a 2.500", "descripcion": "Análisis críticos de novedades editoriales de los últimos tres años en ciencias sociales." },
+  { "slug": "entrevistas", "nombre": "Entrevistas y memorias", "arbitrada": false, "palabras": "2.000 a 4.000", "descripcion": "Diálogos con referentes del pensamiento crítico y memorias científicas." }
+]

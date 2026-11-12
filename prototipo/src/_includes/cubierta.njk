@@ -1,0 +1,9 @@
+{#- Portada del número dibujada en HTML. En OJS será la imagen de portada del número. -#}
+<div class="ps-cover ps-on-dark" role="img" aria-label="Portada del {{ numero.volumen }}.º volumen, número {{ numero.numero }}, {{ numero.anio }}: {{ numero.titulo }}">
+  <div class="ps-cover-in">
+    <div class="ps-cover-top"><span>Vol. {{ numero.volumen }} · Núm. {{ numero.numero }}</span><span>{{ numero.anio }}</span></div>
+    <div class="ps-cover-mark">{% set brujulaClase = "ps-cover-sym" %}{% include "brujula.njk" %}</div>
+    <div class="ps-cover-name">Praxis <i>del</i> Sur</div>
+    <div class="ps-cover-tema">{{ numero.titulo }}</div>
+  </div>
+</div>

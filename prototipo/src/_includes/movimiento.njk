@@ -1,0 +1,106 @@
+{#- Movimiento del sitio (en OJS irá como js/movimiento.js del tema hijo, con addScript). Estilos en css/movimiento.css. -#}
+<script>
+(function () {
+  var root = document.documentElement;
+  var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.__psMov = { repetir: function () {} };
+
+  // Línea de lectura en los artículos. Con CSS de desplazamiento si el navegador lo tiene; si no, con el scroll.
+  var head = document.querySelector('.pkp_structure_head');
+  if (head && document.querySelector('.obj_article_details')) {
+    var barra = document.createElement('span');
+    barra.className = 'ps-progreso'; barra.setAttribute('aria-hidden', 'true');
+    head.appendChild(barra);
+    if (window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()')) {
+      barra.classList.add('is-css');
+    } else {
+      var maxY = 1, pendiente = false;
+      var pintar = function () { pendiente = false; barra.style.transform = 'scaleX(' + Math.min(1, Math.max(0, (window.scrollY || 0) / maxY)).toFixed(4) + ')'; };
+      var medir = function () { maxY = Math.max(1, root.scrollHeight - window.innerHeight); pintar(); };
+      window.addEventListener('scroll', function () { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+      window.addEventListener('resize', medir);
+      if (window.ResizeObserver) new ResizeObserver(medir).observe(document.body);
+      medir();
+    }
+  }
+
+  if (reducir || !('IntersectionObserver' in window)) return;
+
+  // Bloques que aparecen al entrar en pantalla. Se repiten al bajar y al subir.
+  var SEL = [
+    '.ps-deco', '.ps-brujula', '.ps-hero .ps-eyebrow', '.ps-hero-title', '.ps-hero-lead', '.ps-hero-meta', '.ps-hero .ps-actions',
+    '.ps-hero-fechas > div', '.ps-borrador', '.ps-hero-cover',
+    '.ps-sec-head > *', '.ps-hechos > div', '.ps-eje', '.ps-mod-col > h3', '.ps-mod-list > li', '.ps-calendario > li',
+    '.ps-avisos > h2', '.obj_announcement_summary', '.ps-ejes-lista > li', '.ps-banner',
+    '.cmp_article_list > li', '.obj_issue_toc .heading > *', '.obj_issue_toc .section > h2', '.obj_issue_toc .section > h3',
+    '.ps-page-eyebrow', '.ps-page-title', '.ps-page-lead', '.ps-estado', '.ps-list-title',
+    '.ps-article-head > *', '.main_entry > .item', '.entry_details > .item',
+    '.ps-doc > section > *', '.ps-doc > div > *', '.ps-doc--single > *', '.ps-paso',
+    '.ps-equipo-grupo > h2', '.ps-equipo-grupo li', '.ps-plazos > div', '.ps-contacto > section', '.ps-valores > div',
+    '.obj_issue_summary', '.ps-issue-side > *', '.ps-acceso > *', '.ps-otros', '.pkp_footer_content > *'
+  ].join(',');
+  var todos = Array.prototype.slice.call(document.querySelectorAll(SEL)).filter(function (el) {
+    return !el.closest('.pkp_structure_head, .ps-simulacro') && !el.classList.contains('pkp_screen_reader');
+  });
+  // Si un bloque contiene otros que también aparecen, se animan los de dentro (en cascada) y no el de fuera.
+  var marcados = new Set(todos);
+  var els = todos.filter(function (el) {
+    return !todos.some(function (otro) { return otro !== el && el.contains(otro) && marcados.has(otro); });
+  });
+  if (!els.length) return;
+  root.classList.add('ps-mov');
+
+  var dir = 'abajo', ultY = window.scrollY || 0;
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY || 0;
+    if (y !== ultY) { dir = y > ultY ? 'abajo' : 'arriba'; ultY = y; }
+  }, { passive: true });
+  function escalon() { var n = parseFloat(getComputedStyle(root).getPropertyValue('--ps-mov-escalon')); return isNaN(n) ? 70 : n; }
+  function esconder(el, lado) { el.style.removeProperty('--ps-rev-delay'); el.setAttribute('data-rev', lado); }
+  function esconderTodos() { els.forEach(function (el) { esconder(el, el.getBoundingClientRect().bottom <= 0 ? 'arriba' : 'abajo'); }); }
+  esconderTodos();
+
+  // Aparece al pasar la franja de abajo (8 %) o de arriba (6 %). Los que entran juntos van en cascada,
+  // empezando por el que asoma primero: de arriba abajo al bajar y de abajo arriba al subir.
+  var ver = new IntersectionObserver(function (entradas) {
+    var nuevos = entradas.filter(function (e) { return e.isIntersecting && e.target.getAttribute('data-rev') !== 'in'; });
+    if (!nuevos.length) return;
+    var subiendo = dir === 'arriba';
+    nuevos.sort(function (a, b) {
+      var dy = a.boundingClientRect.top - b.boundingClientRect.top;
+      if (Math.abs(dy) > 8) return subiendo ? -dy : dy;
+      return a.boundingClientRect.left - b.boundingClientRect.left;
+    });
+    var paso = escalon();
+    nuevos.forEach(function (e, k) {
+      e.target.style.setProperty('--ps-rev-delay', Math.min(k, 8) * paso + 'ms');
+      e.target.setAttribute('data-rev', 'in');
+    });
+  }, { rootMargin: '-6% 0px -8% 0px' });
+  // Se vuelve a esconder solo cuando ya no se ve nada de él, del lado por donde salió.
+  var salir = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e) {
+      if (e.isIntersecting || e.target.getAttribute('data-rev') !== 'in') return;
+      esconder(e.target, e.boundingClientRect.bottom <= 0 ? 'arriba' : 'abajo');
+    });
+  });
+
+  function empezar() {
+    els.forEach(function (el) { ver.observe(el); salir.observe(el); });
+    // Página sin recorrido: que no quede nada esperando en la franja de abajo.
+    if (root.scrollHeight <= window.innerHeight + 4) els.forEach(function (el) { el.setAttribute('data-rev', 'in'); });
+  }
+  // Espera a las fuentes (como mucho 0,45 s) para que el texto no cambie de letra a mitad de la entrada.
+  var fuentes = document.fonts && document.fonts.ready;
+  if (fuentes) Promise.race([fuentes, new Promise(function (r) { setTimeout(r, 450); })]).then(empezar); else empezar();
+
+  // Para la herramienta de barras: vuelve a hacer la entrada con los valores nuevos.
+  window.__psMov.repetir = function () {
+    ver.disconnect();
+    esconderTodos();
+    void root.offsetHeight;
+    dir = 'abajo';
+    els.forEach(function (el) { ver.observe(el); });
+  };
+})();
+</script>

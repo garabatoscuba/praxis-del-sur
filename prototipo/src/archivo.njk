@@ -1,0 +1,28 @@
+---
+title: Archivo
+pkpPage: issue
+pkpOp: archive
+permalink: archivo.html
+---
+{#- Equivale a pages/issueArchive.tpl + objects/issue_summary.tpl. -#}
+<div class="page page_issue_archive ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Archivo" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Archivo</h1>
+    <p class="ps-page-lead">Todos los números publicados por la revista, del más reciente al más antiguo.</p>
+    <ul class="issues_archive">
+      {%- for numero in numeros %}
+      <li>
+        <div class="obj_issue_summary">
+          <a class="cover" href="numero.html" tabindex="-1" aria-hidden="true">{% include "cubierta.njk" %}</a>
+          <div class="ps-issue-summary-text">
+            <h2><a class="title" href="numero.html">Vol. {{ numero.volumen }} Núm. {{ numero.numero }} ({{ numero.anio }}): {{ numero.titulo }}</a></h2>
+            <div class="ps-issue-fecha">Publicado el {{ numero.publicado | fecha }}</div>
+            <div class="description"><p>{{ numero.descripcion }}</p></div>
+          </div>
+        </div>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{
+  "name": "praxis-del-sur-prototipo",
+  "private": true,
+  "description": "Simulacro navegable de la web de Praxis del Sur con la estructura de páginas de OJS 3.5",
+  "type": "module",
+  "scripts": {
+    "build": "eleventy",
+    "build:artifact": "node scripts/build-artifact.mjs",
+    "dev": "eleventy --serve --port=4318"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "@fontsource-variable/eb-garamond": "^5.3.0",
+    "@fontsource-variable/source-sans-3": "^5.3.1"
+  }
+}

@@ -1,0 +1,71 @@
+---
+title: Inicio con el primer número
+pkpPage: index
+navActive: index.html
+permalink: inicio-publicada.html
+cabeceraSobreHeroe: true
+---
+{#- Portada desde octubre de 2027, con el número actual. Equivale a pages/indexJournal.tpl con section.current_issue. -#}
+{%- set numero = numeros[0] -%}
+<div class="page_index_journal">
+
+  <section class="ps-hero ps-hero--numero ps-on-dark" aria-labelledby="hero-titulo">
+    {% set brujulaClase = "ps-deco" %}{% include "brujula.njk" %}
+    <div class="ps-wrap ps-hero-grid ps-hero-grid--numero">
+      <div class="ps-hero-cover">{% include "cubierta.njk" %}</div>
+      <div class="ps-hero-text">
+        <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span>Número actual · Vol. {{ numero.volumen }}, núm. {{ numero.numero }} ({{ numero.anio }})</p>
+        <h1 id="hero-titulo" class="ps-hero-title">{{ numero.titulo }}</h1>
+        <p class="ps-hero-lead">{{ numero.descripcion }}</p>
+        <p class="ps-hero-meta">Publicado el {{ numero.publicado | fecha }} · {{ articulos.length }} contribuciones</p>
+        <div class="ps-actions">
+          <a class="ps-btn ps-btn--gold" href="numero.html">Ver el número completo</a>
+          <a class="ps-btn ps-btn--ghost" href="archivo.html">Archivo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="current_issue ps-section" aria-labelledby="homepageIssue">
+    <div class="ps-wrap">
+      <a id="homepageIssue"></a>
+      <div class="ps-sec-head ps-sec-head--row">
+        <div>
+          <p class="ps-eyebrow">Vol. {{ numero.volumen }}, núm. {{ numero.numero }} ({{ numero.anio }})</p>
+          <h2>En este número</h2>
+        </div>
+        <a class="read_more ps-link-arrow" href="archivo.html">Ver todos los números</a>
+      </div>
+      <div class="current_issue_title pkp_screen_reader">Vol. {{ numero.volumen }} Núm. {{ numero.numero }} ({{ numero.anio }}): {{ numero.titulo }}</div>
+      {%- set hSeccion = "h3" %}{% set hArticulo = "h4" %}{% set mostrarCabecera = false %}{% set mostrarSeccion = false %}
+      {% include "issue_toc.njk" %}
+    </div>
+  </section>
+
+  <section class="ps-section ps-section--tint" aria-labelledby="ejes-titulo">
+    <div class="ps-wrap">
+      <div class="ps-sec-head">
+        <p class="ps-eyebrow">Explorar</p>
+        <h2 id="ejes-titulo">Por eje temático</h2>
+      </div>
+      <ul class="ps-ejes-lista">
+        {%- for e in ejes %}
+        {%- set n = articulos | where("eje", e.slug) %}
+        <li><a href="eje-{{ e.slug }}.html"><span>{{ e.nombre }}</span><small>{{ n.length }} {% if n.length == 1 %}contribución{% else %}contribuciones{% endif %}</small></a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="ps-section" aria-labelledby="proxima-titulo">
+    <div class="ps-wrap ps-banner">
+      <div>
+        <p class="ps-eyebrow">Próxima convocatoria · ejemplo</p>
+        <h2 id="proxima-titulo">Vol. 2 (2028): tema por anunciar</h2>
+        <p>Las modalidades, las normas y el proceso de evaluación se mantienen. Revisa la guía antes de preparar tu texto.</p>
+      </div>
+      <div class="ps-actions"><a class="ps-btn ps-btn--wine" href="envios.html">Normas para autores</a></div>
+    </div>
+  </section>
+
+</div>

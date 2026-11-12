@@ -1,0 +1,14 @@
+{#- Solo del simulacro: no existe en OJS. Pastilla discreta abajo a la izquierda. -#}
+<details class="ps-simulacro">
+  <summary>Simulacro</summary>
+  <div class="ps-simulacro-panel">
+    <p>Web de ejemplo de {{ revista.nombre }}. Artículos, autores y datos ficticios; textos del equipo en borrador.</p>
+    <p>Ver la portada:
+      <a href="index.html"{% if page.url == "/" %} aria-current="page"{% endif %}>durante la convocatoria</a> ·
+      <a href="inicio-publicada.html"{% if page.url == "/inicio-publicada.html" %} aria-current="page"{% endif %}>con el primer número</a>
+    </p>
+    {%- if page.url == "/" %}
+    <p data-cal-simula></p>
+    {%- endif %}
+  </div>
+</details>

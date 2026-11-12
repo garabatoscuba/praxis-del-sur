@@ -1,0 +1,413 @@
+<title>Identidad Praxis del Sur</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap">
+<style>
+/* Layout: tira comparativa con las tres direcciones; debajo, una dirección a la vez (pestañas) con logo, colores y aplicaciones. */
+:root{
+  /* página */
+  --bg:#F4F2F1; --surface:#FFFFFF; --fg:#1E1517; --muted:#5A4B4E; --faint:#74676A; --line:#E2DADA; --focus:#16506A;
+  --font-ui:"Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* base común, heredada del CIPS (muestras de marca: no cambian con el tema) */
+  --ink:#1E1517; --ink-muted:#5A4B4E; --cream:#FBF8F7; --brand-line:#E9DFDF; --mustard:#E39A37; --paper:#FFFFFF;
+  /* color propio de cada dirección */
+  --a-acc:#16506A; --a-deep:#0D2E3D; --a-tint:#E2ECF0;
+  --b-acc:#4A2D6E; --b-deep:#24163A; --b-tint:#ECE6F2;
+  --c-acc:#2E5E4E; --c-deep:#17322A; --c-tint:#E3EDE8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#141011; --surface:#1E191A; --fg:#F2EDED; --muted:#BDB0B2; --faint:#A09395; --line:#3A3133; --focus:#9CCBDD; color-scheme:dark }
+}
+:root[data-theme="dark"]{ --bg:#141011; --surface:#1E191A; --fg:#F2EDED; --muted:#BDB0B2; --faint:#A09395; --line:#3A3133; --focus:#9CCBDD; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1160px;margin-inline:auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+.dir-a{--acc:var(--a-acc);--deep:var(--a-deep);--tint:var(--a-tint)}
+.dir-b{--acc:var(--b-acc);--deep:var(--b-deep);--tint:var(--b-tint)}
+.dir-c{--acc:var(--c-acc);--deep:var(--c-deep);--tint:var(--c-tint)}
+
+/* Introducción */
+.intro{padding-block:56px 28px;display:grid;gap:14px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,5.2vw,60px);line-height:1.04;letter-spacing:-.015em}
+.lead{max-width:62ch;font-size:18px;color:var(--muted)}
+.note{font-size:13px;color:var(--faint)}
+
+/* Tira comparativa */
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;padding-block:8px 40px}
+.pick{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;color:inherit;text-decoration:none;transition:border-color .25s}
+.pick:hover{border-color:var(--fg)}
+.pick-top{display:flex;align-items:baseline;gap:10px}
+.pick-letter{font-family:var(--font-serif);font-style:italic;font-size:26px;line-height:1}
+.pick-name{font-weight:600;font-size:16px}
+.pick-stage{background:var(--cream);border:1px solid var(--brand-line);border-radius:10px;min-height:170px;display:grid;place-items:center;padding:18px;overflow:hidden}
+.pick-stage,.tile .stage{container-type:inline-size}
+.pick-stage .lk{font-size:min(15px, calc(100cqi / 12.5))}
+.pick-stage .lk-a{font-size:min(15px, calc(100cqi / 18))}
+.pick-stage .lk-c{font-size:min(15px, calc(100cqi / 20.5))}
+.pick-idea{font-size:15px;color:var(--muted)}
+.pick-more{font-size:13px;font-weight:600}
+
+/* Pestañas */
+.tabs{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);display:flex;gap:8px;padding-block:12px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* Panel de cada dirección */
+.panel{padding-block:32px 56px;display:grid;gap:36px}
+.panel-head{display:grid;gap:14px;max-width:780px}
+.panel-head h2{font-family:var(--font-serif);font-weight:400;font-size:clamp(30px,3.8vw,44px);line-height:1.08}
+.panel-head > p{color:var(--muted);font-size:17px;max-width:64ch}
+.traits{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:16px}
+.traits li{border-top:2px solid var(--fg);padding-top:10px;font-size:14px;color:var(--muted)}
+.traits b{display:block;color:var(--fg);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.block{display:grid;gap:14px}
+.sub{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.tile{margin:0;border-radius:12px;min-height:210px;display:grid;grid-template-rows:1fr auto;padding:22px;gap:14px;overflow:hidden}
+.tile .stage{display:grid;place-items:center;min-width:0}
+.tile .stage .lk{font-size:min(16px, calc(100cqi / 12.5))}
+.tile .stage .lk-a{font-size:min(16px, calc(100cqi / 18))}
+.tile .stage .lk-c{font-size:min(16px, calc(100cqi / 20.5))}
+.tile figcaption{font-size:12px}
+.tile-light{background:var(--cream);color:var(--ink);border:1px solid var(--brand-line)}
+.tile-light figcaption{color:var(--ink-muted)}
+.tile-dark{background:var(--deep);color:var(--cream)}
+.tile-dark figcaption{color:color-mix(in srgb, var(--cream) 72%, transparent)}
+.icons{display:flex;align-items:flex-end;gap:22px}
+.icons span{display:grid;justify-items:center;gap:8px;font-size:11px;color:var(--ink-muted);font-variant-numeric:tabular-nums}
+
+.palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:10px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.sw-color{height:62px;border-bottom:1px solid var(--line)}
+.sw-info{padding:10px 12px 12px;display:grid;gap:2px;font-size:12px}
+.sw-info b{font-size:13px}
+.sw-info code{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.sw-info span{color:var(--muted)}
+
+/* Logotipos (el tamaño de todo sale de font-size del contenedor) */
+.lk{--lk-bg:var(--cream);font-size:16px;display:flex;align-items:center;gap:.85em;color:var(--ink);min-width:0}
+.lk.lk-dark{--lk-bg:var(--deep);color:var(--cream)}
+.lk .wm{display:grid;gap:.3em;min-width:0}
+.lk .wm-sig{font-family:var(--font-ui);font-size:.68em;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);white-space:nowrap}
+.lk.lk-dark .wm-sig{color:color-mix(in srgb, var(--cream) 72%, transparent)}
+.lk .sym{flex:none;display:block}
+
+.lk-a .sym{width:4em;height:4em;color:var(--acc)}
+.lk-a.lk-dark .sym{color:var(--cream);--needle:var(--mustard)}
+.lk-a .wm-name{font-family:var(--font-serif);font-weight:500;font-size:2.15em;line-height:1;letter-spacing:-.012em;white-space:nowrap}
+.lk-a .wm-name em{font-style:italic;color:var(--acc)}
+.lk-a.lk-dark .wm-name em{color:var(--mustard)}
+
+.lk-b{display:grid;gap:.45em;justify-items:start}
+.b-praxis{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:4em;line-height:.86;letter-spacing:-.02em}
+.b-x{color:var(--acc)}
+.lk-b.lk-dark .b-x{color:var(--mustard)}
+.b-row{display:flex;align-items:center;gap:.7em;width:100%}
+.b-rule{height:2px;background:currentColor;width:3.2em;flex:none}
+.b-sur{font-family:var(--font-ui);font-stretch:125%;font-weight:650;font-size:.98em;letter-spacing:.34em;text-transform:uppercase;white-space:nowrap}
+
+.lk-c .sym{width:3em;height:3.6em;color:var(--acc)}
+.lk-c.lk-dark .sym{color:var(--cream);--piece:var(--mustard)}
+.c-name{font-family:var(--font-ui);font-weight:600;font-size:1.42em;letter-spacing:.2em;text-transform:uppercase;line-height:1;white-space:nowrap}
+
+/* Variante de cabecera web */
+.lk.lk-header{font-size:9px}
+.lk-b.lk-header{display:flex;align-items:baseline;gap:.9em}
+.lk-b.lk-header .b-praxis{font-size:3.6em}
+.lk-b.lk-header .b-rule,.lk-b.lk-header .wm-sig{display:none}
+.lk-b.lk-header .b-sur{font-size:1.15em}
+
+/* Maqueta de la web */
+.web{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--cream);color:var(--ink)}
+.web-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(16px,3vw,28px);background:var(--paper);border-bottom:1px solid var(--brand-line)}
+.web-nav{display:flex;gap:20px;font-size:13px;font-weight:500;color:var(--ink-muted)}
+.web-nav span:first-child{color:var(--ink);box-shadow:inset 0 -2px 0 var(--acc);padding-bottom:2px}
+.web-menu{display:none;font-size:13px;font-weight:600;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:13px;font-weight:600;padding:10px 16px;border-radius:999px;border:1.5px solid transparent;white-space:nowrap;line-height:1}
+.btn-acc{background:var(--acc);color:var(--cream)}
+.btn-line{border-color:var(--acc);color:var(--acc)}
+.btn-spark{background:var(--mustard);color:var(--ink)}
+.btn-ghost{border-color:color-mix(in srgb, var(--cream) 60%, transparent);color:var(--cream)}
+
+.hero{position:relative;overflow:hidden;padding:clamp(32px,6vw,72px) clamp(20px,4vw,48px);display:grid;gap:18px}
+.hero > :not(.deco){position:relative;z-index:1;max-width:620px}
+.hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.hero h4{font-family:var(--font-serif);font-weight:400;font-size:clamp(32px,4.8vw,58px);line-height:1.03;letter-spacing:-.015em}
+.hero p{font-size:16px;max-width:50ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.draft{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.72}
+.deco{position:absolute;z-index:0;pointer-events:none}
+
+.dir-a .hero,.dir-c .hero{background:var(--deep);color:var(--cream)}
+.dir-a .hero-eyebrow,.dir-c .hero-eyebrow,.dir-a .hero h4 em,.dir-c .hero h4 em{color:var(--mustard)}
+.dir-a .hero h4 em{font-style:italic}
+.dir-c .hero h4 em{font-style:normal}
+.dir-a .hero p,.dir-c .hero p{color:color-mix(in srgb, var(--cream) 84%, transparent)}
+.deco-a{right:-8%;top:-14%;width:min(52%,440px);color:var(--cream);opacity:.11}
+.deco-c{right:4%;bottom:-18%;width:min(34%,280px);color:var(--cream);opacity:.12}
+
+.dir-b .hero{background:var(--cream);color:var(--ink)}
+.dir-b .hero-eyebrow{color:var(--acc)}
+.dir-b .hero h4 em{font-style:italic;color:var(--acc)}
+.dir-b .hero p{color:var(--ink-muted)}
+.dir-b .hero h4{border-top:2px solid var(--ink);padding-top:16px}
+.deco-b{right:-2%;top:50%;transform:translateY(-54%);font-family:var(--font-serif);font-style:italic;font-size:clamp(220px,34vw,440px);line-height:.8;color:var(--tint)}
+
+.ejes{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:16px clamp(16px,3vw,28px);background:var(--paper);border-top:1px solid var(--brand-line)}
+.ejes-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-right:6px}
+.eje{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--tint);color:var(--ink)}
+
+/* Ficha de artículo y publicación */
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px;align-items:start}
+.apps figure{margin:0;display:grid;gap:8px;min-width:0}
+.apps figcaption{font-size:12px;color:var(--muted)}
+.art{background:var(--paper);color:var(--ink);border:1px solid var(--brand-line);border-radius:12px;padding:22px;display:grid;gap:12px}
+.art-sec{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+.badge{font-size:11px;letter-spacing:.02em;text-transform:none;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.ej{margin-left:auto;font-size:10px;letter-spacing:.12em;color:var(--ink-muted)}
+.art h4{font-family:var(--font-serif);font-weight:500;font-size:24px;line-height:1.16}
+.art-en{font-family:var(--font-serif);font-style:italic;color:var(--ink-muted);font-size:16px;line-height:1.3}
+.art-auth{font-size:14px;line-height:1.7}
+.art-auth small{color:var(--ink-muted);font-size:13px}
+.orcid{font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:4px;background:var(--tint);color:var(--acc);margin-left:5px;vertical-align:1px}
+.art-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0;font-size:13px}
+.art-meta dt{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted)}
+.art-meta dd{margin:0;font-variant-numeric:tabular-nums}
+.art-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--brand-line);font-size:13px;color:var(--ink-muted)}
+
+.post{aspect-ratio:1/1;max-width:100%;border-radius:12px;overflow:hidden;position:relative;padding:clamp(20px,6%,34px);display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.post > :not(.deco){position:relative;z-index:1}
+.dir-a .post,.dir-c .post{background:var(--deep);color:var(--cream)}
+.dir-b .post{background:var(--cream);color:var(--ink);border:1px solid var(--brand-line)}
+.post .lk{font-size:8.5px}
+.post-body{align-self:end;display:grid;gap:10px}
+.post-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mustard)}
+.dir-b .post-eyebrow{color:var(--acc)}
+.post h4{font-family:var(--font-serif);font-weight:400;font-size:clamp(26px,3.3vw,36px);line-height:1.04;letter-spacing:-.01em}
+.dir-b .post h4{font-style:italic}
+.post-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-size:12px;padding-top:12px;border-top:1px solid currentColor}
+.post-foot b{font-variant-numeric:tabular-nums}
+.deco-post-a{right:-20%;top:-16%;width:70%;color:var(--cream);opacity:.08}
+.deco-post-b{right:-4%;top:-12%;font-family:var(--font-serif);font-style:italic;font-size:min(62vw,300px);line-height:.8;color:var(--tint)}
+.deco-post-c{right:-6%;top:-8%;width:46%;color:var(--cream);opacity:.1}
+
+/* Para decidir */
+.decide{padding-block:44px 72px;border-top:1px solid var(--line);display:grid;gap:22px}
+.decide h2{font-family:var(--font-serif);font-weight:400;font-size:clamp(28px,3.6vw,40px)}
+.decide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.decide-grid article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.decide-grid h3{font-size:16px;font-weight:600}
+.decide-grid p{font-size:15px;color:var(--muted)}
+.decide-grid .risk{font-size:14px}
+.next{max-width:68ch;font-size:16px}
+
+@media (max-width:760px){
+  .web-nav,.web-bar .btn{display:none}
+  .web-menu{display:inline}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;scroll-behavior:auto !important} }
+</style>
+
+<header class="intro wrap">
+  <p class="eyebrow">Praxis del Sur · Revista del CIPS</p>
+  <h1>Tres direcciones de identidad</h1>
+  <p class="lead">Elige una, o dime qué tomarías de cada una. Las tres comparten las tipografías y los neutros del sitio del CIPS; cambian el símbolo, el color propio y el tono.</p>
+  <p class="note">Borrador de trabajo, 12 de noviembre de 2026. Los textos y las fechas de los ejemplos son propuestas del equipo, sin aprobar.</p>
+</header>
+
+<section class="compare wrap" id="compare" aria-label="Las tres direcciones"></section>
+
+<nav class="tabs wrap" role="tablist" aria-label="Ver una dirección" id="tabs"></nav>
+
+<main class="wrap" id="panels"></main>
+
+<section class="decide wrap" aria-labelledby="decide-title">
+  <h2 id="decide-title">Para decidir</h2>
+  <div class="decide-grid">
+    <article>
+      <h3>A · Brújula al Sur</h3>
+      <p>La más reconocible: el símbolo cuenta la idea del Sur aunque no se lea el nombre.</p>
+      <p class="risk">A vigilar: las brújulas son un recurso conocido; lo que la hace propia es la aguja que rompe el círculo.</p>
+    </article>
+    <article>
+      <h3>B · Teoría y acción</h3>
+      <p>La más sobria y la que mejor envejece; se lee de inmediato como revista académica.</p>
+      <p class="risk">A vigilar: todo depende de la tipografía, y el ícono (la x) dice menos por sí solo.</p>
+    </article>
+    <article>
+      <h3>C · Ventana al Sur</h3>
+      <p>La que más claramente dice «revista del CIPS»: hereda su forma y la gira hacia el sur.</p>
+      <p class="risk">A vigilar: en tamaños pequeños, junto al logo del CIPS, pueden confundirse.</p>
+    </article>
+  </div>
+  <p class="next">Con tu elección, o con la mezcla que prefieras, hago el logo definitivo en archivos SVG, compruebo los colores en pantalla y papel, y preparo una guía breve para el equipo y para quien diseñe la versión impresa.</p>
+</section>
+
+<script>
+(function(){
+  // Símbolos
+  var SYM_A = '<path d="M37.69 79.83A36 36 0 1 1 62.31 79.83" fill="none" stroke="currentColor" stroke-width="7"/>'
+    + '<path d="M50 18L55.2 46h-10.4z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>'
+    + '<path d="M41 46h18L50 98z" fill="var(--needle, currentColor)"/>'
+    + '<circle cx="50" cy="46" r="4.6" fill="var(--lk-bg)"/>';
+  var SYM_C = '<path d="M150 83H103V46H47V103H84V148H0V0H150Z" fill="currentColor"/>'
+    + '<rect x="103" y="135" width="47" height="45" fill="var(--piece, currentColor)"/>';
+  function symB(bg, fg){
+    return '<rect width="100" height="100" fill="' + bg + '"/>'
+      + '<text x="50" y="71" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-style="italic" font-size="96" fill="' + fg + '">x</text>';
+  }
+
+  function lockup(id, v){
+    var cls = 'lk lk-' + id + ' lk-' + v;
+    if (id === 'a') return '<div class="' + cls + '"><svg class="sym" viewBox="0 0 100 100" aria-hidden="true">' + SYM_A + '</svg>'
+      + '<span class="wm"><span class="wm-name">Praxis del <em>Sur</em></span><span class="wm-sig">Revista del CIPS</span></span></div>';
+    if (id === 'b') return '<div class="' + cls + '"><span class="b-praxis">Pra<span class="b-x">x</span>is</span>'
+      + '<span class="b-row"><span class="b-rule"></span><span class="b-sur">del Sur</span></span><span class="wm-sig">Revista del CIPS</span></div>';
+    return '<div class="' + cls + '"><svg class="sym" viewBox="0 0 150 180" aria-hidden="true">' + SYM_C + '</svg>'
+      + '<span class="wm"><span class="c-name">Praxis del Sur</span><span class="wm-sig">Revista del CIPS</span></span></div>';
+  }
+  function icon(id, px){
+    var s = 'width="' + px + '" height="' + px + '"';
+    if (id === 'a') return '<svg ' + s + ' viewBox="0 0 100 100" style="color:var(--acc);--lk-bg:var(--cream)" aria-hidden="true">' + SYM_A + '</svg>';
+    if (id === 'b') return '<svg ' + s + ' viewBox="0 0 100 100" aria-hidden="true">' + symB('var(--acc)', 'var(--cream)') + '</svg>';
+    return '<svg ' + s + ' viewBox="-15 0 180 180" style="color:var(--acc)" aria-hidden="true">' + SYM_C + '</svg>';
+  }
+  function deco(id, where){
+    if (id === 'a') return '<svg class="deco deco-' + where + 'a" viewBox="0 0 100 100" aria-hidden="true"><path d="M37.69 79.83A36 36 0 1 1 62.31 79.83" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M41 46h18L50 98z" fill="currentColor"/></svg>';
+    if (id === 'b') return '<span class="deco deco-' + where + 'b" aria-hidden="true">x</span>';
+    return '<svg class="deco deco-' + where + 'c" viewBox="0 0 150 180" aria-hidden="true"><path d="M150 83H103V46H47V103H84V148H0V0H150Z" fill="currentColor"/><rect x="103" y="135" width="47" height="45" fill="currentColor"/></svg>';
+  }
+
+  var DIRS = [
+    { id:'a', letter:'A', name:'Brújula al Sur',
+      idea:'Una brújula cuya aguja sur atraviesa el círculo: la revista se orienta desde el Sur.',
+      concept:'Parte de la idea de «nuestro norte es el sur»: una brújula cuya aguja sur rompe el círculo y sale de él. Es la dirección más explícita; el símbolo dice qué es la revista aunque no se lea el nombre.',
+      traits:[['Símbolo','Brújula abierta por abajo; la aguja sur, maciza, la atraviesa.'],['Color propio','Azul atlántico. La chispa mostaza del CIPS marca el sur sobre fondos oscuros.'],['Tono','Comprometido y reconocible, con el nombre en la serifa de lectura.']],
+      colors:[['Azul atlántico','--a-acc','#16506A','Sobre crema: 8,3:1'],['Azul profundo','--a-deep','#0D2E3D','Crema encima: 13,5:1'],['Azul tinte','--a-tint','#E2ECF0','Fondos suaves'],['Mostaza (CIPS)','--mustard','#E39A37','Solo sobre oscuro: 6,1:1']] },
+    { id:'b', letter:'B', name:'Teoría y acción',
+      idea:'Dos voces tipográficas: «Praxis» en itálica de lectura y «del Sur» en mayúsculas firmes.',
+      concept:'Todo está en la tipografía. «Praxis» va en la itálica de lectura, la voz de la teoría; «del Sur», en mayúsculas anchas y firmes, la voz de la acción. La x, donde se cruzan los trazos, lleva el color de la revista y sirve de ícono.',
+      traits:[['Símbolo','La x en itálica: el cruce entre teoría y acción.'],['Color propio','Violeta tinta, sobrio y poco común entre revistas de la región.'],['Tono','Académico y editorial; el que mejor envejece.']],
+      colors:[['Violeta tinta','--b-acc','#4A2D6E','Sobre crema: 10,5:1'],['Violeta profundo','--b-deep','#24163A','Crema encima: 15,9:1'],['Violeta tinte','--b-tint','#ECE6F2','Fondos suaves'],['Mostaza (CIPS)','--mustard','#E39A37','Solo sobre oscuro: 7,2:1']] },
+    { id:'c', letter:'C', name:'Ventana al Sur',
+      idea:'El cuadrado con ventana del CIPS, girado hacia el sur: la pieza sale por abajo.',
+      concept:'Parte del logo del CIPS: el mismo cuadrado con ventana, girado hacia el sur, con la pieza que sale por abajo. Es la que más claramente dice «revista del CIPS», con el nombre en mayúsculas espaciadas como el del centro.',
+      traits:[['Símbolo','La geometría del CIPS invertida; la pieza desciende fuera del marco.'],['Color propio','Verde monte, ligado al territorio. Mostaza en la pieza sobre oscuro.'],['Tono','Institucional y de familia; el más cercano al sitio del CIPS.']],
+      colors:[['Verde monte','--c-acc','#2E5E4E','Sobre crema: 7,0:1'],['Verde profundo','--c-deep','#17322A','Crema encima: 13,0:1'],['Verde tinte','--c-tint','#E3EDE8','Fondos suaves'],['Mostaza (CIPS)','--mustard','#E39A37','Solo sobre oscuro: 5,9:1']] }
+  ];
+  var COMMON = [['Tinta (CIPS)','--ink','#1E1517','Texto: 16,9:1 sobre crema'],['Crema (CIPS)','--cream','#FBF8F7','Fondo de lectura']];
+  var EJES = ['Estructura social y desigualdades','Procesos psicosociales y comunitarios','Género, racialidad e interseccionalidades','Medio ambiente y territorio','Epistemologías desde el Sur'];
+
+  function swatch(c){
+    return '<div class="sw"><div class="sw-color" style="background:var(' + c[1] + ')"></div><div class="sw-info"><b>' + c[0] + '</b><code>' + c[2] + '</code><span>' + c[3] + '</span></div></div>';
+  }
+
+  function panel(d){
+    var light = d.id === 'b';
+    return '<section class="panel dir-' + d.id + '" id="panel-' + d.id + '" role="tabpanel" aria-labelledby="tab-' + d.id + '" hidden>'
+      + '<div class="panel-head"><h2>' + d.letter + ' · ' + d.name + '</h2><p>' + d.concept + '</p><ul class="traits">'
+      + d.traits.map(function(t){ return '<li><b>' + t[0] + '</b>' + t[1] + '</li>'; }).join('') + '</ul></div>'
+
+      + '<div class="block"><h3 class="sub">Logo</h3><div class="logos">'
+      + '<figure class="tile tile-light"><div class="stage">' + lockup(d.id, 'light') + '</div><figcaption>Sobre crema</figcaption></figure>'
+      + '<figure class="tile tile-dark"><div class="stage">' + lockup(d.id, 'dark') + '</div><figcaption>Sobre el color profundo</figcaption></figure>'
+      + '<figure class="tile tile-light"><div class="stage"><div class="icons">'
+      + '<span>' + icon(d.id, 64) + '64 px</span><span>' + icon(d.id, 32) + '32 px</span><span>' + icon(d.id, 16) + '16 px</span>'
+      + '</div></div><figcaption>Símbolo como ícono del navegador y de redes</figcaption></figure>'
+      + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Colores</h3><div class="palette">' + d.colors.concat(COMMON).map(swatch).join('') + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Portada de la web durante la convocatoria</h3><div class="web">'
+      + '<div class="web-bar">' + lockup(d.id, 'header')
+      + '<div class="web-nav"><span>Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></div>'
+      + '<span class="btn btn-acc">Enviar contribución</span><span class="web-menu">Menú</span></div>'
+      + '<div class="hero">' + deco(d.id, '')
+      + '<p class="hero-eyebrow">Convocatoria abierta · Vol. 1 (2027)</p>'
+      + '<h4>Ciencias sociales en y desde <em>contextos de crisis</em></h4>'
+      + '<p>Recibimos contribuciones del 1 de enero al 30 de marzo de 2027. El primer número sale el 10 de octubre, en el 44.º aniversario del CIPS.</p>'
+      + '<div class="hero-actions">' + (light
+          ? '<span class="btn btn-acc">Enviar contribución</span><span class="btn btn-line">Leer la convocatoria</span>'
+          : '<span class="btn btn-spark">Enviar contribución</span><span class="btn btn-ghost">Leer la convocatoria</span>') + '</div>'
+      + '<p class="draft">Textos y fechas: borrador del equipo</p></div>'
+      + '<div class="ejes"><span class="ejes-label">Ejes temáticos</span>' + EJES.map(function(e){ return '<span class="eje">' + e + '</span>'; }).join('') + '</div>'
+      + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Ficha de artículo y publicación en redes</h3><div class="apps">'
+      + '<figure><article class="art">'
+      + '<p class="art-sec">Artículo de investigación <span class="badge">Arbitrado · doble ciego</span><span class="ej">Ejemplo</span></p>'
+      + '<h4>Trabajo informal y redes de cuidado en barrios de La Habana</h4>'
+      + '<p class="art-en">Informal work and care networks in Havana neighbourhoods</p>'
+      + '<p class="art-auth">Lucía Moreno Vidal<span class="orcid">ORCID</span> <small>· Universidad de La Habana</small><br>Tomás Ferrer Lima<span class="orcid">ORCID</span> <small>· CIPS</small></p>'
+      + '<dl class="art-meta"><div><dt>Recibido</dt><dd>15 feb 2027</dd></div><div><dt>Aceptado</dt><dd>20 jul 2027</dd></div><div><dt>Publicado</dt><dd>10 oct 2027</dd></div><div><dt>DOI</dt><dd>10.xxxxx/praxis.2027.003</dd></div></dl>'
+      + '<p class="art-foot"><span>Acceso abierto · CC BY-NC 4.0</span><span class="btn btn-line">PDF</span></p>'
+      + '</article><figcaption>Así aparecería cada artículo en el número y en las búsquedas. Autores y datos ficticios.</figcaption></figure>'
+      + '<figure><div class="post">' + deco(d.id, 'post-')
+      + lockup(d.id, light ? 'light' : 'dark')
+      + '<div class="post-body"><p class="post-eyebrow">Convocatoria · Vol. 1 (2027)</p><h4>Ciencias sociales en y desde contextos de crisis</h4></div>'
+      + '<div class="post-foot"><span>Recepción<br><b>1 ene – 30 mar 2027</b></span><span>Envíos por la plataforma de la revista</span></div>'
+      + '</div><figcaption>Publicación cuadrada para anunciar la convocatoria en redes.</figcaption></figure>'
+      + '</div></div>'
+      + '</section>';
+  }
+
+  var compare = document.getElementById('compare');
+  var tabs = document.getElementById('tabs');
+  var panels = document.getElementById('panels');
+  compare.innerHTML = DIRS.map(function(d){
+    return '<a class="pick dir-' + d.id + '" href="#' + d.id + '">'
+      + '<span class="pick-top"><span class="pick-letter">' + d.letter + '</span><span class="pick-name">' + d.name + '</span></span>'
+      + '<span class="pick-stage">' + lockup(d.id, 'light') + '</span>'
+      + '<span class="pick-idea">' + d.idea + '</span>'
+      + '<span class="pick-more">Ver logo, colores y aplicaciones →</span></a>';
+  }).join('');
+  tabs.innerHTML = DIRS.map(function(d){
+    return '<button class="tab" role="tab" id="tab-' + d.id + '" aria-controls="panel-' + d.id + '" aria-selected="false" tabindex="-1" data-id="' + d.id + '">' + d.letter + ' · ' + d.name + '</button>';
+  }).join('');
+  panels.innerHTML = DIRS.map(panel).join('');
+
+  var ids = DIRS.map(function(d){ return d.id; });
+  function show(id, focus){
+    if (ids.indexOf(id) < 0) id = 'a';
+    ids.forEach(function(x){
+      var on = x === id;
+      document.getElementById('panel-' + x).hidden = !on;
+      var t = document.getElementById('tab-' + x);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+  }
+  function fromHash(scroll){
+    var id = (location.hash || '').replace('#', '');
+    show(id);
+    if (scroll && ids.indexOf(id) >= 0) {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      tabs.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+  tabs.addEventListener('click', function(e){
+    var b = e.target.closest('.tab'); if (!b) return;
+    location.hash = b.getAttribute('data-id');
+  });
+  tabs.addEventListener('keydown', function(e){
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var cur = ids.indexOf((document.activeElement && document.activeElement.getAttribute('data-id')) || 'a');
+    var next = ids[(cur + (e.key === 'ArrowRight' ? 1 : ids.length - 1)) % ids.length];
+    location.hash = next; show(next, true); e.preventDefault();
+  });
+  window.addEventListener('hashchange', function(){ fromHash(true); });
+  fromHash(false);
+})();
+</script>

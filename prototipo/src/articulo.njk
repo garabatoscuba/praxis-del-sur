@@ -1,0 +1,148 @@
+---
+pagination:
+  data: articulos
+  size: 1
+  alias: a
+permalink: "articulo-{{ a.slug }}.html"
+pkpPage: article
+pkpOp: view
+navActive: numero.html
+eleventyComputed:
+  title: "{{ a.titulo }}"
+  descripcion: "{{ a.resumen }}"
+---
+{#- Equivale a pages/article.tpl + objects/article_details.tpl. -#}
+{%- set numero = numeros[0] -%}
+{%- set sec = secciones | bySlug(a.seccion) -%}
+{%- set eje = ejes | bySlug(a.eje) -%}
+<div class="page page_article ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Archivo", url: "archivo.html" }, { label: "Vol. " ~ numero.volumen ~ " Núm. " ~ numero.numero ~ " (" ~ numero.anio ~ ")", url: "numero.html" }, { label: sec.nombre }] %}{% include "breadcrumbs.njk" %}
+    <article class="obj_article_details">
+      <div class="cmp_notification notice">Artículo de ejemplo: autores, datos, ORCID y DOI son ficticios.</div>
+
+      <header class="ps-article-head">
+        <p class="ps-summary-meta"><span class="ps-section-label">{{ sec.nombre }}</span>{% set badgeSeccion = sec %}{% include "badge.njk" %}</p>
+        <h1 class="page_title">{{ a.titulo }}</h1>
+        <p class="ps-title-en" lang="en">{{ a.titulo_en }}</p>
+        {%- if a.resenaDe %}<p class="ps-resena-de">{{ a.resenaDe | safe }}</p>{% endif %}
+        <ul class="galleys_links ps-head-galleys">
+          {%- for g in a.galeradas %}<li><a class="obj_galley_link {{ g | lower }}" href="#descargas">{{ g }}</a></li>{% endfor %}
+        </ul>
+      </header>
+
+      <div class="row">
+        <div class="main_entry">
+          <section class="item authors">
+            <h2 class="pkp_screen_reader">Autores</h2>
+            <ul class="authors">
+              {%- for au in a.autores %}
+              <li>
+                <span class="name">{{ au | nombreCompleto }}</span>
+                <span class="affiliation">{{ au.afiliacion }}</span>
+                <span class="orcid"><a href="#" aria-label="ORCID de {{ au | nombreCompleto }} (ejemplo)"><span class="ps-orcid-badge" aria-hidden="true">iD</span>{{ au.orcid }}</a></span>
+                {%- if au.credit %}<span class="ps-credit"><span class="pkp_screen_reader">Contribución: </span>{{ au.credit | join(" · ") }}</span>{% endif %}
+              </li>
+              {%- endfor %}
+            </ul>
+          </section>
+
+          <section class="item doi">
+            <h2 class="label">DOI:</h2>
+            <span class="value"><a href="#">https://doi.org/{{ a.doi }}</a></span>
+          </section>
+
+          <section class="item abstract">
+            <h2 class="label">Resumen</h2>
+            <p>{{ a.resumen }}</p>
+          </section>
+          <section class="item keywords">
+            <h2 class="label">Palabras clave</h2>
+            <span class="value">{% for k in a.palabras %}<span class="ps-kw">{{ k }}</span>{% endfor %}</span>
+          </section>
+
+          <section class="item abstract" lang="en">
+            <h2 class="label">Abstract</h2>
+            <p>{{ a.resumen_en }}</p>
+          </section>
+          <section class="item keywords" lang="en">
+            <h2 class="label">Keywords</h2>
+            <span class="value">{% for k in a.keywords %}<span class="ps-kw">{{ k }}</span>{% endfor %}</span>
+          </section>
+
+          <section class="item ps-declaraciones">
+            <h2 class="label">Declaraciones</h2>
+            <dl>
+              <div><dt>Financiamiento</dt><dd>{{ a.financiamiento }}</dd></div>
+              <div><dt>Conflictos de interés</dt><dd>{{ a.conflictos }}</dd></div>
+            </dl>
+          </section>
+
+          {%- if a.referencias %}
+          <section class="item references">
+            <h2 class="label">Referencias</h2>
+            <div class="value">{% for r in a.referencias %}<p>{{ r | safe }}</p>{% endfor %}</div>
+          </section>
+          {%- endif %}
+        </div>
+
+        <div class="entry_details">
+          <div class="item galleys" id="descargas">
+            <h2 class="pkp_screen_reader">Descargas</h2>
+            <ul class="value galleys_links">
+              {%- for g in a.galeradas %}
+              <li><a class="obj_galley_link {{ g | lower }}" href="#">{% if g == "PDF" %}Descargar PDF{% else %}Leer en HTML{% endif %}</a></li>
+              {%- endfor %}
+            </ul>
+          </div>
+
+          <div class="item published">
+            <section class="sub_item">
+              <h2 class="label">Publicado</h2>
+              <div class="value"><span>{{ a.publicado | fecha }}</span></div>
+            </section>
+            <section class="sub_item ps-historial">
+              <h2 class="label">Historial</h2>
+              <dl class="value">
+                <div><dt>Recibido</dt><dd>{{ a.recibido | fechaCorta }}</dd></div>
+                <div><dt>Aceptado</dt><dd>{{ a.aceptado | fechaCorta }}</dd></div>
+                <div><dt>Publicado</dt><dd>{{ a.publicado | fechaCorta }}</dd></div>
+              </dl>
+            </section>
+          </div>
+
+          <div class="item citation">
+            <section class="sub_item citation_display">
+              <h2 class="label">Cómo citar</h2>
+              <div class="value">
+                <div id="citationOutput" class="ps-cita">{{ a | apa(revista, numero) | safe }}</div>
+                <p class="ps-cita-acciones"><button type="button" class="ps-btn ps-btn--line ps-btn--small" data-copiar="citationOutput">Copiar cita</button><span>APA 7.ª edición</span></p>
+              </div>
+            </section>
+          </div>
+
+          <div class="item issue">
+            <section class="sub_item">
+              <h2 class="label">Número</h2>
+              <div class="value"><a class="title" href="numero.html">Vol. {{ numero.volumen }} Núm. {{ numero.numero }} ({{ numero.anio }}): {{ numero.titulo }}</a></div>
+            </section>
+            <section class="sub_item">
+              <h2 class="label">Sección</h2>
+              <div class="value">{{ sec.nombre }}</div>
+            </section>
+            <section class="sub_item">
+              <h2 class="label">Eje temático</h2>
+              <div class="value"><ul class="categories"><li><a href="eje-{{ eje.slug }}.html">{{ eje.nombre }}</a></li></ul></div>
+            </section>
+          </div>
+
+          <div class="item copyright">
+            <h2 class="label">Licencia</h2>
+            <p><a class="ps-cc" href="{{ revista.licencia.url }}">{{ revista.licencia.corta }}</a></p>
+            <p>Se publica bajo la licencia {{ revista.licencia.larga }}.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

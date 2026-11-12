@@ -1,0 +1,26 @@
+---
+title: Políticas
+pkpPage: about
+permalink: politicas.html
+---
+<div class="page page_about ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Acerca de", url: "acerca.html" }, { label: "Políticas" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Políticas</h1>
+    <p class="ps-page-lead">Cómo evalúa, publica y protege la revista los trabajos que recibe.</p>
+    <div class="ps-with-toc">
+      <nav class="ps-toc" aria-label="En esta página">
+        <ol>{% for p in politicas %}<li><a href="#{{ p.id }}">{{ p.titulo }}</a></li>{% endfor %}</ol>
+      </nav>
+      <div class="ps-doc">
+        {%- for p in politicas %}
+        <section id="{{ p.id }}">
+          <h2>{{ p.titulo }}</h2>
+          {{ p.html | safe }}
+          {%- if p.pendiente %}<p><span class="ps-pendiente">{{ p.pendiente }}</span></p>{% endif %}
+        </section>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="pkp_structure_footer_wrapper" role="contentinfo">
+  <a id="pkp_content_footer"></a>
+  <div class="pkp_structure_footer">
+    <div class="pkp_footer_content">
+      <div class="ps-footer-brand ps-on-dark">
+        <a href="index.html" class="ps-footer-logo">{% include "logo.njk" %}</a>
+        <p>{{ revista.lema }}</p>
+      </div>
+      <nav class="ps-footer-col" aria-label="La revista">
+        <h2>La revista</h2>
+        <ul>
+          <li><a href="acerca.html">Enfoque y alcance</a></li>
+          <li><a href="equipo.html">Equipo editorial</a></li>
+          <li><a href="politicas.html">Políticas</a></li>
+          <li><a href="archivo.html">Archivo</a></li>
+        </ul>
+      </nav>
+      <nav class="ps-footer-col" aria-label="Para autores y revisores">
+        <h2>Para autores</h2>
+        <ul>
+          <li><a href="convocatoria.html">Convocatoria</a></li>
+          <li><a href="envios.html">Envíos y normas</a></li>
+          <li><a href="flujo.html">Flujo editorial</a></li>
+          <li><a href="revisores.html">Para revisores</a></li>
+        </ul>
+      </nav>
+      <div class="ps-footer-col">
+        <h2>Datos</h2>
+        <dl class="ps-footer-datos">
+          <div><dt>Edita</dt><dd>{{ revista.institucion }}</dd></div>
+          <div><dt>ISSN</dt><dd>{{ revista.issn or "En trámite" }}</dd></div>
+          <div><dt>Licencia</dt><dd><a href="{{ revista.licencia.url }}">{{ revista.licencia.corta }}</a></dd></div>
+          <div><dt>Contacto</dt><dd>{{ revista.correo or "Correo de la revista pendiente" }}</dd></div>
+        </dl>
+      </div>
+    </div>
+    <div class="pkp_brand_footer">
+      <p>{{ revista.direccion }}</p>
+      <a href="https://pkp.sfu.ca/software/ojs/">Funciona con Open Journal Systems</a>
+    </div>
+  </div>
+</div>

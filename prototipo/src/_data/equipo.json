@@ -1,0 +1,18 @@
+{
+  "nota": "Estructura propuesta en el proyecto de revista y en la reunión del 27 de octubre de 2026. Pendiente de aprobación final del Consejo Científico.",
+  "grupos": [
+    { "rol": "Dirección", "personas": [ { "nombre": "Enrique Gómez", "cargo": "Director de la revista", "afiliacion": "CIPS" } ] },
+    { "rol": "Edición", "personas": [ { "nombre": "Por definir", "cargo": "Editor o editora jefe", "pendiente": true } ] },
+    { "rol": "Comité Editorial", "personas": [
+      { "nombre": "Laura Esquivel", "afiliacion": "CIPS" },
+      { "nombre": "Yaíma Prede Fernández", "afiliacion": "CIPS" },
+      { "nombre": "Yamilka", "afiliacion": "CIPS", "nota": "Apellidos por completar" }
+    ] },
+    { "rol": "Consejo Científico", "personas": [ { "nombre": "Consejo Científico del CIPS", "cargo": "Nombra la dirección, decide las políticas y propone dossieres" } ] },
+    { "rol": "Equipo de gestión", "personas": [
+      { "nombre": "Por definir", "cargo": "Gestor o gestora de OJS", "pendiente": true },
+      { "nombre": "Por definir", "cargo": "Asistencia editorial", "pendiente": true },
+      { "nombre": "Servicio externo", "cargo": "Corrección de estilo y maquetación" }
+    ] }
+  ]
+}

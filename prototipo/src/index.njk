@@ -1,0 +1,173 @@
+---
+title: Inicio
+pkpPage: index
+permalink: index.html
+cabeceraSobreHeroe: true
+---
+{#- Portada durante la convocatoria (enero a marzo de 2027). Equivale a pages/indexJournal.tpl. -#}
+{%- set c = convocatoria -%}
+{#- data-movil-*: cómo se ven en el móvil las secciones largas (opciones en _data/movil.json; script en movil.njk). -#}
+<div class="page_index_journal" data-movil-ejes="{{ movil.ejes }}" data-movil-mod="{{ movil.modGrupos }}" data-movil-desc="{{ movil.modDesc }}" data-movil-compacto="{{ movil.compacto }}">
+
+  <section class="ps-hero ps-on-dark" aria-labelledby="hero-titulo">
+    <div class="ps-wrap ps-hero-grid">
+      <div class="ps-hero-text">
+        <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span><span data-cal-corto>Convocatoria abierta · {{ c.volumen }}</span></p>
+        <h1 id="hero-titulo" class="ps-hero-title">{{ c.tituloHtml | safe }}</h1>
+        <p class="ps-hero-lead">{{ c.tema }}</p>
+        <div class="ps-actions">
+          <a class="ps-btn ps-btn--gold" href="envios.html">Enviar contribución</a>
+          <a class="ps-btn ps-btn--ghost" href="convocatoria.html">Leer la convocatoria</a>
+        </div>
+      </div>
+      <div class="ps-hero-lado">
+      {% include "brujula-viva.njk" %}
+      <dl class="ps-hero-fechas">
+        <div><dt>Recepción de contribuciones</dt><dd>{{ c.apertura | fechaCorta }} – {{ c.cierre | fechaCorta }}</dd></div>
+        <div><dt>Lanzamiento del primer número</dt><dd>{{ c.lanzamiento | fecha }}</dd></div>
+        <div><dt>Costo para autores y lectores</dt><dd>Ninguno: acceso abierto</dd></div>
+      </dl>
+      </div>
+    </div>
+    <p class="ps-wrap ps-borrador">{{ c.estado }}</p>
+  </section>
+
+  <section class="homepage_about ps-section" aria-labelledby="homepageAbout">
+    <div class="ps-wrap ps-about-grid">
+      <div class="ps-sec-head">
+        <p class="ps-eyebrow">Sobre la revista</p>
+        <h2 id="homepageAbout">Pensamiento crítico desde el Sur Global, con anclaje en Cuba</h2>
+        <p>{{ revista.descripcion }}</p>
+        <p><a class="ps-link-arrow" href="acerca.html">Enfoque, valores y equipo</a></p>
+      </div>
+      <dl class="ps-hechos">
+        <div><dt>Doble ciego</dt><dd>Dos revisores externos evalúan cada texto arbitrado sin conocer su autoría.</dd></div>
+        <div><dt>Acceso abierto diamante</dt><dd>Sin cobros a autores ni a lectores.</dd></div>
+        <div><dt>Publicación continua</dt><dd>Cada artículo sale al terminar su proceso y luego se agrupa en el número.</dd></div>
+        <div><dt>{{ revista.licencia.corta }}</dt><dd>Se puede compartir y adaptar con atribución y sin fines comerciales.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="ps-section ps-section--tint" aria-labelledby="ejes-titulo">
+    <div class="ps-wrap">
+      <div class="ps-sec-head">
+        <p class="ps-eyebrow">Qué publicamos</p>
+        <h2 id="ejes-titulo">Tema central y ejes temáticos</h2>
+        <p>El primer número da prioridad al tema central, y recibe también trabajos sobre los cinco ejes de la revista.</p>
+      </div>
+      <ul class="ps-ejes" data-ejes>
+        <li class="ps-eje ps-eje--tema ps-on-dark" style="--i: 0">
+          <span class="ps-eje-num">Tema central del número 1</span>
+          <h3>{{ c.titulo }}</h3>
+          <p>{{ c.tema }}</p>
+          <a class="ps-link-arrow" href="convocatoria.html">Ver la convocatoria</a>
+        </li>
+        {%- for e in ejes %}
+        <li class="ps-eje" style="--i: {{ loop.index }}">
+          <span class="ps-eje-num">Eje {{ loop.index }}</span>
+          <h3>{{ e.nombre }}</h3>
+          <p>{{ e.descripcion }}</p>
+          <a class="ps-link-arrow" href="eje-{{ e.slug }}.html">Ver el eje</a>
+        </li>
+        {%- endfor %}
+      </ul>
+      <div class="ps-mazo-nav">
+        <button type="button" data-mazo="-1" aria-label="Tarjeta anterior"></button>
+        <span data-mazo-cuenta aria-live="polite">1 de {{ ejes.length + 1 }}</span>
+        <button type="button" data-mazo="1" aria-label="Tarjeta siguiente"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ps-section" aria-labelledby="mod-titulo">
+    <div class="ps-wrap">
+      <div class="ps-sec-head">
+        <p class="ps-eyebrow">Qué puedes enviar</p>
+        <h2 id="mod-titulo">Modalidades y extensión</h2>
+        <p>Contribuciones inéditas, con la extensión indicada para cada sección.</p>
+      </div>
+      <div class="ps-mod-tabs" role="tablist" aria-label="Tipo de sección">
+        <button type="button" role="tab" id="mod-tab-1" aria-controls="mod-col-1" aria-selected="true" data-mod-tab="0">Arbitradas <small>{{ secciones | where("arbitrada", true) | length }}</small></button>
+        <button type="button" role="tab" id="mod-tab-2" aria-controls="mod-col-2" aria-selected="false" data-mod-tab="1">No arbitradas <small>{{ secciones | where("arbitrada", false) | length }}</small></button>
+      </div>
+      <div class="ps-modalidades">
+        {%- for grupo in [true, false] %}
+        <div class="ps-mod-col{% if loop.first %} is-activa{% endif %}" id="mod-col-{{ loop.index }}" data-mod-col="{{ loop.index0 }}">
+          <h3>{% if grupo %}Secciones arbitradas <small>Doble ciego</small>{% else %}Secciones no arbitradas <small>Curaduría del Comité Editorial</small>{% endif %}</h3>
+          <ul class="ps-mod-list">
+            {%- for s in secciones | where("arbitrada", grupo) %}
+            <li>
+              <b>{{ s.nombre }}</b>
+              <span class="ps-pal">{{ s.palabras }}</span>
+              <p>{{ s.descripcion }}{% if s.nota %} <span class="ps-pendiente">{{ s.nota }}</span>{% endif %}</p>
+            </li>
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endfor %}
+      </div>
+      <p class="ps-mod-mas"><a class="ps-link-arrow" href="envios.html">Normas, formato y lista de comprobación</a></p>
+    </div>
+  </section>
+
+  {#- Calendario. El script (calendario.njk) lee la fecha de hoy y marca dónde estamos; sin script queda como lista fija.
+      Opciones en _data/calendario.json; textos de estado en _data/convocatoria.json. -#}
+  {%- set fechas = [c.apertura, c.cierre, c.lanzamiento] -%}
+  {%- set dRec = c.apertura | dias(c.cierre) -%}{%- set dEval = c.cierre | dias(c.lanzamiento) -%}
+  <section class="ps-section ps-section--tint ps-cal" aria-labelledby="cal-titulo" data-cal
+    data-cal-opciones="{{ calendario.opciones | join(' ') }}" data-cal-anim="{{ calendario.animacion }}"
+    data-apertura="{{ c.apertura }}" data-cierre="{{ c.cierre }}" data-lanzamiento="{{ c.lanzamiento }}"
+    data-cal-textos='{{ { estados: c.estados, apertura: c.apertura | fecha, cierre: c.cierre | fecha, lanzamiento: c.lanzamiento | fecha, volumen: c.volumen } | dump }}'
+    style="--cal-cols: minmax(0, {{ dRec }}fr) minmax(0, {{ dEval }}fr) minmax(240px, {{ ((dRec + dEval) * 0.42) | round }}fr)">
+    <div class="ps-wrap">
+      <div class="ps-sec-head">
+        <p class="ps-eyebrow">Fechas</p>
+        <h2 id="cal-titulo">Calendario del primer número</h2>
+        <p class="ps-cal-estado" data-cal-estado hidden></p>
+      </div>
+      <div class="ps-cal-pista">
+        <ol class="ps-calendario">
+          {%- for h in c.hitos %}
+          {%- set f = fechas[loop.index0] %}
+          <li data-fecha="{{ f }}"{% if loop.last %} class="is-hito"{% endif %}>
+            <span class="ps-cal-raya" aria-hidden="true"><i class="ps-cal-hecho"></i><i class="ps-cal-falta"></i></span>
+            <span class="ps-cal-tramo" aria-hidden="true">{{ c.tramos[loop.index0] }}{% if loop.index0 == 0 %} · {{ dRec | meses }} meses{% elif loop.index0 == 1 %} · {{ dEval | meses }} meses{% endif %}</span>
+            <p class="ps-cal-fecha">{{ f | dia }}<small>{{ f | mesAnio }}</small></p>
+            <p class="ps-cal-marca" data-cal-marca hidden></p>
+            <h3>{{ h.titulo }}</h3>
+            <p>{{ h.texto }}</p>
+            <div class="ps-cal-detalle" id="cal-detalle-{{ loop.index }}"><div><p>{{ h.detalle }}</p></div></div>
+            <p class="ps-cal-acciones">
+              <button type="button" class="ps-cal-mas" aria-expanded="false" aria-controls="cal-detalle-{{ loop.index }}">Qué hay que saber</button>
+              {%- if "ics" in calendario.opciones %}
+              <a class="ps-cal-ics" href="{{ f | ics(h.titulo, revista.nombre) }}" download="praxis-del-sur-{{ f }}.ics">Añadir a mi calendario</a>
+              {%- endif %}
+            </p>
+          </li>
+          {%- endfor %}
+        </ol>
+        <div class="ps-cal-hoy" aria-hidden="true" hidden><b></b><span></span></div>
+      </div>
+    </div>
+  </section>
+  {% include "calendario.njk" %}
+  {% include "movil.njk" %}
+
+  <section class="cmp_announcements ps-section" aria-labelledby="avisos-titulo">
+    <div class="ps-wrap ps-avisos">
+      <h2 id="avisos-titulo" class="ps-h-small">Avisos</h2>
+      <article class="obj_announcement_summary">
+        <div class="obj_announcement_summary_details">
+          <h3><a href="convocatoria.html">Abierta la convocatoria del primer número</a></h3>
+          <div class="date">{{ c.apertura | fecha }}</div>
+          <div class="summary">
+            <p>El CIPS invita a presentar contribuciones sobre «{{ c.titulo }}» hasta el {{ c.cierre | fecha }}.</p>
+            <a class="read_more" href="convocatoria.html"><span aria-hidden="true">Leer más</span><span class="pkp_screen_reader">Leer más sobre la convocatoria</span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</div>

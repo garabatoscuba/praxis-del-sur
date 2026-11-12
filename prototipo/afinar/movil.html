@@ -1,0 +1,275 @@
+<title>Móvil: elige</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: el teléfono con la portada real a la izquierda (a pantalla completa si se abre en el teléfono) y las opciones a la derecha (abajo en el teléfono). */
+:root {
+  --bg: #ECE8DF; --panel: #FFFFFF; --fg: #1F1B18; --muted: #5C574E; --line: #E3DED2; --accent: #662426; --on-accent: #FFFFFF;
+  --gold: #B6A160; --chip: #F3F0E8; --stage: #D8D2C4;
+  --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "EB Garamond", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #15120F; --panel: #1F1B17; --fg: #F1ECE3; --muted: #BEB6A8; --line: #3A342C; --accent: #DDA9AB; --on-accent: #1F1B18; --gold: #CDBB80; --chip: #2A251F; --stage: #0E0C0A; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #15120F; --panel: #1F1B17; --fg: #F1ECE3; --muted: #BEB6A8; --line: #3A342C; --accent: #DDA9AB; --on-accent: #1F1B18; --gold: #CDBB80; --chip: #2A251F; --stage: #0E0C0A; color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.45; overflow: hidden; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.tool { display: grid; grid-template-columns: minmax(0, 1fr) 420px; height: 100%; }
+.stage { position: relative; overflow: hidden; background: var(--stage); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.box { flex: none; overflow: hidden; border-radius: 28px; background: #FFFFFF; box-shadow: 0 0 0 8px #1F1B18, 0 30px 70px -30px rgba(0, 0, 0, 0.6); }
+.box iframe { display: block; border: 0; background: #FFFFFF; transform-origin: 0 0; }
+.medida { position: absolute; left: 16px; bottom: 14px; margin: 0; padding: 6px 12px; border-radius: 999px; background: var(--panel); color: var(--fg); font-size: 13px; font-weight: 600; box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.5); }
+.medida b { color: var(--accent); }
+
+.panel { overflow-y: auto; background: var(--panel); border-left: 1px solid var(--line); padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 18px; }
+.asa { display: none; }
+.p-head h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.1; }
+.p-lead { margin: 6px 0 0; color: var(--muted); }
+.p-cuerpo { display: flex; flex-direction: column; gap: 20px; }
+h2 { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+h2 small { font-weight: 600; letter-spacing: 0; text-transform: none; }
+
+.ir { display: flex; flex-wrap: wrap; gap: 6px; }
+.ir button { border: 1px solid var(--line); background: var(--chip); padding: 5px 11px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 13.5px; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button { border: 1px solid var(--line); background: var(--chip); padding: 7px 12px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.presets button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+
+.lista { display: grid; border-top: 1px solid var(--line); }
+.op { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; padding: 11px 2px; border-bottom: 1px solid var(--line); cursor: pointer; }
+.op input { grid-row: 1 / span 2; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); cursor: pointer; }
+.op b { font-weight: 700; }
+.op span { color: var(--muted); font-size: 14px; }
+.op .rec { margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: var(--gold); color: #1F1B18; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; vertical-align: 2px; }
+.op .nota { margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: var(--chip); border: 1px solid var(--line); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; vertical-align: 2px; }
+
+.guardar { display: grid; gap: 8px; padding-top: 16px; border-top: 2px solid var(--fg); }
+.btn { border: 0; background: var(--accent); color: var(--on-accent); padding: 12px 18px; border-radius: 999px; font-weight: 700; cursor: pointer; }
+.estado { margin: 0; min-height: 1.4em; font-size: 14px; color: var(--muted); }
+.ahora-t { margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.ahora { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--chip); font-size: 13.5px; user-select: all; overflow-wrap: anywhere; }
+
+@media (max-width: 999px) {
+  .tool { display: block; }
+  .stage { position: fixed; inset: 0; padding: 0; background: #FFFFFF; }
+  .box { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+  .box iframe { width: 100% !important; height: 100% !important; transform: none !important; }
+  .medida { display: none; }
+  .panel {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; max-height: 72%; border-left: 0; border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0; box-shadow: 0 -18px 50px -20px rgba(0, 0, 0, 0.45);
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .panel.recogido { transform: translateY(calc(100% - 58px)); overflow: hidden; }
+  .asa { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; border: 0; background: none; padding: 4px 0 6px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .asa-raya { width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+  .p-head h1 { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .panel { transition: none; } }
+</style>
+
+<div class="tool">
+  <div class="stage" id="stage">
+    <div class="box" id="box"><iframe id="pagina" title="Portada de Praxis del Sur en un móvil" src="portada.html"></iframe></div>
+    <p class="medida" id="medida"></p>
+  </div>
+  <aside class="panel" id="panel" aria-label="Opciones del móvil">
+    <div class="p-head">
+      <button class="asa" id="asa" type="button" aria-expanded="true" aria-controls="panel-cuerpo"><span class="asa-raya" aria-hidden="true"></span><span id="asa-txt">Recoger las opciones</span></button>
+      <h1>Móvil: elige</h1>
+      <p class="p-lead">La portada de verdad en un teléfono. Cambia cómo se ven los ejes y las modalidades, y baja por la página.</p>
+    </div>
+    <div class="p-cuerpo" id="panel-cuerpo">
+      <section>
+        <h2>Ir a</h2>
+        <div class="ir" id="ir"></div>
+      </section>
+      <section>
+        <h2>Combinaciones listas</h2>
+        <div class="presets" id="presets"></div>
+      </section>
+      <div id="grupos"></div>
+      <section class="guardar">
+        <button class="btn" id="guardar" type="button">Guardar para Claude</button>
+        <p class="estado" id="estado" role="status"></p>
+        <p class="ahora-t">Lo que tienes elegido</p>
+        <p class="ahora" id="ahora"></p>
+        <button class="lnk" id="copiar" type="button" style="justify-self:start;border:0;background:none;padding:4px 2px;cursor:pointer;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px">Copiar esta línea</button>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  var GRUPOS = [
+    { id: 'ejes', titulo: 'Tema central y ejes', ir: 'ejes', ops: [
+      { v: 'pila', nombre: 'Se apilan al bajar', rec: true, d: 'Cada tarjeta se queda arriba y la siguiente la cubre; al final queda una pila con «Eje 1, Eje 2…». Se leen todas.' },
+      { v: 'mazo', nombre: 'Mazo para deslizar', nota: 'la más corta', d: 'Una tarjeta encima de otra; se pasan deslizando con el dedo o con las flechas. Ocupa una sola pantalla.' },
+      { v: 'lista', nombre: 'Lista que se abre', d: 'El tema central entero y los cinco ejes solo con su título; cada uno se abre al tocarlo.' },
+      { v: 'normal', nombre: 'Como estaba', d: 'Las seis tarjetas una debajo de otra.' }
+    ] },
+    { id: 'modGrupos', titulo: 'Modalidades: los dos grupos', ir: 'mod', ops: [
+      { v: 'pestanas', nombre: 'Pestañas', rec: true, d: '«Arbitradas» y «No arbitradas» en dos pestañas; se ve un grupo cada vez.' },
+      { v: 'todas', nombre: 'Los dos a la vista', d: 'Un grupo debajo del otro, como estaba.' }
+    ] },
+    { id: 'modDesc', titulo: 'Modalidades: la descripción', ir: 'mod', ops: [
+      { v: 'tocar', nombre: 'Se abre al tocar', rec: true, d: 'Cada sección muestra su nombre y su extensión; la descripción aparece al tocarla.' },
+      { v: 'ocultas', nombre: 'Solo nombre y extensión', d: 'Una lista corta; el detalle queda en «Normas, formato y lista de comprobación».' },
+      { v: 'visibles', nombre: 'Siempre a la vista', d: 'Con la descripción debajo de cada nombre, como estaba.' }
+    ] },
+    { id: 'compacto', titulo: 'Lo demás', ir: 'arriba', ops: [
+      { v: 'si', nombre: 'Más ajustado', rec: true, d: 'La portada de arriba cabe en una pantalla, «Sobre la revista» en dos columnas y el pie más corto.' },
+      { v: 'no', nombre: 'Como estaba', d: 'Para comparar.' }
+    ] }
+  ];
+  var PRESETS = [
+    { nombre: 'Recomendado', v: { ejes: 'pila', modGrupos: 'pestanas', modDesc: 'tocar', compacto: 'si' } },
+    { nombre: 'Lo más corto', v: { ejes: 'mazo', modGrupos: 'pestanas', modDesc: 'ocultas', compacto: 'si' } },
+    { nombre: 'Como estaba', v: { ejes: 'normal', modGrupos: 'todas', modDesc: 'visibles', compacto: 'no' } }
+  ];
+  var IR = [
+    { id: 'arriba', nombre: 'Arriba', sel: null },
+    { id: 'sobre', nombre: 'Sobre la revista', sel: '.homepage_about' },
+    { id: 'ejes', nombre: 'Ejes', sel: '#ejes-titulo' },
+    { id: 'mod', nombre: 'Modalidades', sel: '#mod-titulo' },
+    { id: 'cal', nombre: 'Calendario', sel: '#cal-titulo' },
+    { id: 'pie', nombre: 'Pie', sel: '.pkp_structure_footer_wrapper' }
+  ];
+  var CLAVE = 'ps-movil-eleccion';
+  var v = Object.assign({}, PRESETS[0].v);
+  try { var s = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (s) GRUPOS.forEach(function (g) { if (typeof s[g.id] === 'string') v[g.id] = s[g.id]; }); } catch (e) {}
+  function recordar() { try { localStorage.setItem(CLAVE, JSON.stringify(v)); } catch (e) {} }
+
+  var frame = document.getElementById('pagina'), stage = document.getElementById('stage'), box = document.getElementById('box');
+  var panel = document.getElementById('panel'), estado = document.getElementById('estado'), medida = document.getElementById('medida');
+  var angosto = window.matchMedia('(max-width: 999px)');
+
+  // La portada de dentro pide estos valores al cargar (window.__psMovilAfinar), así entra ya con ellos.
+  window.__psMovilAfinar = function () { return Object.assign({}, v); };
+  function w() { try { return frame.contentWindow; } catch (e) { return null; } }
+  function ir(id, suave) {
+    var win = w(); if (!win) return;
+    var x = IR.filter(function (i) { return i.id === id; })[0];
+    var el = x && x.sel ? win.document.querySelector(x.sel) : null;
+    var top = el ? el.getBoundingClientRect().top + win.scrollY - 80 : 0;
+    win.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+  }
+  function medir() {
+    var win = w(); if (!win || !win.document.documentElement) return;
+    var pant = win.document.documentElement.scrollHeight / win.innerHeight;
+    medida.innerHTML = 'La portada mide <b>' + pant.toLocaleString('es-ES', { maximumFractionDigits: 1 }) + '</b> pantallas de móvil';
+  }
+  function aplicar(irA) {
+    var win = w();
+    if (win && win.__psMovil) win.__psMovil.config(Object.assign({}, v));
+    setTimeout(function () { medir(); if (irA) { ir(irA); if (win && win.__psMov) setTimeout(win.__psMov.repetir, 60); } }, 120);
+  }
+
+  // Controles
+  document.getElementById('ir').innerHTML = IR.map(function (i) { return '<button type="button" data-ir="' + i.id + '">' + i.nombre + '</button>'; }).join('');
+  document.getElementById('ir').addEventListener('click', function (e) { var b = e.target.closest('[data-ir]'); if (b) ir(b.getAttribute('data-ir')); });
+
+  var pres = document.getElementById('presets');
+  pres.innerHTML = PRESETS.map(function (p, i) { return '<button type="button" data-p="' + i + '" aria-pressed="false">' + p.nombre + '</button>'; }).join('');
+  pres.addEventListener('click', function (e) { var b = e.target.closest('[data-p]'); if (!b) return; v = Object.assign({}, PRESETS[+b.getAttribute('data-p')].v); pintar(); aplicar('ejes'); });
+
+  var grupos = document.getElementById('grupos');
+  grupos.innerHTML = GRUPOS.map(function (g) {
+    return '<section style="margin-bottom:18px"><h2>' + g.titulo + '</h2><div class="lista" role="radiogroup" aria-label="' + g.titulo + '">'
+      + g.ops.map(function (o) {
+        return '<label class="op"><input type="radio" name="' + g.id + '" value="' + o.v + '"><b>' + o.nombre
+          + (o.rec ? '<span class="rec">recomendada</span>' : '') + (o.nota ? '<span class="nota">' + o.nota + '</span>' : '') + '</b><span>' + o.d + '</span></label>';
+      }).join('') + '</div></section>';
+  }).join('');
+  grupos.addEventListener('change', function (e) {
+    var g = GRUPOS.filter(function (x) { return x.id === e.target.name; })[0]; if (!g) return;
+    v[g.id] = e.target.value; pintar(); aplicar(g.ir);
+  });
+
+  function resumen() {
+    return GRUPOS.map(function (g) { var o = g.ops.filter(function (x) { return x.v === v[g.id]; })[0]; return g.titulo + ': ' + (o ? o.nombre : v[g.id]); }).join(' · ')
+      + ' [ejes ' + v.ejes + ', modGrupos ' + v.modGrupos + ', modDesc ' + v.modDesc + ', compacto ' + v.compacto + ']';
+  }
+  function pintar() {
+    GRUPOS.forEach(function (g) { grupos.querySelectorAll('input[name="' + g.id + '"]').forEach(function (r) { r.checked = r.value === v[g.id]; }); });
+    PRESETS.forEach(function (p, i) {
+      var igual = GRUPOS.every(function (g) { return p.v[g.id] === v[g.id]; });
+      pres.querySelector('[data-p="' + i + '"]').setAttribute('aria-pressed', igual ? 'true' : 'false');
+    });
+    document.getElementById('ahora').textContent = resumen();
+    recordar();
+  }
+
+  // El teléfono: 390 × 844, reducido si no cabe.
+  function encajar() {
+    if (angosto.matches) { frame.style.cssText = ''; box.style.cssText = ''; return; }
+    var aw = stage.clientWidth - 48, ah = stage.clientHeight - 80;
+    var s = Math.min(1, ah / 844, aw / 390);
+    frame.style.cssText = 'width:390px;height:844px;transform:scale(' + s + ')';
+    box.style.cssText = 'width:' + (390 * s) + 'px;height:' + (844 * s) + 'px';
+  }
+  if (window.ResizeObserver) new ResizeObserver(encajar).observe(stage);
+  window.addEventListener('resize', encajar);
+
+  // Panel del teléfono: se recoge solo al bajar la portada.
+  var asa = document.getElementById('asa'), asaTxt = document.getElementById('asa-txt'), base = 0;
+  function recoger(si) {
+    panel.classList.toggle('recogido', si);
+    asa.setAttribute('aria-expanded', si ? 'false' : 'true');
+    asaTxt.textContent = si ? 'Ver las opciones' : 'Recoger las opciones';
+    try { base = frame.contentWindow.scrollY || 0; } catch (e) { base = 0; }
+  }
+  asa.addEventListener('click', function () { recoger(!panel.classList.contains('recogido')); });
+
+  frame.addEventListener('load', function () {
+    var win = w(), d = frame.contentDocument;
+    try {
+      d.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (a && a.getAttribute('href').charAt(0) !== '#') { e.preventDefault(); estado.textContent = 'En esta herramienta los enlaces de la portada no navegan.'; }
+      }, true);
+      win.addEventListener('scroll', function () {
+        if (!angosto.matches) return;
+        var y = win.scrollY || 0;
+        if (!panel.classList.contains('recogido') && y - base > 40) recoger(true);
+        if (y < base) base = y;
+      }, { passive: true });
+    } catch (e) {}
+    setTimeout(medir, 600);
+  });
+
+  // Guardar para Claude
+  var dbP = null;
+  function db() {
+    if (!dbP) dbP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('db') : Promise.resolve(null);
+    return dbP;
+  }
+  document.getElementById('guardar').addEventListener('click', function () {
+    estado.textContent = 'Guardando…';
+    db().then(function (d) {
+      if (!d) { estado.textContent = 'Aquí no se puede guardar. Copia la línea de abajo y pégamela en el chat.'; return; }
+      return d.doc('movil/elegido').set(Object.assign({}, v, { resumen: resumen(), guardado: new Date().toISOString() }))
+        .then(function () { estado.textContent = 'Guardado. Ya puedo leer lo que elegiste.'; });
+    }).catch(function (e) {
+      estado.textContent = 'No se pudo guardar (' + ((e && e.code) || 'error') + '). Copia la línea de abajo y pégamela en el chat.';
+    });
+  });
+  document.getElementById('copiar').addEventListener('click', function () {
+    var el = document.getElementById('ahora');
+    var hecho = function () { estado.textContent = 'Línea copiada.'; };
+    var sel = function () { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); estado.textContent = 'Línea seleccionada: cópiala.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(el.textContent).then(hecho, sel); else sel();
+  });
+
+  encajar();
+  pintar();
+})();
+</script>

@@ -1,0 +1,27 @@
+---
+title: Contacto
+pkpPage: about
+pkpOp: contact
+permalink: contacto.html
+---
+<div class="page page_contact ps-page">
+  <div class="ps-wrap ps-narrow">
+    {% set migas = [{ label: "Acerca de", url: "acerca.html" }, { label: "Contacto" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Contacto</h1>
+    <div class="ps-contacto">
+      <section>
+        <h2>Contacto principal</h2>
+        <p>Equipo editorial de {{ revista.nombre }}</p>
+        <p>Correo: <span class="ps-pendiente">{{ revista.correo or "pendiente de crear" }}</span></p>
+      </section>
+      <section>
+        <h2>Soporte técnico</h2>
+        <p>Gestor o gestora de OJS <span class="ps-pendiente">por definir</span></p>
+      </section>
+      <section>
+        <h2>Dirección postal</h2>
+        <p>{{ revista.institucion }}<br>{{ revista.direccion }}</p>
+      </section>
+    </div>
+  </div>
+</div>

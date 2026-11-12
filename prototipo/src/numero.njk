@@ -1,0 +1,29 @@
+---
+title: "Vol. 1, núm. 1 (2027)"
+pkpPage: issue
+pkpOp: view
+permalink: numero.html
+---
+{#- Equivale a pages/issue.tpl + objects/issue_toc.tpl. -#}
+{%- set numero = numeros[0] -%}
+<div class="page ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Archivo", url: "archivo.html" }, { label: "Vol. " ~ numero.volumen ~ " Núm. " ~ numero.numero ~ " (" ~ numero.anio ~ ")" }] %}{% include "breadcrumbs.njk" %}
+    <div class="ps-issue">
+      <aside class="ps-issue-side" aria-label="Datos del número">
+        {% include "cubierta.njk" %}
+        <dl class="ps-issue-datos">
+          <div><dt>Publicado</dt><dd>{{ numero.publicado | fecha }}</dd></div>
+          <div><dt>Contribuciones</dt><dd>{{ articulos.length }}</dd></div>
+          <div><dt>Licencia</dt><dd><a href="{{ revista.licencia.url }}">{{ revista.licencia.corta }}</a></dd></div>
+        </dl>
+      </aside>
+      <div class="ps-issue-main">
+        <p class="ps-eyebrow">Vol. {{ numero.volumen }}, núm. {{ numero.numero }} ({{ numero.anio }})</p>
+        <h1 class="ps-page-title">{{ numero.titulo }}</h1>
+        {%- set hSeccion = "h2" %}{% set hArticulo = "h3" %}{% set mostrarCabecera = true %}{% set mostrarSeccion = false %}
+        {% include "issue_toc.njk" %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{#- Equivale a frontend/objects/issue_toc.tpl. Espera «numero»; «hSeccion» y «hArticulo» fijan los niveles. -#}
+<div class="obj_issue_toc">
+  {%- if mostrarCabecera %}
+  <div class="heading">
+    <div class="description"><p>{{ numero.descripcion }}</p></div>
+    <div class="published"><span class="label">Publicado:</span> <span class="value">{{ numero.publicado | fecha }}</span></div>
+  </div>
+  {%- endif %}
+  <div class="sections">
+  {%- for s in secciones %}
+    {%- set arts = articulos | where("seccion", s.slug) %}
+    {%- if arts.length %}
+    {%- set badgeSeccion = s %}
+    <div class="section">
+      <{{ hSeccion or "h2" }}>{{ s.nombre }} {% include "badge.njk" %}</{{ hSeccion or "h2" }}>
+      <ul class="cmp_article_list articles">
+        {%- for a in arts %}
+        <li>{% include "article_summary.njk" %}</li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
+  {%- endfor %}
+  </div>
+</div>

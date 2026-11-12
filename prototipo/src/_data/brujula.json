@@ -1,0 +1,7 @@
+{
+  "nota": "Brújula de grabado de la portada (identidad/brujula-animada.html). La caja gira con el ratón (en el móvil, al bajar y subir o con el dedo) y la aguja vuelve siempre al Sur. Valores de 0 a 100 elegidos por la usuaria el 12 nov 2026 (combinación «Seca y viva»): rapidez del giro de la caja, peso de la aguja (más alto, más ligera), líquido que la frena y cuánto la arrastra el giro.",
+  "rapidez": 50,
+  "peso": 55,
+  "liquido": 12,
+  "arrastre": 35
+}

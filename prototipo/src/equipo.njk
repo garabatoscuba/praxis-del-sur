@@ -1,0 +1,30 @@
+---
+title: Equipo editorial
+pkpPage: about
+pkpOp: editorialTeam
+permalink: equipo.html
+---
+<div class="page page_about ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Acerca de", url: "acerca.html" }, { label: "Equipo editorial" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Equipo editorial</h1>
+    <p class="ps-estado"><span class="ps-pendiente">{{ equipo.nota }}</span></p>
+    <div class="ps-equipo">
+      {%- for g in equipo.grupos %}
+      <section class="ps-equipo-grupo">
+        <h2>{{ g.rol }}</h2>
+        <ul>
+          {%- for p in g.personas %}
+          <li{% if p.pendiente %} class="is-pendiente"{% endif %}>
+            <span class="ps-persona">{{ p.nombre }}</span>
+            {%- if p.cargo %}<span class="ps-cargo">{{ p.cargo }}</span>{% endif %}
+            {%- if p.afiliacion %}<span class="ps-afil">{{ p.afiliacion }}</span>{% endif %}
+            {%- if p.nota %}<span class="ps-pendiente">{{ p.nota }}</span>{% endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+      </section>
+      {%- endfor %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,385 @@
+<title>Brújula que busca el Sur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: arriba, el selector de estilo; debajo, la portada de la web con la brújula a la derecha del texto (encima en el móvil); al final, qué tiene cada estilo. */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"EB Garamond",Garamond,serif;
+  --wine:#662426;--gold:#B6A160;--beige:#DED8C7;--olive:#4B483D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;line-height:1.55;padding-inline:max(16px, env(safe-area-inset-left, 0px));-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin-inline:auto}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.intro{padding-block:44px 20px;display:grid;gap:12px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-family:var(--serif);font-size:clamp(34px,4.6vw,54px);line-height:1.05}
+.lead{max-width:66ch;font-size:17px;color:var(--muted)}
+.estilos{display:flex;flex-wrap:wrap;gap:8px;padding-block:6px 18px}
+.estilos button{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.estilos button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* La portada de la web, como en el sitio */
+.hero{position:relative;overflow:hidden;border-radius:14px;background:var(--wine);color:var(--beige);padding:clamp(28px,5vw,64px) clamp(20px,4vw,56px);
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.hero-text{display:grid;gap:16px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.hero-eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.hero h2{font-family:var(--serif);font-size:clamp(34px,4.6vw,62px);line-height:1.02;letter-spacing:-.01em;color:#fff}
+.hero h2 em{color:var(--gold)}
+.hero p{max-width:50ch;font-size:16.5px}
+.acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;padding:11px 22px;border-radius:999px;font-weight:600;font-size:15px;border:1.5px solid transparent}
+.btn-oro{background:var(--gold);color:#1F1B18}
+.btn-linea{border-color:color-mix(in srgb, var(--beige) 60%, transparent);color:#fff}
+.escena{position:relative;aspect-ratio:300/180;width:100%;max-width:460px;justify-self:center;touch-action:pan-y;cursor:grab}
+.escena svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.escena[data-estilo="despiece"]{aspect-ratio:330/290}
+.pista{position:absolute;left:0;right:0;bottom:-30px;text-align:center;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--beige) 75%, transparent)}
+@media (max-width:820px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .escena{order:-1;max-width:300px;margin-bottom:22px}
+}
+
+/* Barras para afinar el movimiento */
+.afinar{padding-block:26px 8px;display:grid;gap:16px}
+.afinar-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px 20px}
+.afinar h2{font-family:var(--serif);font-size:clamp(26px,3vw,34px)}
+.afinar-head p{color:var(--muted);font-size:15px;max-width:60ch}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button,.lnk{font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.presets button{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.presets button[aria-pressed="true"]{border-color:var(--wine);background:var(--wine);color:#fff}
+.barras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.barra{display:grid;gap:4px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.barra-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;align-items:baseline}
+.barra label{font-weight:700;font-size:14.5px}
+.barra output{font-size:14px;font-weight:600;color:var(--focus)}
+.pista2{position:relative}
+.pista2 input{width:100%;margin:6px 0;height:28px;accent-color:var(--wine);cursor:pointer}
+.rec{position:absolute;top:2px;width:3px;height:8px;margin-left:-1.5px;border-radius:2px;background:var(--gold);pointer-events:none}
+.barra p{font-size:13.5px;color:var(--muted)}
+.lnk{border:0;background:none;padding:2px 0;color:var(--focus);text-decoration:underline;text-underline-offset:3px;justify-self:start;font-size:13.5px}
+.lnk[hidden]{display:none}
+.guardar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.btn-guardar{font:inherit;font-weight:700;padding:11px 20px;border-radius:999px;border:0;background:var(--wine);color:#fff;cursor:pointer}
+.estado{font-size:14px;color:var(--muted);min-height:1.4em}
+.ahora{flex-basis:100%;font-size:13px;color:var(--muted);padding:9px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);user-select:all;overflow-wrap:anywhere}
+.notas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;padding-block:28px 64px}
+.notas article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start}
+.notas h3{font-size:16px;font-weight:700}
+.notas p{font-size:14.5px;color:var(--muted)}
+.notas article.activa{border-color:var(--fg)}
+</style>
+
+<header class="intro wrap">
+  <p class="eyebrow">Praxis del Sur · Ilustración de la portada</p>
+  <h1>Una brújula que siempre busca el Sur</h1>
+  <p class="lead">Mueve el ratón sobre la página: el cuerpo de la brújula gira, pero la aguja vuelve siempre al Sur, con la inercia de una aguja de verdad. En el teléfono gira al bajar y subir, o arrastrándola con el dedo. Vista isométrica (30° de elevación), caras en cuatro tonos y un solo acento, con los colores del manual del CIPS.</p>
+</header>
+
+<div class="wrap">
+  <div class="estilos" role="group" aria-label="Estilo de la brújula">
+    <button type="button" data-estilo="linea" aria-pressed="true">Grabado de línea · el elegido</button>
+    <button type="button" data-estilo="plano" aria-pressed="false">Isométrica plana</button>
+    <button type="button" data-estilo="despiece" aria-pressed="false">3 · Despiece</button>
+  </div>
+  <section class="hero" aria-label="Portada de la web con la brújula">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Convocatoria · abre el 1 de enero de 2027</p>
+      <h2>Ciencias sociales en y desde <em>contextos de crisis</em></h2>
+      <p>Este número valorará de forma especial las contribuciones que analicen cómo se viven, se afrontan y se interpretan los contextos de crisis en el Sur Global.</p>
+      <div class="acc"><span class="btn btn-oro">Enviar contribución</span><span class="btn btn-linea">Leer la convocatoria</span></div>
+    </div>
+    <div class="escena" id="escena" role="img" aria-label="Brújula isométrica cuya aguja apunta siempre al Sur">
+      <svg id="lienzo" viewBox="-160 -170 320 320" aria-hidden="true"></svg>
+      <p class="pista" id="pista">Mueve el ratón</p>
+    </div>
+  </section>
+</div>
+
+<section class="afinar wrap" aria-labelledby="afinar-titulo">
+  <div class="afinar-head">
+    <div><h2 id="afinar-titulo">Afinar el movimiento</h2><p>Mueve las barras y luego el ratón. La raya dorada marca lo que recomiendo: la caja gira con peso y la aguja vuelve al Sur frenada por el líquido, pasándose apenas un poco.</p></div>
+    <div class="presets" id="presets"></div>
+  </div>
+  <div class="barras" id="barras"></div>
+  <div class="guardar">
+    <button class="btn-guardar" id="guardar" type="button">Guardar para Claude</button>
+    <button class="lnk" id="empujon" type="button">Darle un empujón a la aguja</button>
+    <span class="estado" id="estado" role="status"></span>
+    <span class="ahora" id="ahora"></span>
+  </div>
+</section>
+
+<section class="notas wrap" aria-label="Qué tiene cada estilo">
+  <article data-nota="plano"><h3>1 · Isométrica plana</h3><p>Un objeto sólido en cuatro tonos de beige y oliva, con la aguja dorada hacia el Sur. Moderna y limpia; es la que más se parece a las ilustraciones de la skill.</p></article>
+  <article data-nota="linea"><h3>2 · Grabado de línea</h3><p>Solo trazos finos en beige y dorado, como la brújula tenue que hoy está detrás del título. La más ligera y la que mejor convive con el texto.</p></article>
+  <article data-nota="despiece"><h3>3 · Despiece</h3><p>Las piezas de la brújula flotan separadas, como en un dibujo técnico: base, esfera, aguja y cristal. Al acercar el ratón se separan un poco más.</p></article>
+</section>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var lienzo = document.getElementById('lienzo'), escena = document.getElementById('escena'), pista = document.getElementById('pista');
+  var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var f = function(n){ return +n.toFixed(2); };
+
+  // Vista isométrica: el plano de la brújula se ve aplastado a la mitad (elevación 30°) y las alturas se acortan a cos 30°.
+  var K = 0.5, HZ = 0.866;
+  var R = 100;                 // radio de la caja
+  var SUR = 112;               // dirección del Sur en el plano (grados): hacia quien mira, un poco a la izquierda
+  var C = {                    // cuatro tonos por cara y un acento (manual del CIPS)
+    plano:   { techo:'#F3F0E8', bisel:'#DED8C7', ladoLuz:'#BDB49E', ladoSombra:'#8E8672', sombra:'rgba(31,10,12,.35)', tinta:'#4B483D', sur:'#B6A160', surOsc:'#8F7D45', norte:'#6A665A', norteOsc:'#4B483D', s:'#662426' },
+    linea:   { trazo:'#DED8C7', fino:'rgba(222,216,199,.55)', sur:'#B6A160', norte:'#DED8C7' },
+    despiece:{ techo:'#F3F0E8', bisel:'#DED8C7', ladoLuz:'#BDB49E', ladoSombra:'#8E8672', sombra:'rgba(31,10,12,.35)', tinta:'#4B483D', sur:'#B6A160', surOsc:'#8F7D45', norte:'#6A665A', norteOsc:'#4B483D', s:'#662426', guia:'rgba(222,216,199,.5)' }
+  };
+
+  function el(tag, at, padre){ var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (padre) padre.appendChild(e); return e; }
+  // Cilindro visto en isométrico: pared delantera (en dos tonos) y tapa
+  function cilindro(g, r, z0, z1, c, conTapa){
+    var y0 = -z0 * R * 0 - z0 * HZ, y1 = -z1 * HZ;
+    var pared = 'M' + (-r) + ' ' + f(y1) + 'L' + (-r) + ' ' + f(y0) + 'A' + r + ' ' + f(r * K) + ' 0 0 0 ' + r + ' ' + f(y0) + 'L' + r + ' ' + f(y1) + 'A' + r + ' ' + f(r * K) + ' 0 0 1 ' + (-r) + ' ' + f(y1) + 'Z';
+    el('path', { d: pared, fill: c.ladoLuz }, g);
+    // mitad derecha de la pared, en el tono de sombra
+    el('path', { d: 'M0 ' + f(y1 + r * K) + 'L0 ' + f(y0 + r * K) + 'A' + r + ' ' + f(r * K) + ' 0 0 0 ' + r + ' ' + f(y0) + 'L' + r + ' ' + f(y1) + 'A' + r + ' ' + f(r * K) + ' 0 0 1 0 ' + f(y1 + r * K) + 'Z', fill: c.ladoSombra }, g);
+    if (conTapa) el('ellipse', { cx: 0, cy: f(y1), rx: r, ry: f(r * K), fill: conTapa }, g);
+  }
+  // Grupo «en el plano»: lo de dentro se dibuja visto desde arriba y se aplasta en isométrico
+  function plano(g, z){ return el('g', { transform: 'translate(0 ' + f(-z * HZ) + ') scale(1 ' + K + ')' }, g); }
+
+  function esfera(gp, c, linea){
+    // marcas cada 10° y cada 30° más largas; letras S, O, N, E (en el orden de una brújula de verdad: el Este a la derecha del Norte), con la S en la dirección del Sur cuando la caja no ha girado
+    var d = '';
+    for (var a = 0; a < 360; a += 10){
+      var r1 = a % 30 === 0 ? 68 : 74, r2 = 80, t = a * Math.PI / 180;
+      d += 'M' + f(Math.cos(t) * r1) + ' ' + f(Math.sin(t) * r1) + 'L' + f(Math.cos(t) * r2) + ' ' + f(Math.sin(t) * r2);
+    }
+    el('path', { d: d, stroke: linea ? c.fino : c.tinta, 'stroke-width': linea ? 1.2 : 1.6, fill: 'none' }, gp);
+    el('circle', { r: 40, fill: 'none', stroke: linea ? c.fino : c.tinta, 'stroke-width': linea ? .9 : 1, opacity: linea ? 1 : .5 }, gp);
+    // las letras miran hacia fuera; S en la dirección del Sur de la caja
+    [['S', 0, true], ['O', 90], ['N', 180], ['E', 270]].forEach(function(L){
+      var t = (L[1] + SUR) * Math.PI / 180, x = Math.cos(t) * 55, y = Math.sin(t) * 55;
+      var tx = el('text', { x: f(x), y: f(y), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'EB Garamond, Garamond, serif',
+        'font-size': L[2] ? 30 : 21, 'font-weight': L[2] ? 600 : 500, fill: linea ? (L[2] ? c.sur : c.trazo) : (L[2] ? c.s : c.tinta),
+        transform: 'rotate(' + (L[1] + SUR + 90) + ' ' + f(x) + ' ' + f(y) + ')' }, gp);
+      tx.textContent = L[0];
+    });
+  }
+  function aguja(gp, c, linea){
+    // rombo: la punta sur (dorada) apunta a +x; cada mitad con una cara clara y otra oscura
+    var L = 66, W = 9;
+    if (linea){
+      el('path', { d: 'M' + L + ' 0L0 ' + (-W) + 'L0 ' + W + 'Z', fill: c.sur }, gp);
+      el('path', { d: 'M' + (-L) + ' 0L0 ' + (-W) + 'L0 ' + W + 'Z', fill: 'none', stroke: c.norte, 'stroke-width': 1.3, 'stroke-linejoin': 'round' }, gp);
+    } else {
+      el('path', { d: 'M' + L + ' 0L0 ' + (-W) + 'L0 0Z', fill: c.sur }, gp);
+      el('path', { d: 'M' + L + ' 0L0 ' + W + 'L0 0Z', fill: c.surOsc }, gp);
+      el('path', { d: 'M' + (-L) + ' 0L0 ' + (-W) + 'L0 0Z', fill: c.norte }, gp);
+      el('path', { d: 'M' + (-L) + ' 0L0 ' + W + 'L0 0Z', fill: c.norteOsc }, gp);
+    }
+    el('circle', { r: 5, fill: linea ? c.trazo : c.bisel, stroke: linea ? 'none' : c.norteOsc, 'stroke-width': 1 }, gp);
+  }
+
+  // reflejo del cristal: un arco arriba a la izquierda, dentro de la esfera
+  function reflejo(r, d0, d1){ r = r || 70; var a0 = (d0 || 200) * Math.PI / 180, a1 = (d1 || 250) * Math.PI / 180; return 'M' + f(Math.cos(a0) * r) + ' ' + f(Math.sin(a0) * r) + 'A' + r + ' ' + r + ' 0 0 1 ' + f(Math.cos(a1) * r) + ' ' + f(Math.sin(a1) * r); }
+  var G = {}; // grupos que se mueven: esfera (gira con la caja) y aguja (busca el Sur)
+  var estilo = 'plano', abrir = 0;
+  function dibujar(){
+    while (lienzo.firstChild) lienzo.removeChild(lienzo.firstChild);
+    escena.setAttribute('data-estilo', estilo);
+    lienzo.setAttribute('viewBox', estilo === 'despiece' ? '-165 -212 330 290' : '-150 -96 300 180');
+    var c = C[estilo], g = el('g', {}, lienzo);
+    G = {};
+    if (estilo === 'linea'){
+      var yT = f(-18 * HZ);
+      var gl = el('g', { fill: 'none', stroke: c.trazo, 'stroke-width': 1.4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, g);
+      // caja: el canto es una sola línea (lado izquierdo, base de delante y lado derecho), con el mismo trazo,
+      // así no hay encuentros entre una línea clara y otra tenue
+      el('path', { d: 'M' + (-R) + ' ' + yT + 'V0A' + R + ' ' + f(R * K) + ' 0 0 0 ' + R + ' 0V' + yT }, gl);
+      el('ellipse', { cx: 0, cy: yT, rx: R, ry: f(R * K) }, gl);
+      el('ellipse', { cx: 0, cy: yT, rx: 86, ry: f(86 * K), stroke: c.fino }, gl);
+      G.esfera = el('g', {}, plano(g, 16));
+      esfera(G.esfera, c, true);
+      // sombra de la aguja sobre la esfera: la luz viene de arriba a la izquierda
+      G.sombra = el('g', {}, plano(el('g', { transform: 'translate(5 3)' }, g), 16));
+      el('path', { d: 'M66 0L0 -9L-66 0L0 9Z', fill: 'rgba(20,6,8,.30)' }, G.sombra);
+      G.aguja = el('g', {}, plano(g, 24));
+      aguja(G.aguja, c, true);
+      // reflejo del cristal: un arco corto en el hueco entre las marcas y el aro, sin cruzar ninguna línea
+      el('path', { d: reflejo(83, 204, 236), fill: 'none', stroke: c.fino, 'stroke-width': 2, 'stroke-linecap': 'round' }, plano(g, 16.5));
+      return;
+    }
+    var desp = estilo === 'despiece';
+    // alturas de cada pieza; en el despiece flotan separadas (abrir: 0 a 1 según el ratón)
+    var zEsf = desp ? 52 : 16, zAg = desp ? 96 : 24, zCr = desp ? 132 : 30;
+    el('ellipse', { cx: 10, cy: 10, rx: R * 1.04, ry: R * K * 1.04, fill: c.sombra }, g);
+    cilindro(g, R, 0, 18, c, c.bisel);
+    var hueco = el('g', {}, g);
+    el('ellipse', { cx: 0, cy: f(-18 * HZ), rx: 86, ry: 86 * K, fill: c.ladoSombra }, hueco);
+    if (desp){
+      G.piezas = el('g', {}, g);
+      G.guias = el('path', { d: '', stroke: c.guia, 'stroke-width': 1, 'stroke-dasharray': '3 4', fill: 'none' }, G.piezas);
+      G.capaEsf = el('g', {}, G.piezas);
+      el('ellipse', { cx: 0, cy: 0, rx: 84, ry: 84 * K, fill: c.ladoSombra }, G.capaEsf);
+      var tapa = el('g', { transform: 'translate(0 ' + f(-4 * HZ) + ')' }, G.capaEsf);
+      el('ellipse', { cx: 0, cy: 0, rx: 84, ry: 84 * K, fill: c.techo }, tapa);
+      G.esfera = el('g', {}, el('g', { transform: 'scale(1 ' + K + ')' }, tapa));
+      esfera(G.esfera, c, false);
+      G.capaAg = el('g', {}, G.piezas);
+      G.aguja = el('g', {}, el('g', { transform: 'scale(1 ' + K + ')' }, G.capaAg));
+      aguja(G.aguja, c, false);
+      G.capaCr = el('g', {}, G.piezas);
+      el('ellipse', { cx: 0, cy: 0, rx: 86, ry: 86 * K, fill: 'rgba(255,255,255,.14)', stroke: 'rgba(255,255,255,.55)', 'stroke-width': 1.2 }, G.capaCr);
+      el('path', { d: reflejo(), fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 4, 'stroke-linecap': 'round', transform: 'scale(1 ' + K + ')' }, G.capaCr);
+      G.z = [zEsf, zAg, zCr];
+      colocarDespiece();
+      return;
+    }
+    var cara = plano(g, 15);
+    el('circle', { r: 84, fill: c.techo }, cara);
+    G.esfera = el('g', {}, cara);
+    esfera(G.esfera, c, false);
+    G.aguja = el('g', {}, plano(g, zAg));
+    aguja(G.aguja, c, false);
+    // cristal: un reflejo plano
+    el('path', { d: reflejo(), fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 4, 'stroke-linecap': 'round' }, plano(g, zCr));
+  }
+  function colocarDespiece(){
+    if (!G.capaEsf) return;
+    var s = 1 + abrir * 0.35, z = G.z;
+    var y = function(zz){ return f(-(18 + (zz - 18) * s) * HZ); };
+    G.capaEsf.setAttribute('transform', 'translate(0 ' + y(z[0]) + ')');
+    G.capaAg.setAttribute('transform', 'translate(0 ' + y(z[1]) + ')');
+    G.capaCr.setAttribute('transform', 'translate(0 ' + y(z[2]) + ')');
+    G.guias.setAttribute('d', 'M' + (-R) + ' ' + f(-18 * HZ) + 'V' + y(z[2]) + 'M' + R + ' ' + f(-18 * HZ) + 'V' + y(z[2]) + 'M0 ' + f(-18 * HZ) + 'V' + y(z[2]));
+  }
+
+  // ---------- Movimiento ----------
+  // giro: lo que gira la caja (con la esfera). La aguja vive en el mundo: quiere estar en SUR, y el roce con la caja la arrastra un poco.
+  // Ajustes (0 a 100), con las barras de abajo:
+  //   rapidez: lo que tarda la caja en seguir al ratón (muelle sin rebote: arranca y frena con suavidad, como algo con peso);
+  //   peso: lo que tarda la aguja en volver al Sur; liquido: lo que la frena (las brújulas buenas van llenas de líquido);
+  //   arrastre: cuánto la empuja el líquido cuando gira la caja.
+  var A = { rapidez: 28, peso: 27, liquido: 38, arrastre: 60 };
+  var giro = 0, giroObj = 0, giroVel = 0, psi = SUR, psiVel = 0, abrirObj = 0, corriendo = false, ult = 0;
+  function pintar(){
+    if (G.esfera) G.esfera.setAttribute('transform', 'rotate(' + f(giro) + ')');
+    if (G.aguja) G.aguja.setAttribute('transform', 'rotate(' + f(psi) + ')');
+    if (G.sombra) G.sombra.setAttribute('transform', 'rotate(' + f(psi) + ')');
+    if (estilo === 'despiece') colocarDespiece();
+  }
+  function paso(t){
+    var dt = Math.min(0.05, ult ? (t - ult) / 1000 : 1 / 60); ult = t;
+    var kb = 4 + A.rapidez * 0.36, cb = 2 * Math.sqrt(kb);
+    var kn = 4 + A.peso * 0.3, cn = 2 * (0.15 + A.liquido * 0.0105) * Math.sqrt(kn), ar = A.arrastre / 100;
+    // pasos pequeños (1/240 s) para que el muelle sea estable y igual de suave con cualquier pantalla
+    for (var n = Math.max(1, Math.round(dt * 240)), h = dt / n, i = 0; i < n; i++){
+      giroVel += (kb * (giroObj - giro) - cb * giroVel) * h; giro += giroVel * h;
+      psiVel += (kn * (SUR - psi) - cn * (psiVel - ar * giroVel)) * h; psi += psiVel * h;
+    }
+    abrir += (abrirObj - abrir) * Math.min(1, dt * 5);
+    pintar();
+    var quieto = Math.abs(giroObj - giro) < 0.02 && Math.abs(giroVel) < 0.05 && Math.abs(psi - SUR) < 0.02 && Math.abs(psiVel) < 0.05 && Math.abs(abrirObj - abrir) < 0.002;
+    if (quieto){ corriendo = false; ult = 0; return; }
+    requestAnimationFrame(paso);
+  }
+  function mover(){ if (reducir) { giro = giroObj; abrir = abrirObj; psi = SUR; pintar(); return; } if (!corriendo){ corriendo = true; requestAnimationFrame(paso); } }
+
+  // Ratón: la posición horizontal en la ventana hace girar la caja (±75°); en el despiece, acercarse la abre.
+  var conRaton = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  window.addEventListener('pointermove', function(e){
+    if (e.pointerType !== 'mouse') return;
+    giroObj = (e.clientX / window.innerWidth - 0.5) * 150;
+    var r = escena.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var dist = Math.hypot(e.clientX - cx, e.clientY - cy) / Math.max(r.width, 1);
+    abrirObj = Math.max(0, Math.min(1, 1.1 - dist));
+    mover();
+  }, { passive: true });
+  // Teléfono: gira al bajar y subir, y se puede arrastrar con el dedo
+  if (!conRaton){
+    pista.textContent = 'Baja, sube o arrástrala';
+    window.addEventListener('scroll', function(){ giroObj = (window.scrollY || 0) * 0.35; mover(); }, { passive: true });
+  }
+  var x0 = null, g00 = 0;
+  escena.addEventListener('pointerdown', function(e){ x0 = e.clientX; g00 = giroObj; escena.setPointerCapture(e.pointerId); });
+  escena.addEventListener('pointermove', function(e){ if (x0 === null) return; giroObj = g00 + (e.clientX - x0) * 0.8; abrirObj = 1; mover(); });
+  var soltar = function(){ x0 = null; abrirObj = 0; mover(); };
+  escena.addEventListener('pointerup', soltar); escena.addEventListener('pointercancel', soltar);
+
+  // ---------- Barras ----------
+  var BARRAS = [
+    { id:'rapidez', nombre:'Rapidez del giro de la caja', rec:28, ayuda:'A la izquierda, la caja tarda más en seguir al ratón y se frena con más suavidad, como un objeto pesado.',
+      palabras:function(v){ return v < 12 ? 'muy lenta y pesada' : v < 40 ? 'suave, con peso' : v < 70 ? 'ágil' : 'rápida'; } },
+    { id:'peso', nombre:'Peso de la aguja', rec:27, ayuda:'A la izquierda, la aguja vuelve al Sur más despacio, como la de una brújula grande.',
+      palabras:function(v){ return v < 15 ? 'muy pesada' : v < 40 ? 'pesada' : v < 70 ? 'ligera' : 'muy ligera'; } },
+    { id:'liquido', nombre:'Líquido que la frena', rec:38, ayuda:'Las brújulas buenas van llenas de líquido para que la aguja no baile. A la derecha, más espeso.',
+      palabras:function(v){ return v < 15 ? 'casi seco: oscila mucho' : v < 45 ? 'se pasa un poco y vuelve' : v < 75 ? 'apenas se pasa' : 'muy espeso, sin pasarse'; } },
+    { id:'arrastre', nombre:'Cuánto la arrastra el giro', rec:60, ayuda:'Al girar la caja, el líquido empuja la aguja un poco con ella antes de que vuelva al Sur.',
+      palabras:function(v){ return v < 15 ? 'nada' : v < 45 ? 'un poco' : v < 75 ? 'bastante' : 'mucho'; } }
+  ];
+  var PRESETS = [
+    { nombre:'Recomendado', v:{ rapidez:28, peso:27, liquido:38, arrastre:60 } },
+    { nombre:'Seca y viva', v:{ rapidez:50, peso:55, liquido:12, arrastre:35 } },
+    { nombre:'Muy amortiguada', v:{ rapidez:18, peso:18, liquido:80, arrastre:75 } }
+  ];
+  var CLAVE = 'ps-brujula-ajustes';
+  try { var g0 = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (g0) BARRAS.forEach(function(b){ if (typeof g0[b.id] === 'number') A[b.id] = g0[b.id]; }); } catch (e) {}
+  var cajaB = document.getElementById('barras'), cajaP = document.getElementById('presets'), estadoEl = document.getElementById('estado');
+  cajaB.innerHTML = BARRAS.map(function(b){
+    return '<div class="barra"><div class="barra-top"><label for="b-' + b.id + '">' + b.nombre + '</label><output id="o-' + b.id + '"></output></div>'
+      + '<div class="pista2"><input type="range" min="0" max="100" step="1" id="b-' + b.id + '"><span class="rec" style="left:calc(10px + (100% - 20px) * ' + (b.rec / 100) + ')"></span></div>'
+      + '<p>' + b.ayuda + '</p><button class="lnk" type="button" data-usar="' + b.id + '">Usar lo recomendado: «' + b.palabras(b.rec) + '»</button></div>';
+  }).join('');
+  cajaP.innerHTML = PRESETS.map(function(p, i){ return '<button type="button" data-p="' + i + '" aria-pressed="false">' + p.nombre + '</button>'; }).join('');
+  function resumen(){ return BARRAS.map(function(b){ return b.nombre + ': ' + b.palabras(A[b.id]); }).join(' · ') + ' [' + BARRAS.map(function(b){ return b.id + ' ' + A[b.id]; }).join(', ') + ']'; }
+  function pintarBarras(){
+    BARRAS.forEach(function(b){
+      document.getElementById('b-' + b.id).value = A[b.id];
+      document.getElementById('o-' + b.id).textContent = b.palabras(A[b.id]);
+      cajaB.querySelector('[data-usar="' + b.id + '"]').hidden = A[b.id] === b.rec;
+    });
+    PRESETS.forEach(function(p, i){ var igual = BARRAS.every(function(b){ return p.v[b.id] === A[b.id]; }); cajaP.querySelector('[data-p="' + i + '"]').setAttribute('aria-pressed', igual ? 'true' : 'false'); });
+    document.getElementById('ahora').textContent = resumen();
+    try { localStorage.setItem(CLAVE, JSON.stringify(A)); } catch (e) {}
+  }
+  // al cambiar algo, un empujón suave a la aguja para notar la diferencia
+  function probar(){ if (!reducir){ psiVel += 70; mover(); } }
+  BARRAS.forEach(function(b){
+    var r = document.getElementById('b-' + b.id);
+    r.addEventListener('input', function(e){ A[b.id] = +e.target.value; pintarBarras(); });
+    r.addEventListener('change', probar);
+  });
+  cajaB.addEventListener('click', function(e){ var u = e.target.closest('[data-usar]'); if (!u) return; var id = u.getAttribute('data-usar'); A[id] = BARRAS.filter(function(b){ return b.id === id; })[0].rec; pintarBarras(); probar(); });
+  cajaP.addEventListener('click', function(e){ var p = e.target.closest('[data-p]'); if (!p) return; var v = PRESETS[+p.getAttribute('data-p')].v; BARRAS.forEach(function(b){ A[b.id] = v[b.id]; }); pintarBarras(); probar(); });
+  document.getElementById('empujon').addEventListener('click', function(){ if (!reducir){ psiVel += 160; mover(); } });
+  var dbP = null;
+  document.getElementById('guardar').addEventListener('click', function(){
+    estadoEl.textContent = 'Guardando…';
+    if (!dbP) dbP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('db') : Promise.resolve(null);
+    dbP.then(function(d){
+      if (!d){ estadoEl.textContent = 'Aquí no se puede guardar. Copia la línea de abajo y pégamela en el chat.'; return; }
+      return d.doc('brujula/ajustes').set(Object.assign({ estilo: estilo, resumen: resumen(), guardado: new Date().toISOString() }, A))
+        .then(function(){ estadoEl.textContent = 'Guardado. Ya puedo leer tus ajustes.'; });
+    }).catch(function(e){ estadoEl.textContent = 'No se pudo guardar (' + ((e && e.code) || 'error') + '). Copia la línea de abajo y pégamela en el chat.'; });
+  });
+  pintarBarras();
+
+  // Estilos
+  var botones = document.querySelectorAll('[data-estilo]');
+  function poner(e){
+    estilo = e;
+    botones.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-estilo') === e ? 'true' : 'false'); });
+    document.querySelectorAll('[data-nota]').forEach(function(n){ n.classList.toggle('activa', n.getAttribute('data-nota') === e); });
+    dibujar(); pintar();
+    // un pequeño empujón para que se vea la aguja buscar el Sur
+    if (!reducir){ psiVel = 90; mover(); }
+  }
+  botones.forEach(function(b){ b.addEventListener('click', function(){ poner(b.getAttribute('data-estilo')); }); });
+  poner('linea');
+})();
+</script>

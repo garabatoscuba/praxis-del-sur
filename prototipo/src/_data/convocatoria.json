@@ -1,0 +1,59 @@
+{
+  "estado": "Borrador del equipo · versión 1 de la convocatoria",
+  "volumen": "Vol. 1 (2027)",
+  "titulo": "Ciencias sociales en y desde contextos de crisis",
+  "tituloHtml": "Ciencias sociales en y desde <em>contextos de crisis</em>",
+  "tema": "Este número valorará de forma especial las contribuciones que analicen cómo se viven, se afrontan y se interpretan los contextos de crisis en el Sur Global, y las que reflexionen sobre qué significa producir conocimiento científico en y desde ellos.",
+  "presentacion": [
+    "El Centro de Investigaciones Psicológicas y Sociológicas (CIPS) convoca a la comunidad científica a presentar contribuciones para el primer número de Praxis del Sur, revista académica orientada a la difusión de investigaciones y al debate del pensamiento crítico y descolonial desde la perspectiva del Sur Global.",
+    "Praxis del Sur es una revista de acceso abierto diamante, sin cobro de tarifas para autores ni lectores. Las contribuciones se publican en línea de forma continua, a medida que concluye su proceso editorial. Las secciones arbitradas pasan por arbitraje doble ciego, y las contribuciones aceptadas reciben un DOI.",
+    "El primer número se lanzará el 10 de octubre de 2027, en conmemoración del 44.º aniversario del CIPS, e incluirá las contribuciones que hayan concluido su proceso para esa fecha. Las demás se publicarán posteriormente."
+  ],
+  "apertura": "2027-01-01",
+  "cierre": "2027-03-30",
+  "lanzamiento": "2027-10-10",
+  "hitos": [
+    { "fecha": "apertura", "titulo": "Abre la convocatoria", "texto": "Los envíos se hacen solo por la plataforma de la revista.",
+      "detalle": "Ten listos el manuscrito anonimizado y, en un archivo aparte, los datos de autoría: ORCID, filiación y declaraciones de contribución (CRediT), financiamiento y conflictos de interés." },
+    { "fecha": "cierre", "titulo": "Cierra la recepción", "texto": "Siguen la evaluación inicial y el arbitraje doble ciego.",
+      "detalle": "La evaluación inicial tarda 7 días. En las secciones arbitradas siguen la revisión doble ciego (60 días) y la decisión editorial (15 días)." },
+    { "fecha": "lanzamiento", "titulo": "Sale el primer número", "texto": "En el 44.º aniversario del CIPS, con las contribuciones que hayan terminado su proceso.",
+      "detalle": "Las contribuciones que terminen su proceso después se publican más adelante, en línea y de forma continua." }
+  ],
+  "tramos": ["Recepción", "Evaluación y arbitraje", "Publicación continua"],
+  "estados": {
+    "antes": { "corto": "Convocatoria · abre el {apertura}", "frase": "La convocatoria abre el {apertura}: {faltan}." },
+    "abierta": { "corto": "Convocatoria abierta · {volumen}", "frase": "Convocatoria abierta hasta el {cierre}: {quedan} para enviar contribuciones." },
+    "evaluacion": { "corto": "Convocatoria cerrada · en evaluación", "frase": "La recepción cerró el {cierre}. Las contribuciones están en evaluación y el número sale el {lanzamiento}." },
+    "publicado": { "corto": "Primer número publicado", "frase": "El primer número salió el {lanzamiento}." }
+  },
+  "idiomas": "Español, inglés o portugués.",
+  "idiomasNota": "El equipo propone aceptar solo español en este primer número.",
+  "estructura": [
+    { "t": "Título", "d": "Conciso, informativo y representativo del contenido (máximo 15 palabras), en el idioma original y en inglés." },
+    { "t": "Resumen", "d": "Entre 150 y 250 palabras, en el idioma original y en inglés. Debe explicitar objetivo, enfoque teórico y metodológico, hallazgos clave y conclusiones principales." },
+    { "t": "Palabras clave", "d": "Entre 3 y 5 descriptores en español e inglés, normalizados preferentemente con el Tesauro de la UNESCO o el de CLACSO." },
+    { "t": "Cuerpo del texto", "d": "Introducción, Metodología, Resultados y Discusión, Conclusiones y Referencias." },
+    { "t": "Referencias", "d": "Según las Normas APA (7.ª edición). Todas las referencias digitales deben incluir enlace URL o DOI." }
+  ],
+  "autoria": [
+    "Nombres y apellidos completos de cada autor o autora, y correo electrónico institucional.",
+    "Filiación institucional detallada: institución, facultad o centro, ciudad y país.",
+    "Código ORCID, obligatorio para todas las personas firmantes.",
+    "Declaración de la contribución de cada autor (CRediT), del financiamiento y de la ausencia de conflictos de interés."
+  ],
+  "autoriaNota": "Para garantizar el anonimato durante el arbitraje, la información de autoría se adjunta en un archivo independiente.",
+  "etica": [
+    "Praxis del Sur suscribe el código de conducta del Committee on Publication Ethics (COPE).",
+    "Todas las contribuciones se someten a verificación de originalidad antes de la evaluación externa.",
+    "Las contribuciones de las secciones arbitradas aprobadas en la preevaluación pasan a evaluación externa doble ciego.",
+    "Las personas autoras ceden a la revista derechos de publicación no exclusiva bajo licencia Creative Commons Atribución-NoComercial 4.0 Internacional (CC BY-NC 4.0)."
+  ],
+  "envio": "Todas las propuestas se envían exclusivamente a través de la plataforma Open Journal Systems (OJS) de la revista. No se aceptan contribuciones por correo electrónico.",
+  "pendientes": [
+    "Correo de contacto de la revista",
+    "Enlace definitivo a la plataforma",
+    "Herramienta de verificación de originalidad",
+    "Idiomas aceptados en el primer número"
+  ]
+}

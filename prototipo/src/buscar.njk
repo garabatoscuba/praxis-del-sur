@@ -1,0 +1,25 @@
+---
+title: Buscar
+pkpPage: search
+permalink: buscar.html
+---
+{#- En OJS es pages/search.tpl. En el simulacro se muestra un resultado de ejemplo. -#}
+{%- set termino = "crisis" -%}
+{%- set resultados = articulos | buscar(termino) -%}
+<div class="page page_search ps-page">
+  <div class="ps-wrap ps-narrow">
+    {% set migas = [{ label: "Buscar" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Buscar</h1>
+    <form class="cmp_form ps-search-form" onsubmit="return false" role="search">
+      <label for="query" class="pkp_screen_reader">Buscar en la revista</label>
+      <input id="query" type="search" value="{{ termino }}" disabled>
+      <button class="ps-btn ps-btn--wine" type="submit" disabled>Buscar</button>
+    </form>
+    <p class="ps-form-nota">Búsqueda de ejemplo. En la revista real busca en títulos, resúmenes, autores y texto completo.</p>
+    <h2 class="ps-list-title">{{ resultados.length }} resultados para «{{ termino }}»</h2>
+    {%- set mostrarSeccion = true %}{% set mostrarFecha = true %}{% set hArticulo = "h3" %}
+    <ul class="cmp_article_list search_results">
+      {%- for a in resultados %}<li>{% include "article_summary.njk" %}</li>{% endfor %}
+    </ul>
+  </div>
+</div>

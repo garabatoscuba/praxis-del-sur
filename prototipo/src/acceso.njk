@@ -1,0 +1,33 @@
+---
+title: Entrar
+pkpPage: login
+permalink: acceso.html
+---
+{#- En OJS es pages/userLogin.tpl. En el simulacro el formulario está desactivado. -#}
+<div class="page page_login ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Entrar" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Entrar</h1>
+    <div class="cmp_notification">En el simulacro el acceso está desactivado. En la revista real, desde aquí se entra al panel de OJS para enviar, revisar o editar.</div>
+    <div class="ps-acceso">
+      <form class="cmp_form cmp_form login ps-form" onsubmit="return false" aria-describedby="acceso-nota">
+        <p id="acceso-nota" class="ps-form-nota">Formulario de ejemplo</p>
+        <label for="login-usuario">Usuario o correo electrónico<input id="login-usuario" type="text" autocomplete="off" disabled></label>
+        <label for="login-clave">Contraseña<input id="login-clave" type="password" autocomplete="off" disabled></label>
+        <button class="ps-btn ps-btn--wine" type="submit" disabled>Entrar</button>
+        <a href="#" class="ps-form-link">¿Olvidaste tu contraseña?</a>
+      </form>
+      <section class="ps-acceso-info">
+        <h2>¿Primera vez?</h2>
+        <p>Regístrate una sola vez para enviar contribuciones o para ofrecerte como revisor. Con una misma cuenta puedes tener varios roles.</p>
+        <h3>Qué verás dentro</h3>
+        <ul>
+          <li><b>Autoras y autores:</b> el asistente de envío y el estado de cada contribución.</li>
+          <li><b>Revisores:</b> las invitaciones, los plazos y el formulario de dictamen.</li>
+          <li><b>Equipo editorial:</b> el flujo completo, del envío a la publicación.</li>
+        </ul>
+        <p><a class="ps-link-arrow" href="flujo.html">Ver el flujo editorial</a></p>
+      </section>
+    </div>
+  </div>
+</div>

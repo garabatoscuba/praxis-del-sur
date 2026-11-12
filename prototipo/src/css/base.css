@@ -1,0 +1,53 @@
+/* Praxis del Sur · base */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--ps-header-h) + 16px); }
+body {
+  margin: 0;
+  background: var(--ps-paper);
+  color: var(--ps-ink);
+  font-family: var(--ps-sans);
+  font-size: var(--ps-step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, svg { max-width: 100%; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--ps-serif); font-weight: 500; line-height: 1.15; color: var(--ps-ink); text-wrap: balance; }
+p, ul, ol, dl, dd, figure { margin: 0; }
+a { color: var(--ps-wine); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--ps-wine); outline-offset: 3px; }
+.ps-on-dark :focus-visible { outline-color: var(--ps-gold); }
+button { font: inherit; }
+
+.pkp_screen_reader {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+.ps-wrap { width: 100%; max-width: var(--ps-max); margin-inline: auto; padding-left: var(--ps-gutter); padding-right: var(--ps-gutter); }
+.ps-narrow { max-width: 920px; }
+.ps-section { padding-block: clamp(56px, 8vw, 104px); }
+.ps-section--tint { background: var(--ps-beige-light); }
+
+.ps-eyebrow {
+  font-family: var(--ps-sans); font-size: 0.8125rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive);
+}
+.ps-h-small {
+  font-family: var(--ps-sans); font-size: 0.8125rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive);
+}
+.ps-link-arrow { font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.ps-link-arrow::after { content: "→"; transition: transform 0.2s; }
+.ps-link-arrow:hover { text-decoration: underline; }
+.ps-link-arrow:hover::after { transform: translateX(3px); }
+
+.ps-pendiente {
+  display: inline-block; font-family: var(--ps-sans); font-size: 0.8125rem; font-weight: 600; line-height: 1.4;
+  padding: 2px 10px; border-radius: 999px; background: var(--ps-sage); color: var(--ps-olive); vertical-align: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

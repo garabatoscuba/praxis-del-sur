@@ -1,0 +1,38 @@
+/* Praxis del Sur · variables de diseño.
+   Colores del Manual de Identidad del CIPS (2016). Los marcados como «derivado» son tintes de esos colores.
+   Diseño de un solo tema (claro), como el sitio de OJS. */
+:root {
+  /* Colores del manual */
+  --ps-wine: #662426;        /* Pantone S323-4 CVS */
+  --ps-gold: #B6A160;        /* Pantone S10-3 CVS */
+  --ps-beige: #DED8C7;       /* Pantone DS 20-9 C */
+  --ps-sage: #D9DFCE;        /* Pantone DS 12-9 C */
+  --ps-olive: #4B483D;       /* Pantone 329-3 C */
+  /* Derivados */
+  --ps-wine-dark: #4F1B1D;   /* vino más oscuro, para estados activos */
+  --ps-gold-light: #CDBD8A;  /* dorado aclarado, para pasar el cursor sobre botones dorados */
+  --ps-beige-light: #F3F0E8; /* beige muy claro para fondos de sección */
+  --ps-ink: #1F1B18;         /* negro cálido para texto */
+  --ps-muted: #5C574E;       /* texto secundario: 7,2:1 sobre blanco */
+  --ps-line: #E3DED2;
+  --ps-line-strong: #CFC8B6;
+  --ps-paper: #FFFFFF;
+
+  /* Tipografía: Garamond y Frutiger según el manual; EB Garamond y Source Sans 3 como versiones libres para web */
+  --ps-serif: "EB Garamond", Garamond, "Times New Roman", serif;
+  --ps-sans: "Frutiger", "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --ps-step--1: 0.875rem;
+  --ps-step-0: 1.0625rem;
+  --ps-step-1: 1.25rem;
+  --ps-step-2: clamp(1.4rem, 1.2rem + 0.7vw, 1.65rem);
+  --ps-step-3: clamp(1.85rem, 1.5rem + 1.4vw, 2.5rem);
+  --ps-step-4: clamp(2.3rem, 1.7rem + 2.6vw, 3.6rem);
+  --ps-step-5: clamp(2.6rem, 1.6rem + 4.4vw, 4.9rem);
+
+  /* Medidas */
+  --ps-max: 1200px;
+  --ps-text: 68ch;
+  --ps-gutter: clamp(16px, 4vw, 48px);
+  --ps-header-h: 64px; /* altura de la cabecera ya encogida, para anclas y elementos fijos */
+}

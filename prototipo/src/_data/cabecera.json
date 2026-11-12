@@ -1,0 +1,8 @@
+{
+  "nota": "Cabecera de la portada: transparente sobre el bloque vino y barra blanca al bajar. Valores elegidos por la usuaria en la herramienta de barras el 12 nov 2026 (coinciden con los recomendados).",
+  "umbral": 80,
+  "duracion": 380,
+  "llegada": 0.35,
+  "transparencia": 0.3,
+  "encoge": 0.4
+}

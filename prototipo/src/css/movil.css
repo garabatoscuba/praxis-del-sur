@@ -1,0 +1,111 @@
+/* Praxis del Sur · el móvil (hasta 760 px de ancho).
+   Que cada sección de la portada se vea bien en la pantalla del teléfono, sin hacerse eterna.
+   Opciones en _data/movil.json, en la portada como data-movil-* (script en movil.njk):
+   - data-movil-ejes: pila (las tarjetas se apilan al bajar), mazo (una encima de otra, se pasan deslizando),
+     lista (solo títulos; se abren al tocar) o normal;
+   - data-movil-mod: pestanas (arbitradas / no arbitradas) o todas; data-movil-desc: tocar, visibles u ocultas;
+   - data-movil-compacto en <html>: si (todas las páginas, más ajustadas) o no. */
+
+.ps-mod-tabs, .ps-mazo-nav { display: none; }
+.ps-mod-mas { margin-top: clamp(24px, 3vw, 36px); }
+
+@media (max-width: 760px) {
+  /* ---------- Más ajustado: portada, «Sobre la revista», encabezados de sección y pie ---------- */
+  html:not([data-movil-compacto="no"]) .ps-hero { padding-top: calc(var(--ps-head-h) + 26px); padding-bottom: 26px; }
+  html:not([data-movil-compacto="no"]) .ps-hero-title { margin-top: 14px; }
+  html:not([data-movil-compacto="no"]) .ps-hero-lead { margin-top: 14px; font-size: 1.0625rem; line-height: 1.5; }
+  html:not([data-movil-compacto="no"]) .ps-hero .ps-actions { margin-top: 22px; gap: 10px; }
+  html:not([data-movil-compacto="no"]) .ps-hero .ps-actions .ps-btn { min-height: 42px; padding: 9px 18px; font-size: 0.9375rem; }
+  html:not([data-movil-compacto="no"]) .ps-hero-fechas div { padding-block: 10px; }
+  html:not([data-movil-compacto="no"]) .ps-hero-fechas dt { font-size: 0.6875rem; letter-spacing: 0.06em; }
+  html:not([data-movil-compacto="no"]) .ps-hero-fechas dd { margin-top: 2px; font-size: 1.2rem; }
+  html:not([data-movil-compacto="no"]) .ps-borrador { margin-top: 16px; }
+  html:not([data-movil-compacto="no"]) .ps-section { padding-block: 44px; }
+  html:not([data-movil-compacto="no"]) .ps-sec-head { gap: 10px; margin-bottom: 24px; }
+  html:not([data-movil-compacto="no"]) .ps-sec-head p:not(.ps-eyebrow) { font-size: 1.0625rem; }
+  html:not([data-movil-compacto="no"]) .ps-about-grid { gap: 28px; }
+  html:not([data-movil-compacto="no"]) .ps-hechos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
+  html:not([data-movil-compacto="no"]) .ps-hechos div { padding-block: 14px; gap: 2px; align-content: start; }
+  html:not([data-movil-compacto="no"]) .ps-hechos dt { font-size: 1.15rem; }
+  html:not([data-movil-compacto="no"]) .ps-hechos dd { font-size: 0.875rem; line-height: 1.45; }
+  html:not([data-movil-compacto="no"]) .pkp_structure_footer { padding-top: 40px; }
+  html:not([data-movil-compacto="no"]) .pkp_footer_content { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 20px; }
+  html:not([data-movil-compacto="no"]) .ps-footer-brand, html:not([data-movil-compacto="no"]) .pkp_footer_content > :last-child { grid-column: 1 / -1; }
+  html:not([data-movil-compacto="no"]) .ps-footer-datos { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px 20px; }
+  html:not([data-movil-compacto="no"]) .ps-footer-datos > div:first-child { grid-column: 1 / -1; }
+  html:not([data-movil-compacto="no"]) .pkp_brand_footer { margin-top: 32px; }
+  html:not([data-movil-compacto="no"]) .ps-simulacro summary { padding: 5px 11px; font-size: 0.75rem; }
+
+  /* ---------- Ejes: se apilan al bajar ----------
+     Cada tarjeta se queda arriba y la siguiente la cubre, dejando ver su franja con «Eje n»: al final queda una pila. */
+  [data-movil-ejes="pila"] .ps-ejes { display: block; }
+  [data-movil-ejes="pila"] .ps-eje {
+    position: sticky; top: calc(var(--ps-head-h-compact) + 10px + var(--i, 0) * 40px);
+    margin-bottom: 14px; padding-top: 15px;
+    box-shadow: 0 -14px 28px -20px rgb(31 27 24 / 0.6);
+  }
+  [data-movil-ejes="pila"] .ps-eje:last-child { margin-bottom: 0; }
+
+  /* ---------- Ejes: mazo para deslizar ----------
+     Todas en la misma celda; el script pone --k (0 = la de arriba). Las de detrás asoman por abajo. */
+  [data-movil-ejes="mazo"] .ps-ejes { display: grid; grid-template-columns: minmax(0, 1fr); padding-bottom: 30px; touch-action: pan-y; }
+  [data-movil-ejes="mazo"] .ps-eje {
+    grid-area: 1 / 1; z-index: calc(20 - var(--k, 0)); user-select: none; -webkit-user-select: none;
+    transform-origin: 50% 100%;
+    transform: translateY(calc(min(var(--k, 0), 3) * 10px)) scale(calc(1 - min(var(--k, 0), 3) * 0.045));
+    box-shadow: 0 16px 30px -24px rgb(31 27 24 / 0.7);
+  }
+  .ps-mov [data-movil-ejes="mazo"] .ps-eje { transition: transform 0.5s var(--ps-mov-e), translate 0.3s var(--ps-mov-e), opacity 0.4s ease, box-shadow 0.3s; }
+  [data-movil-ejes="mazo"] .ps-eje[data-k-oculta] { opacity: 0; }
+  [data-movil-ejes="mazo"] .ps-mazo-nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 6px; }
+  .ps-mazo-nav button {
+    display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--ps-line-strong); border-radius: 999px;
+    background: var(--ps-paper); color: var(--ps-ink); cursor: pointer; transition: border-color 0.25s, color 0.25s;
+  }
+  .ps-mazo-nav button::before { content: ""; width: 9px; height: 9px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateX(2px) rotate(45deg); }
+  .ps-mazo-nav button[data-mazo="1"]::before { transform: translateX(-2px) rotate(-135deg); }
+  .ps-mazo-nav button:active { border-color: var(--ps-wine); color: var(--ps-wine); }
+  .ps-mazo-nav span { min-width: 4.5em; text-align: center; font-size: 0.9375rem; font-weight: 600; color: var(--ps-muted); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Ejes: lista que se abre ---------- */
+  [data-movil-ejes="lista"] .ps-ejes { gap: 0; }
+  [data-movil-ejes="lista"] .ps-eje--tema { margin-bottom: 16px; }
+  [data-movil-ejes="lista"] .ps-eje:not(.ps-eje--tema) {
+    gap: 4px; padding: 16px 18px; border-top: 1px solid var(--ps-line-strong); cursor: pointer;
+    --ps-raya: 1px; --ps-raya-c: var(--ps-line-strong);
+  }
+  [data-movil-ejes="lista"] .ps-eje:not(.ps-eje--tema) h3 { position: relative; padding-right: 30px; font-size: 1.2rem; }
+  [data-movil-ejes="lista"] .ps-eje:not(.ps-eje--tema) h3::after {
+    content: ""; position: absolute; right: 4px; top: 0.35em; width: 8px; height: 8px;
+    border-right: 2px solid var(--ps-olive); border-bottom: 2px solid var(--ps-olive); transform: rotate(45deg); transition: transform 0.35s var(--ps-mov-e, ease-out);
+  }
+  [data-movil-ejes="lista"] .ps-eje.is-abierto h3::after { transform: translateY(4px) rotate(-135deg); }
+  [data-movil-ejes="lista"] .ps-eje:not(.ps-eje--tema):not(.is-abierto) > p,
+  [data-movil-ejes="lista"] .ps-eje:not(.ps-eje--tema):not(.is-abierto) > a { display: none; }
+  [data-movil-ejes="lista"] .ps-eje.is-abierto > p, [data-movil-ejes="lista"] .ps-eje.is-abierto > a { animation: ps-asoma 0.35s var(--ps-mov-e, ease-out); }
+
+  /* ---------- Modalidades: pestañas y descripciones ---------- */
+  [data-movil-mod="pestanas"] .ps-mod-tabs {
+    display: inline-flex; gap: 2px; margin-bottom: 18px; padding: 3px; border: 1px solid var(--ps-line); border-radius: 999px; background: var(--ps-beige-light);
+  }
+  .ps-mod-tabs button {
+    padding: 8px 16px; border: 0; border-radius: 999px; background: transparent; font: inherit; font-size: 0.9375rem; font-weight: 600;
+    color: var(--ps-muted); cursor: pointer; transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
+  }
+  .ps-mod-tabs button small { margin-left: 4px; font-size: 0.8125rem; font-weight: 700; color: var(--ps-olive); }
+  .ps-mod-tabs button[aria-selected="true"] { background: var(--ps-paper); color: var(--ps-ink); box-shadow: 0 1px 4px rgb(31 27 24 / 0.16); }
+  [data-movil-mod="pestanas"] .ps-mod-col:not(.is-activa) { display: none; }
+  [data-movil-mod="pestanas"] .ps-mod-col.is-activa { animation: ps-asoma 0.35s var(--ps-mov-e, ease-out); }
+  [data-movil-mod="pestanas"] .ps-mod-col > h3 { font-size: 1.15rem; padding-bottom: 10px; }
+  [data-movil-desc="tocar"] .ps-mod-list li, [data-movil-desc="ocultas"] .ps-mod-list li { padding-block: 13px; }
+  [data-movil-desc="tocar"] .ps-mod-list li { grid-template-columns: minmax(0, 1fr) auto 14px; cursor: pointer; }
+  [data-movil-desc="tocar"] .ps-mod-list li::after {
+    content: ""; grid-column: 3; grid-row: 1; align-self: center; width: 7px; height: 7px; margin-left: 4px;
+    border-right: 2px solid var(--ps-olive); border-bottom: 2px solid var(--ps-olive); transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.35s var(--ps-mov-e, ease-out);
+  }
+  [data-movil-desc="tocar"] .ps-mod-list li.is-abierto::after { transform: translateY(2px) rotate(-135deg); }
+  [data-movil-desc="tocar"] .ps-mod-list li:not(.is-abierto) > p, [data-movil-desc="ocultas"] .ps-mod-list li > p { display: none; }
+  [data-movil-desc="tocar"] .ps-mod-list li.is-abierto > p { animation: ps-asoma 0.35s var(--ps-mov-e, ease-out); }
+  [data-movil-desc="tocar"] .ps-mod-list b, [data-movil-desc="ocultas"] .ps-mod-list b { font-size: 1.15rem; }
+}

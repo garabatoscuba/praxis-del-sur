@@ -1,0 +1,7 @@
+{
+  "nota": "Cómo se ven en el móvil (hasta 760 px de ancho) las secciones largas de la portada. Elegido por la usuaria en la herramienta del móvil el 12 nov 2026 (lo recomendado). ejes: pila (se apilan al bajar), mazo (una tarjeta encima de otra, se pasan deslizando), lista (solo títulos, se abren al tocar) o normal. modGrupos: pestanas (arbitradas / no arbitradas) o todas. modDesc: tocar (la descripción se abre al tocar), visibles u ocultas (solo nombre y extensión). compacto: si (portada, «Sobre la revista» y pie más ajustados) o no.",
+  "ejes": "pila",
+  "modGrupos": "pestanas",
+  "modDesc": "tocar",
+  "compacto": "si"
+}

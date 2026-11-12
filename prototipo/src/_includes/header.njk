@@ -1,0 +1,49 @@
+{%- set here = navActive or (page.url | replace("/", "")) or "index.html" -%}
+<header class="pkp_structure_head{% if cabeceraSobreHeroe %} ps-head--sobre{% endif %}" id="headerNavigationContainer" role="banner">
+  <nav class="cmp_skip_to_content" aria-label="Saltar a">
+    <a href="#pkp_content_main">Ir al contenido principal</a>
+    <a href="#pkp_content_footer">Ir al pie de página</a>
+  </nav>
+  <div class="pkp_head_wrapper">
+    <div class="pkp_site_name_wrapper">
+      <button class="pkp_site_nav_toggle" type="button" aria-expanded="false" aria-controls="siteNavMenu"><span>Menú</span></button>
+      <div class="pkp_site_name">
+        <a href="index.html" class="is_img" aria-label="{{ revista.nombre }}, {{ revista.firma }}. Ir al inicio">{% include "logo.njk" %}</a>
+      </div>
+    </div>
+    <nav class="pkp_site_nav_menu" aria-label="Navegación del sitio" id="siteNavMenu">
+      <a id="siteNav"></a>
+      <div class="pkp_navigation_primary_row">
+        <div class="pkp_navigation_primary_wrapper">
+          <ul id="navigationPrimary" class="pkp_navigation_primary pkp_nav_list">
+          {%- for item in nav %}
+            <li class="{% if item.children %}has_submenu{% endif %}{% if item | navActivo(here) %} is_current{% endif %}">
+              <a href="{{ item.url }}"{% if item.url == here %} aria-current="page"{% endif %}>{{ item.label }}</a>
+              {%- if item.children %}
+              <ul>
+                {%- for c in item.children %}
+                <li><a href="{{ c.url }}"{% if c.url == here %} aria-current="page"{% endif %}>{{ c.label }}</a></li>
+                {%- endfor %}
+              </ul>
+              {%- endif %}
+            </li>
+          {%- endfor %}
+          </ul>
+          <div class="pkp_navigation_search_wrapper">
+            <a href="buscar.html" class="pkp_search pkp_search_desktop">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Buscar</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
+        <ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
+          <li class="profile"><a href="acceso.html">Registrarse</a></li>
+          <li class="profile"><a href="acceso.html">Entrar</a></li>
+          <li class="ps-nav-cta"><a class="ps-btn ps-btn--wine ps-btn--small" href="envios.html">Enviar contribución</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>

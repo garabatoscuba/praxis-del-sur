@@ -1,0 +1,86 @@
+{#- Equivale a frontend/components/header.tpl + footer.tpl de OJS 3.5 (pkp-lib). -#}
+{%- set isEntry = site.artifact and page.url == "/" -%}
+{%- if not isEntry %}<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{%- endif %}
+<title>{% if title and page.url != "/" %}{{ title }} | {% endif %}{{ revista.nombre }}{% if page.url == "/" %} · {{ revista.firma }}{% endif %}</title>
+<meta name="description" content="{{ descripcion or revista.descripcion }}">
+{%- if site.artifact %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+{%- else %}
+<link rel="icon" href="img/simbolo.svg" type="image/svg+xml">
+{%- endif %}
+{% estilos %}
+<style>:root { --ps-cab-dur: {{ cabecera.duracion }}; --ps-cab-llegada: {{ cabecera.llegada }}; --ps-cab-transp: {{ cabecera.transparencia }}; --ps-cab-encoge: {{ cabecera.encoge }}; --ps-mov-dist: {{ movimiento.distancia }}; --ps-mov-dur: {{ movimiento.duracion }}; --ps-mov-escalon: {{ movimiento.escalon }}; --ps-mov-raton: {{ movimiento.raton }}; }</style>
+{%- if not isEntry %}
+</head>
+<body class="pkp_page_{{ pkpPage or 'index' }} pkp_op_{{ pkpOp or 'index' }} has_site_logo">
+{%- endif %}
+<div class="pkp_structure_page{% if cabeceraSobreHeroe %} ps-sobre-heroe{% endif %}">
+{% include "header.njk" %}
+<div class="pkp_structure_content">
+<div class="pkp_structure_main" role="main">
+<a id="pkp_content_main"></a>
+{{ content | safe }}
+</div>
+</div>
+{% include "footer.njk" %}
+</div>
+{% include "simulacro.njk" %}
+<script>
+window.PS_CABECERA = { umbral: {{ cabecera.umbral }} };
+(function () {
+  // Cabecera: en la portada va transparente sobre el bloque vino y la barra aparece al bajar.
+  var head = document.querySelector('.pkp_structure_head');
+  var sobre = head && head.classList.contains('ps-head--sobre');
+  var menuAbierto = false;
+  function cabecera() {
+    if (!head) return;
+    var pasado = (window.scrollY || 0) > ((window.PS_CABECERA && window.PS_CABECERA.umbral) || 0);
+    head.classList.toggle('is-compact', pasado);
+    if (sobre) head.classList.toggle('is-solid', pasado || menuAbierto);
+  }
+  window.__psCabecera = cabecera;
+  window.addEventListener('scroll', cabecera, { passive: true });
+  cabecera();
+
+  var toggle = document.querySelector('.pkp_site_nav_toggle');
+  var menu = document.getElementById('siteNavMenu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', function () {
+      menuAbierto = menu.classList.toggle('is_open');
+      toggle.setAttribute('aria-expanded', menuAbierto ? 'true' : 'false');
+      toggle.querySelector('span').textContent = menuAbierto ? 'Cerrar' : 'Menú';
+      cabecera();
+    });
+  }
+  function select(el) {
+    var range = document.createRange(); range.selectNodeContents(el);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  }
+  document.querySelectorAll('[data-copiar]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.getElementById(btn.getAttribute('data-copiar'));
+      var label = btn.textContent;
+      var done = function () {
+        btn.textContent = 'Copiada'; el.classList.add('is-copiada');
+        setTimeout(function () { el.classList.remove('is-copiada'); }, 160);
+        setTimeout(function () { btn.textContent = label; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(el.innerText).then(done, function () { select(el); });
+      } else { select(el); }
+    });
+  });
+})();
+</script>
+{% include "movimiento.njk" %}
+{%- if not isEntry %}
+</body>
+</html>
+{%- endif %}

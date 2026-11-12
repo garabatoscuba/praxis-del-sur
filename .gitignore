@@ -1,0 +1,15 @@
+node_modules/
+_site/
+_artifact/
+_afinar/
+dist/
+.cache/
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
+~$*.docx
+
+# Permisos locales de Claude Code (personales, no van al repositorio)
+.claude/settings.local.json

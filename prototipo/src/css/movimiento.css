@@ -1,0 +1,192 @@
+/* Praxis del Sur · movimiento.
+   Muy sutil y sin rebotes: los bloques aparecen al entrar en pantalla, al bajar y también al subir;
+   las líneas se dibujan; enlaces, tarjetas y botones responden al ratón.
+   Ajustes en _data/movimiento.json: --ps-mov-dist (px), --ps-mov-dur (ms), --ps-mov-escalon (ms) y --ps-mov-raton (0 a 1).
+   Lo que depende del script va bajo .ps-mov (lo pone movimiento.njk). Con «reducir movimiento» no se aplica. */
+:root {
+  --ps-mov-d: calc(var(--ps-mov-dur, 700) * 1ms);
+  --ps-mov-e: cubic-bezier(0.22, 1, 0.36, 1); /* arranca con decisión y se posa despacio */
+  --ps-mov-y: calc(var(--ps-mov-dist, 14) * 1px);
+  --ps-mov-h: var(--ps-mov-raton, 0.5);
+}
+
+/* ---------- 1. Aparecer al entrar en pantalla ----------
+   abajo: espera debajo y sube al entrar (al bajar). arriba: espera encima y baja al entrar (al subir).
+   Escondido casi del todo (no a 0) para que ya esté pintado cuando aparezca. */
+.ps-mov [data-rev] {
+  transition: opacity var(--ps-mov-d) var(--ps-mov-e) var(--ps-rev-delay, 0ms),
+    transform var(--ps-mov-d) var(--ps-mov-e) var(--ps-rev-delay, 0ms),
+    translate 0.45s var(--ps-mov-e), box-shadow 0.45s var(--ps-mov-e),
+    background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+.ps-mov [data-rev="abajo"], .ps-mov [data-rev="arriba"] { opacity: 0.0005; transition: none; }
+.ps-mov [data-rev="abajo"] { transform: translateY(var(--ps-mov-y)); }
+.ps-mov [data-rev="arriba"] { transform: translateY(calc(-1 * var(--ps-mov-y))); }
+
+/* La brújula del fondo no se desplaza: se dibuja el arco y la aguja busca el sur. */
+.ps-mov .ps-deco[data-rev] { opacity: 0.13; transform: translateY(-50%); transition: none; }
+.ps-mov .ps-deco .ps-trazo {
+  stroke-dasharray: 1 2; stroke-dashoffset: 0; stroke-linecap: round;
+  transition: stroke-dashoffset calc(var(--ps-mov-d) * 2.6) cubic-bezier(0.45, 0, 0.2, 1) calc(var(--ps-rev-delay, 0ms) + 120ms);
+}
+.ps-mov .ps-deco .ps-aguja {
+  transform-box: view-box; transform-origin: 50px 46px;
+  transition: transform calc(var(--ps-mov-d) * 3.2) var(--ps-mov-e) calc(var(--ps-rev-delay, 0ms) + 200ms),
+    opacity var(--ps-mov-d) ease calc(var(--ps-rev-delay, 0ms) + 200ms);
+}
+.ps-mov .ps-deco[data-rev]:not([data-rev="in"]) .ps-trazo { stroke-dashoffset: 1.05; transition: none; }
+.ps-mov .ps-deco[data-rev]:not([data-rev="in"]) .ps-aguja { transform: rotate(-26deg); opacity: 0; transition: none; }
+
+/* ---------- 2. Líneas que se dibujan (de izquierda a derecha, o hacia abajo en el flujo) ---------- */
+.ps-mov .ps-eje { border-top-color: transparent; }
+.ps-mov .ps-mod-col > h3 { position: relative; border-bottom-color: transparent; }
+.ps-mov .ps-eje { position: relative; --ps-raya: 3px; --ps-raya-c: var(--ps-olive); }
+.ps-mov .ps-eje--tema { --ps-raya-c: var(--ps-gold); }
+.ps-mov .ps-eje::before, .ps-mov .ps-mod-col > h3::after {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(-1 * var(--ps-raya)); height: var(--ps-raya);
+  background: var(--ps-raya-c); transform-origin: left center;
+  transition: transform calc(var(--ps-mov-d) * 1.5) var(--ps-mov-e) calc(var(--ps-rev-delay, 0ms) + var(--ps-mov-d) * 0.25),
+    background-color 0.35s;
+}
+.ps-mov .ps-mod-col > h3::after { --ps-raya: 2px; top: auto; bottom: -2px; background: var(--ps-ink); }
+.ps-mov .ps-paso::before {
+  transform-origin: top center;
+  transition: transform calc(var(--ps-mov-d) * 1.8) var(--ps-mov-e) calc(var(--ps-rev-delay, 0ms) + var(--ps-mov-d) * 0.4);
+}
+.ps-mov .ps-eje[data-rev]:not([data-rev="in"])::before,
+.ps-mov .ps-mod-col > h3[data-rev]:not([data-rev="in"])::after { transform: scaleX(0); transition: none; }
+.ps-mov .ps-paso[data-rev]:not([data-rev="in"])::before { transform: scaleY(0); transition: none; }
+
+/* Calendario. En cada hito se dibuja primero el tramo hecho (continuo) y luego el que falta (punteado);
+   el punto se enciende cuando llega la línea y «Hoy» aparece cuando la línea pasa por él.
+   data-cal-anim:
+   - columnas: cada hito se dibuja con su bloque, en cascada;
+   - linea: una sola pluma recorre la línea entera, tramo tras tramo, desde que el calendario entra en pantalla
+     (.is-trazando; el script pone los tiempos). En el móvil, si se entra subiendo, va de abajo arriba (.desde-abajo);
+   - recorrido: la línea sigue al scroll (el script escribe --cal-ph, --cal-pf y --cal-pp). */
+.ps-mov .ps-calendario li {
+  --cal-t: calc(var(--ps-mov-d) * 1.5);
+  --cal-h-d0: calc(var(--ps-rev-delay, 0ms) + var(--ps-mov-d) * 0.25);
+  --cal-h-dd: calc(var(--cal-t) * var(--cal-lleno, 1));
+  --cal-f-d0: calc(var(--cal-h-d0) + var(--cal-h-dd));
+  --cal-f-dd: calc(var(--cal-t) * (1 - var(--cal-lleno, 1)));
+  --cal-e: var(--ps-mov-e);
+}
+.ps-mov .ps-cal[data-cal-anim="linea"] .ps-calendario li { --cal-e: linear; }
+.ps-mov .ps-cal-hecho { transition: transform var(--cal-h-dd) var(--cal-e) var(--cal-h-d0); }
+.ps-mov .ps-cal-falta { clip-path: inset(0 0 0 0); transition: clip-path var(--cal-f-dd) var(--cal-e) var(--cal-f-d0); }
+.ps-mov .ps-calendario li::before { transition: background-color 0.35s, border-color 0.35s, box-shadow 0.35s; transition-delay: var(--cal-p-d0, var(--cal-h-d0)); }
+.ps-mov .ps-cal.is-antes .ps-calendario::before { clip-path: inset(0 0 0 0); transition: clip-path var(--cal-pre-dd, 400ms) linear var(--cal-pre-d0, 150ms); }
+.ps-mov .ps-cal-hoy > * { transition: opacity 0.5s ease, translate 0.6s var(--ps-mov-e); transition-delay: var(--cal-hoy-d, 0ms); }
+.ps-mov .ps-cal-hoy:not(.is-visto) > * { opacity: 0.0005; translate: 0 -6px; transition: none; }
+/* Sin dibujar: en «columnas», mientras su hito no ha aparecido; en «linea», mientras la pluma no ha empezado. */
+.ps-mov .ps-cal[data-cal-anim="columnas"] .ps-calendario li[data-rev]:not([data-rev="in"]) .ps-cal-hecho,
+.ps-mov .ps-cal[data-cal-anim="linea"]:not(.is-trazando) .ps-cal-hecho { transform: scaleX(0); transition: none; }
+.ps-mov .ps-cal[data-cal-anim="columnas"] .ps-calendario li[data-rev]:not([data-rev="in"]) .ps-cal-falta,
+.ps-mov .ps-cal[data-cal-anim="linea"]:not(.is-trazando) .ps-cal-falta { clip-path: inset(0 100% 0 0); transition: none; }
+.ps-mov .ps-cal.is-antes[data-cal-anim="columnas"] .ps-calendario:has(> li[data-rev]:first-of-type:not([data-rev="in"]))::before,
+.ps-mov .ps-cal.is-antes[data-cal-anim="linea"]:not(.is-trazando) .ps-calendario::before { clip-path: inset(0 100% 0 0); transition: none; }
+.ps-mov .ps-cal[data-cal-anim="columnas"] .ps-calendario li[data-rev]:not([data-rev="in"])::before,
+.ps-mov .ps-cal[data-cal-anim="linea"]:not(.is-trazando) .ps-calendario li::before,
+.ps-mov .ps-cal[data-cal-anim="recorrido"] .ps-calendario li:not(.is-alcanzado)::before {
+  background: var(--ps-beige-light); border-color: color-mix(in srgb, var(--ps-olive) 40%, transparent); box-shadow: none; transition: none;
+}
+/* Pegada al recorrido */
+.ps-mov .ps-cal[data-cal-anim="recorrido"] .ps-cal-hecho { transform: scaleX(calc(var(--cal-lleno, 1) * var(--cal-ph, 0))); transition: none; }
+.ps-mov .ps-cal[data-cal-anim="recorrido"] .ps-cal-falta { clip-path: inset(0 calc((1 - var(--cal-pf, 0)) * 100%) 0 0); transition: none; }
+.ps-mov .ps-cal.is-antes[data-cal-anim="recorrido"] .ps-calendario::before { clip-path: inset(0 calc((1 - var(--cal-pp, 0)) * 100%) 0 0); transition: none; }
+.ps-mov .ps-cal[data-cal-anim="recorrido"] .ps-calendario li::before, .ps-mov .ps-cal[data-cal-anim="recorrido"] .ps-cal-hoy > * { transition-delay: 0ms; }
+/* Línea vertical del móvil: lo mismo, pero hacia abajo (o hacia arriba si se entra subiendo). */
+@media (max-width: 760px) {
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="columnas"] .ps-calendario li[data-rev]:not([data-rev="in"]) .ps-cal-hecho,
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-cal-hecho { transform: scaleY(0); }
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="columnas"] .ps-calendario li[data-rev]:not([data-rev="in"]) .ps-cal-falta,
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-cal-falta { clip-path: inset(0 0 100% 0); }
+  .ps-mov .ps-cal.is-antes[data-cal-opciones~="vertical"][data-cal-anim="columnas"] .ps-calendario:has(> li[data-rev]:first-of-type:not([data-rev="in"]))::before,
+  .ps-mov .ps-cal.is-antes[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-calendario::before { clip-path: inset(0 0 100% 0); }
+  .ps-mov .ps-cal.desde-abajo[data-cal-opciones~="vertical"][data-cal-anim="linea"] .ps-cal-hecho {
+    transform: scaleY(var(--cal-lleno, 1)); clip-path: inset(0 0 0 0); transition: clip-path var(--cal-h-dd) linear var(--cal-h-d0);
+  }
+  .ps-mov .ps-cal.desde-abajo[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-cal-hecho { transform: scaleY(var(--cal-lleno, 1)); clip-path: inset(100% 0 0 0); transition: none; }
+  .ps-mov .ps-cal.desde-abajo[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-cal-falta { clip-path: inset(100% 0 0 0); }
+  .ps-mov .ps-cal.is-antes.desde-abajo[data-cal-opciones~="vertical"][data-cal-anim="linea"]:not(.is-trazando) .ps-calendario::before { clip-path: inset(100% 0 0 0); }
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="recorrido"] .ps-cal-hecho { transform: scaleY(calc(var(--cal-lleno, 1) * var(--cal-ph, 0))); }
+  .ps-mov .ps-cal[data-cal-opciones~="vertical"][data-cal-anim="recorrido"] .ps-cal-falta { clip-path: inset(0 0 calc((1 - var(--cal-pf, 0)) * 100%) 0); }
+  .ps-mov .ps-cal.is-antes[data-cal-opciones~="vertical"][data-cal-anim="recorrido"] .ps-calendario::before { clip-path: inset(0 0 calc((1 - var(--cal-pp, 0)) * 100%) 0); }
+}
+/* Fuera de la convocatoria abierta, el punto de la portada no late. */
+html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { display: none; }
+
+/* ---------- 3. Subrayado que crece en vez de aparecer de golpe ---------- */
+.ps-link-arrow, .read_more, .obj_article_summary .title a, .obj_announcement_summary h3 a, .obj_issue_summary h2 a,
+.ps-ejes-lista a span, ul.authors .orcid a, .pkp_navigation_user .profile a, .pkp_structure_footer .ps-footer-col a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat;
+  background-position: 0 100%; background-size: 0% 1px;
+  transition: background-size 0.5s var(--ps-mov-e), color 0.25s;
+}
+.ps-link-arrow:hover, .read_more:hover, .obj_article_summary .title a:hover, .obj_announcement_summary h3 a:hover, .obj_issue_summary h2 a:hover,
+.ps-ejes-lista a:hover span, ul.authors .orcid a:hover, .pkp_navigation_user .profile a:hover, .pkp_structure_footer .ps-footer-col a:hover,
+.ps-link-arrow:focus-visible, .obj_article_summary .title a:focus-visible, .pkp_structure_footer .ps-footer-col a:focus-visible {
+  text-decoration: none; background-size: 100% 1px;
+}
+.ps-link-arrow { justify-self: start; }
+.ps-link-arrow::after { transition: transform 0.45s var(--ps-mov-e); }
+.ps-link-arrow:hover::after { transform: translateX(calc(2px + 5px * var(--ps-mov-h))); }
+
+/* Menú principal (ordenador): raya que se abre desde el centro; dorada sobre el bloque vino. */
+@media (min-width: 1081px) {
+  .pkp_structure_head .pkp_navigation_primary > li > a {
+    background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat;
+    background-position: 50% 100%; background-size: 0% 2px;
+    transition: color var(--ps-head-dur) var(--ps-head-ease), box-shadow var(--ps-head-dur) var(--ps-head-ease), background-size 0.4s var(--ps-mov-e);
+  }
+  .pkp_structure_head .pkp_navigation_primary > li > a:hover,
+  .pkp_structure_head .pkp_navigation_primary > li:focus-within > a { background-size: 100% 2px; }
+  .ps-head--sobre:not(.is-solid) .pkp_navigation_primary > li > a { background-image: linear-gradient(var(--ps-gold), var(--ps-gold)); }
+  .pkp_navigation_primary .has_submenu:hover > ul,
+  .pkp_navigation_primary .has_submenu:focus-within > ul { animation: ps-asoma 0.26s var(--ps-mov-e); }
+}
+@media (max-width: 1080px) {
+  .pkp_site_nav_menu.is_open { animation: ps-asoma 0.32s var(--ps-mov-e); }
+}
+@keyframes ps-asoma { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ---------- 4. Respuesta al ratón ---------- */
+.ps-btn { transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.4s var(--ps-mov-e), transform 0.15s var(--ps-mov-e); }
+.obj_galley_link, .ps-otros a, .ps-toc a, .ps-kw, .ps-cc { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+.ps-eje { transition: translate 0.45s var(--ps-mov-e), box-shadow 0.45s var(--ps-mov-e); }
+.ps-cover { transition: translate 0.6s var(--ps-mov-e), box-shadow 0.6s var(--ps-mov-e); }
+.ps-mov .ps-eje:hover::before { background: var(--ps-wine); }
+.ps-mov .ps-eje--tema:hover::before { background: var(--ps-gold-light); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ps-btn--gold:hover, .ps-btn--wine:hover { box-shadow: 0 12px 24px -16px rgb(31 27 24 / calc(0.9 * var(--ps-mov-h))); }
+  .ps-btn:active { transform: scale(0.98); }
+  .ps-eje:hover { translate: 0 calc(-4px * var(--ps-mov-h)); box-shadow: 0 24px 40px -30px rgb(31 27 24 / calc(0.75 * var(--ps-mov-h))); }
+  a:hover > .ps-cover, a:hover .ps-cover { translate: 0 calc(-6px * var(--ps-mov-h)); box-shadow: 0 40px 70px -34px rgb(31 10 12 / calc(0.4 + 0.4 * var(--ps-mov-h))); }
+}
+
+/* ---------- 5. Detalles ---------- */
+/* «Convocatoria abierta»: el punto dorado late despacio, como algo en curso. */
+.ps-hero:not(.ps-hero--numero) .ps-dot { position: relative; }
+@media (prefers-reduced-motion: no-preference) {
+  .ps-hero:not(.ps-hero--numero) .ps-dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--ps-gold);
+    animation: ps-latido 3.4s var(--ps-mov-e) infinite;
+  }
+}
+@keyframes ps-latido { 0% { transform: scale(1); opacity: 0.6; } 60%, 100% { transform: scale(2.8); opacity: 0; } }
+
+/* Línea de lectura en los artículos: dorada, bajo la cabecera. */
+.ps-progreso {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--ps-gold);
+  transform-origin: left center; transform: scaleX(0); will-change: transform; pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .ps-progreso.is-css { animation: ps-lee linear both; animation-timeline: scroll(root block); }
+}
+@keyframes ps-lee { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* «Copiar cita»: la cita se ilumina un instante al copiarse. */
+.ps-cita { transition: background-color 0.9s var(--ps-mov-e); }
+.ps-cita.is-copiada { background: color-mix(in srgb, var(--ps-gold) 30%, var(--ps-beige-light)); transition-duration: 0.12s; }

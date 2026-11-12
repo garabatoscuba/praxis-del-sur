@@ -1,0 +1,34 @@
+---
+pagination:
+  data: ejes
+  size: 1
+  alias: eje
+permalink: "eje-{{ eje.slug }}.html"
+pkpPage: catalog
+pkpOp: category
+eleventyComputed:
+  title: "{{ eje.nombre }}"
+---
+{#- Equivale a pages/catalogCategory.tpl (categorías de OJS). -#}
+{%- set lista = articulos | where("eje", eje.slug) -%}
+<div class="page page_catalog_category ps-page">
+  <div class="ps-wrap ps-narrow">
+    {% set migas = [{ label: "Ejes temáticos", url: "acerca.html#ejes" }, { label: eje.corto }] %}{% include "breadcrumbs.njk" %}
+    <p class="ps-eyebrow ps-page-eyebrow">Eje temático</p>
+    <h1 class="ps-page-title">{{ eje.nombre }}</h1>
+    <div class="about_section"><p class="ps-page-lead">{{ eje.descripcion }}</p></div>
+    <h2 class="ps-list-title">{{ lista.length }} {% if lista.length == 1 %}contribución{% else %}contribuciones{% endif %}</h2>
+    {%- set mostrarSeccion = true %}{% set mostrarFecha = true %}{% set hArticulo = "h3" %}
+    <ul class="cmp_article_list articles">
+      {%- for a in lista %}
+      <li>{% include "article_summary.njk" %}</li>
+      {%- endfor %}
+    </ul>
+    <nav class="ps-otros" aria-label="Otros ejes temáticos">
+      <h2 class="ps-h-small">Otros ejes</h2>
+      <ul>
+        {%- for e in ejes %}{% if e.slug != eje.slug %}<li><a href="eje-{{ e.slug }}.html">{{ e.nombre }}</a></li>{% endif %}{% endfor %}
+      </ul>
+    </nav>
+  </div>
+</div>

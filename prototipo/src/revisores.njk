@@ -1,0 +1,49 @@
+---
+title: Para revisores
+pkpPage: pages
+permalink: revisores.html
+---
+{#- Página estática. Plazos y recomendaciones salen del flujo editorial (flujo.json). -#}
+{%- set invitacion = flujo.pasos[2] -%}
+{%- set revision = flujo.pasos[3] -%}
+<div class="page ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Acerca de", url: "acerca.html" }, { label: "Para revisores" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Para revisores</h1>
+    <p class="ps-page-lead">Cómo funciona la evaluación doble ciego en {{ revista.nombre }} y qué se espera de cada dictamen.</p>
+
+    <dl class="ps-plazos">
+      <div><dt>Para aceptar o declinar la invitación</dt><dd>{{ invitacion.plazo }}</dd></div>
+      <div><dt>Para entregar el dictamen</dt><dd>{{ revision.plazo }}</dd></div>
+      <div><dt>Revisores por artículo</dt><dd>2, externos a la institución</dd></div>
+    </dl>
+
+    <div class="ps-doc ps-doc--single">
+      <section>
+        <h2>Doble ciego</h2>
+        <p>Quien revisa no conoce la identidad de las personas autoras, y estas no conocen la de quienes revisan. Si los dos dictámenes discrepan, el Comité Editorial puede pedir un tercero. La decisión final es siempre del Comité Editorial.</p>
+      </section>
+      <section>
+        <h2>Antes de aceptar</h2>
+        <p>Declara si tienes algún conflicto de interés con el texto, siguiendo las directrices de COPE. Si no puedes hacer la revisión, indícalo en la plataforma con el motivo, por ejemplo falta de tiempo o conflicto de intereses. OJS te enviará recordatorios antes y después del vencimiento.</p>
+      </section>
+      <section>
+        <h2>Qué evaluar</h2>
+        <ul>
+          <li>Rigor científico.</li>
+          <li>Originalidad.</li>
+          <li>Claridad metodológica.</li>
+          <li>Relevancia de los resultados.</li>
+        </ul>
+        <p>La guía de dictamen detalla cada criterio. <span class="ps-pendiente">Guía en preparación</span></p>
+      </section>
+      <section>
+        <h2>Cómo entregar el dictamen</h2>
+        <p>Escribe tus observaciones en el formulario de la plataforma o en un archivo adjunto con control de cambios. Antes de subirlo, borra tu nombre y tus datos de usuario de las propiedades del documento.</p>
+        <h3>Recomendaciones posibles</h3>
+        <ul class="ps-decisiones">{% for d in revision.decisiones %}<li>{{ d.t }}</li>{% endfor %}</ul>
+        <p class="ps-nota">OJS 3.5 ofrece seis recomendaciones fijas y no permite reducirlas. La guía indicará cuáles usar.</p>
+      </section>
+    </div>
+  </div>
+</div>

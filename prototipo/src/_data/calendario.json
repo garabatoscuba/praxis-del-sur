@@ -1,0 +1,10 @@
+{
+  "nota": "Calendario de la portada. Elegido por la usuaria en la herramienta del calendario el 12 nov 2026 (sin la idea de hitos con «Cumplido» o «Próximo»). opciones: hoy (marca de hoy), estado (frase de estado, también en la portada), hitos (cumplido / próximo con cuenta atrás), escala (tramos con nombre y a escala real), ics (añadir a mi calendario), detalles (hitos que se abren), vertical (en el móvil, una sola línea vertical a la izquierda). animacion: columnas (cada tramo a la vez), linea (la línea avanza de izquierda a derecha y se detiene en hoy) o recorrido (la línea se llena al bajar y se vacía al subir).",
+  "opciones": [
+    "hoy",
+    "estado",
+    "escala",
+    "vertical"
+  ],
+  "animacion": "linea"
+}

@@ -1,0 +1,397 @@
+<title>Brújula Praxis del Sur</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+<style>
+/* Layout: cuatro símbolos grandes para comparar; debajo, uno a la vez (pestañas) con tamaños, logotipo, portada impresa y web. */
+:root{
+  --bg:#F3F1EC; --surface:#FFFFFF; --fg:#1F1B18; --muted:#57524A; --faint:#706A61; --line:#E0DBD0; --focus:#662426;
+  --font-ui:"Frutiger", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif:"EB Garamond", Garamond, "Times New Roman", serif;
+  --font-mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* marca, según el Manual de Identidad del CIPS (2016); son muestras y no cambian con el tema de la página */
+  --wine:#662426;   /* Pantone S323-4 CVS */
+  --gold:#B6A160;   /* Pantone S10-3 CVS */
+  --beige:#DED8C7;  /* Pantone DS 20-9 C */
+  --sage:#D9DFCE;   /* Pantone DS 12-9 C */
+  --olive:#4B483D;  /* Pantone 329-3 C */
+  --ink:#1F1B18; --ink-muted:#57524A; --paper:#FFFFFF; --brand-line:#E4DFD3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#15120F; --surface:#1F1B17; --fg:#F1ECE3; --muted:#BEB6A8; --faint:#A39B8D; --line:#3A342C; --focus:#E0C98A; color-scheme:dark }
+}
+:root[data-theme="dark"]{ --bg:#15120F; --surface:#1F1B17; --fg:#F1ECE3; --muted:#BEB6A8; --faint:#A39B8D; --line:#3A342C; --focus:#E0C98A; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1160px;margin-inline:auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+svg{display:block}
+
+/* Colores del símbolo: estructura y Sur, sobre claro y sobre oscuro */
+.on-light{--lk-bg:var(--paper);--face:var(--gold);--south:var(--wine);color:var(--wine)}
+.on-light .sym{color:var(--olive)}
+.on-dark{--lk-bg:var(--wine);--face:var(--wine);--south:var(--gold);color:var(--beige)}
+.on-dark .sym{color:var(--beige)}
+
+.intro{padding-block:56px 28px;display:grid;gap:14px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-family:var(--font-serif);font-weight:400;font-size:clamp(36px,5.2vw,60px);line-height:1.04;letter-spacing:-.015em}
+.lead{max-width:64ch;font-size:18px;color:var(--muted)}
+.note{font-size:13px;color:var(--faint)}
+
+/* Los cuatro símbolos */
+.marks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;padding-block:8px 40px}
+.pick{display:grid;gap:12px;align-content:start;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;color:inherit;text-decoration:none;transition:border-color .25s}
+.pick:hover{border-color:var(--fg)}
+.pick-stage{aspect-ratio:1/1;max-width:100%;border-radius:10px;border:1px solid var(--brand-line);display:grid;place-items:center;padding:13%}
+.pick-stage .sym{width:100%;height:100%}
+.pick-name{display:flex;align-items:baseline;gap:8px;font-weight:600;font-size:16px}
+.pick-name span{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:22px;line-height:1}
+.pick-idea{font-size:14px;color:var(--muted)}
+
+/* Pestañas */
+.tabs{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);display:flex;gap:8px;padding-block:12px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* Panel */
+.panel{padding-block:32px 56px;display:grid;gap:36px}
+.panel-head{display:grid;gap:14px;max-width:780px}
+.panel-head h2{font-family:var(--font-serif);font-weight:400;font-size:clamp(30px,3.8vw,44px);line-height:1.08}
+.panel-head > p{color:var(--muted);font-size:17px;max-width:64ch}
+.traits{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:16px}
+.traits li{border-top:2px solid var(--fg);padding-top:10px;font-size:14px;color:var(--muted)}
+.traits b{display:block;color:var(--fg);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.block{display:grid;gap:14px}
+.sub{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.tile{margin:0;border-radius:12px;display:grid;gap:12px;padding:20px;overflow:hidden;align-content:start}
+.tile.on-light{background:var(--paper);border:1px solid var(--brand-line)}
+.tile.on-dark{background:var(--wine)}
+.tile .stage{aspect-ratio:1/1;max-width:100%;display:grid;place-items:center;padding:8%}
+.tile .stage > .sym{width:100%;height:100%}
+.tile figcaption{font-size:12px;opacity:.75}
+.sizes{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;gap:22px;padding-block:18% 10%}
+.sizes span{display:grid;justify-items:center;gap:8px;font-size:11px;font-variant-numeric:tabular-nums;opacity:.8}
+
+/* Logotipo */
+.lockups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px}
+.lockups .tile{min-height:220px;align-content:stretch;grid-template-rows:1fr auto}
+.lockups .stage{display:grid;place-items:center;container-type:inline-size;min-width:0}
+.lk{display:flex;align-items:center;gap:.9em;font-size:min(16px, calc(100cqi / 19))}
+.lk .sym{width:5.2em;height:5.2em;flex:none}
+.lk .wm{display:grid;gap:.45em;min-width:0}
+.wm-name{font-family:var(--font-serif);font-weight:500;font-size:2.4em;line-height:1;letter-spacing:-.012em;white-space:nowrap}
+.wm-name i{font-style:italic;font-weight:400;font-size:.62em;margin:0 .05em;color:var(--olive)}
+.on-dark .wm-name i{color:var(--gold)}
+.wm-sig{font-family:var(--font-ui);font-size:.68em;font-weight:600;letter-spacing:.17em;text-transform:uppercase;white-space:nowrap;opacity:.72}
+.lk-v{flex-direction:column;text-align:center;font-size:min(16px, calc(100cqi / 13))}
+.lk-v .wm{justify-items:center}
+.lk-v .sym{width:6.4em;height:6.4em}
+.lk-header{font-size:8px;gap:.8em}
+.lk-header .sym{width:4.8em;height:4.8em}
+.lk-header .wm-name{font-size:2.6em}
+
+/* Aplicaciones */
+.apps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;align-items:start}
+@media (max-width:860px){ .apps{grid-template-columns:1fr} }
+.apps figure{margin:0;display:grid;gap:8px;min-width:0}
+.apps figcaption{font-size:12px;color:var(--muted)}
+
+.cover{container-type:inline-size;aspect-ratio:1/1.414;max-width:100%;border-radius:4px;padding:9cqi 9cqi 7cqi;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:5cqi;overflow:hidden}
+.cover.on-light{--lk-bg:var(--beige);background:var(--beige)}
+.cover.on-dark{background:var(--wine)}
+.cover-top{display:flex;justify-content:space-between;gap:8px;font-size:3.6cqi;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid currentColor;padding-bottom:2.6cqi;font-variant-numeric:tabular-nums}
+.cover-mark{display:grid;place-items:center;min-height:0}
+.cover-mark .sym{width:64cqi;height:auto;max-height:100%;aspect-ratio:1/1}
+.cover-title{display:grid;gap:2.4cqi;justify-items:center;text-align:center}
+.cover-title .wm-name{font-size:12cqi}
+.cover-title .wm-sig{font-size:2.9cqi;white-space:normal;max-width:70cqi;line-height:1.4}
+.cover-foot{display:grid;gap:1.6cqi;border-top:1px solid currentColor;padding-top:3cqi;text-align:center}
+.cover-theme{font-family:var(--font-serif);font-style:italic;font-size:5.2cqi;line-height:1.15}
+.cover-meta{font-size:2.8cqi;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+
+.web{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.web-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,26px);background:var(--paper);border-bottom:1px solid var(--brand-line)}
+.web-nav{display:flex;gap:18px;font-size:13px;font-weight:500;color:var(--ink-muted)}
+.web-nav span:first-child{color:var(--ink);box-shadow:inset 0 -2px 0 var(--wine);padding-bottom:2px}
+.web-menu{display:none;font-size:13px;font-weight:600}
+.btn{display:inline-flex;align-items:center;font-family:var(--font-ui);font-size:13px;font-weight:600;padding:10px 16px;border-radius:999px;border:1.5px solid transparent;white-space:nowrap;line-height:1}
+.btn-acc{background:var(--wine);color:var(--paper)}
+.btn-spark{background:var(--gold);color:var(--ink)}
+.btn-ghost{border-color:color-mix(in srgb, var(--beige) 60%, transparent);color:var(--beige)}
+.hero{position:relative;overflow:hidden;background:var(--wine);color:var(--beige);padding:clamp(32px,6vw,64px) clamp(20px,4vw,44px);display:grid;gap:16px}
+.hero > :not(.deco){position:relative;z-index:1;max-width:560px}
+.hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--beige)}
+.hero h4{font-family:var(--font-serif);font-weight:400;font-size:clamp(32px,4.4vw,54px);line-height:1.02;letter-spacing:-.01em}
+.hero h4 em{font-style:italic;color:var(--gold)}
+.hero p{font-size:15px;max-width:48ch;color:color-mix(in srgb, var(--beige) 90%, transparent)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.draft{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.deco{position:absolute;z-index:0;right:-10%;top:50%;transform:translateY(-50%);width:min(58%,420px);opacity:.13;pointer-events:none}
+.deco .sym{width:100%;height:auto}
+.ejes{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px clamp(16px,3vw,26px);background:var(--paper);border-top:1px solid var(--brand-line)}
+.ejes-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-right:6px}
+.eje{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--beige);color:var(--ink)}
+@media (max-width:760px){ .web-nav,.web-bar .btn{display:none} .web-menu{display:inline} }
+
+/* Colores */
+.palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:10px}
+.sw{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.sw-color{height:56px;border-bottom:1px solid var(--line)}
+.sw-info{padding:10px 12px 12px;display:grid;gap:2px;font-size:12px}
+.sw-info b{font-size:13px}
+.sw-info code{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.sw-info span{color:var(--muted)}
+
+/* Para decidir */
+.decide{padding-block:44px 72px;border-top:1px solid var(--line);display:grid;gap:22px}
+.decide h2{font-family:var(--font-serif);font-weight:400;font-size:clamp(28px,3.6vw,40px)}
+.decide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.decide-grid article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start}
+.decide-grid h3{font-size:16px;font-weight:600}
+.decide-grid p{font-size:14.5px;color:var(--muted)}
+.next{max-width:70ch;font-size:16px}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;scroll-behavior:auto !important} }
+</style>
+
+<header class="intro wrap">
+  <p class="eyebrow">Praxis del Sur · Identidad · Dirección «Brújula al Sur»</p>
+  <h1>La brújula, más elaborada</h1>
+  <p class="lead">Cuatro maneras de dibujarla. En las tres primeras el Sur ocupa el lugar del Norte: «nuestro norte es el sur». La cuarta es un sello de gala que puede llevar dentro cualquiera de ellas. Colores y letras salen del Manual de Identidad del CIPS: estructura en gris oliva y dorado, como el isotipo del centro, y el Sur en vino, el color de su logotipo.</p>
+  <p class="note">El manual prevé que las publicaciones del CIPS tengan su propio identificador, «construido a partir de las tipografías y colores institucionales», como «Papeles del CIPS». Borrador de trabajo, noviembre de 2026; fechas y textos de los ejemplos son propuestas del equipo.</p>
+</header>
+
+<section class="marks wrap" id="marks" aria-label="Las cuatro variantes"></section>
+<nav class="tabs wrap" role="tablist" aria-label="Ver una variante" id="tabs"></nav>
+<main class="wrap" id="panels"></main>
+
+<section class="decide wrap" aria-labelledby="decide-title">
+  <h2 id="decide-title">Para decidir</h2>
+  <div class="decide-grid">
+    <article><h3>1 · Rosa invertida</h3><p>Rica y clásica; la S arriba cuenta la idea en un vistazo.</p><p>A vigilar: las rosas de los vientos son comunes en náutica y viajes. Lo que la hace propia es el Sur arriba, y conviene explicarlo una vez en «Acerca de».</p></article>
+    <article><h3>2 · Instrumento</h3><p>La más fina y académica: parece un instrumento de precisión, con los puntos cardinales girados.</p><p>A vigilar: la graduación se pierde en pequeño; por debajo de 48 px se usa la versión simple, aro y aguja.</p></article>
+    <article><h3>3 · Cruz del Sur</h3><p>La de más contenido: la constelación con la que se busca el Sur, apuntando a la marca que rompe el círculo.</p><p>A vigilar: la Cruz del Sur aparece en banderas como la de Brasil y en el logo del Mercosur, y no debe leerse como una cruz religiosa. Por eso va sin líneas entre las estrellas y dentro de la brújula.</p></article>
+    <article><h3>4 · Sello</h3><p>No sustituye al símbolo: es la versión de gala para portadas, certificados de arbitraje, constancias y redes.</p><p>A vigilar: en la web no conviene usarlo como logo principal, porque el texto de la corona no se lee en pequeño.</p></article>
+  </div>
+  <p class="next">Dime cuál prefieres o qué combinarías, por ejemplo la rosa como símbolo y el sello para portadas. Con eso dibujo la versión final, ajusto grosores para pantalla e impresión, y preparo los archivos y la guía breve.</p>
+</section>
+
+<script>
+(function(){
+  var f = function(n){ return +n.toFixed(2); };
+  var pol = function(r, deg){ var a = deg * Math.PI / 180; return [f(r * Math.cos(a)), f(r * Math.sin(a))]; };
+  var poly = function(pts){ return 'M' + pts.map(function(p){ return p[0] + ' ' + p[1]; }).join('L') + 'Z'; };
+  var near = function(a, c, d){ return Math.abs(((a - c + 540) % 360) - 180) < d; };
+  function ticks(r1, r2, step, skip, sw){
+    var d = '';
+    for (var a = 0; a < 360; a += step){ if (skip(a)) continue; var p = pol(r1, a), q = pol(r2, a); d += 'M' + p[0] + ' ' + p[1] + 'L' + q[0] + ' ' + q[1]; }
+    return '<path d="' + d + '" fill="none" stroke="currentColor" stroke-width="' + sw + '"/>';
+  }
+  function star(x, y, s){
+    var v = s * 1.3, k = s * 0.2;
+    return 'M' + f(x) + ' ' + f(y - v) + 'Q' + f(x + k) + ' ' + f(y - k) + ' ' + f(x + s) + ' ' + f(y)
+      + 'Q' + f(x + k) + ' ' + f(y + k) + ' ' + f(x) + ' ' + f(y + v)
+      + 'Q' + f(x - k) + ' ' + f(y + k) + ' ' + f(x - s) + ' ' + f(y)
+      + 'Q' + f(x - k) + ' ' + f(y - k) + ' ' + f(x) + ' ' + f(y - v) + 'Z';
+  }
+  var TXT = 'font-family="Frutiger, \'Source Sans 3\', system-ui, sans-serif"';
+
+  // 1. Rosa de los vientos con el Sur arriba
+  function rosa(detail){
+    var s = '';
+    function punta(th, R, w, solid){
+      var T = pol(R, th), L = pol(w, th - 45), D = pol(w, th + 45);
+      if (solid) return '<path d="' + poly([[0,0], T, L]) + poly([[0,0], T, D]) + '" fill="var(--south)" stroke="var(--south)" stroke-width=".8" stroke-linejoin="round"/>';
+      if (!detail) return '<path d="' + poly([[0,0], T, L]) + poly([[0,0], T, D]) + '" fill="currentColor"/>';
+      return '<path d="' + poly([[0,0], T, L]) + '" fill="var(--face, var(--lk-bg))" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/>'
+        + '<path d="' + poly([[0,0], T, D]) + '" fill="currentColor" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/>';
+    }
+    if (detail){
+      s += '<circle r="37" fill="none" stroke="currentColor" stroke-width="1.3"/><circle r="31.5" fill="none" stroke="currentColor" stroke-width=".6"/>';
+      s += ticks(31.5, 37, 10, function(a){ return a % 45 === 0; }, .6);
+      [45, 135, 225, 315].forEach(function(th){ s += punta(th, 27, 6, false); });
+    }
+    [0, 90, 180].forEach(function(th){ s += punta(th, 44, detail ? 8 : 10, false); });
+    s += punta(270, 52, detail ? 8 : 10, true);
+    s += '<circle r="' + (detail ? 2.4 : 3.2) + '" fill="var(--lk-bg)"' + (detail ? ' stroke="currentColor" stroke-width=".9"' : '') + '/>';
+    if (detail) s += '<text x="0" y="-57" text-anchor="middle" ' + TXT + ' font-weight="700" font-size="11" fill="var(--south)">S</text>';
+    return s;
+  }
+
+  // 2. Instrumento: esfera graduada, girada (S arriba, E a la izquierda, O a la derecha)
+  function instrumento(detail){
+    var s = '<circle r="' + (detail ? 46.5 : 45) + '" fill="none" stroke="currentColor" stroke-width="' + (detail ? 2.6 : 5) + '"/>';
+    var w = detail ? 4.6 : 8;
+    if (detail){
+      var hueco = function(a){ return near(a, 270, 13) || near(a, 90, 11) || near(a, 0, 10) || near(a, 180, 10); };
+      s += '<circle r="33.5" fill="none" stroke="currentColor" stroke-width=".7"/>';
+      s += ticks(40.6, 44.4, 5, function(a){ return a % 30 === 0 || hueco(a); }, .5);
+      s += ticks(38.6, 44.4, 30, hueco, 1);
+      s += '<path d="M-33.5 0H33.5M0 -33.5V33.5" fill="none" stroke="currentColor" stroke-width=".4"/>';
+      s += '<text x="0" y="-36.7" text-anchor="middle" ' + TXT + ' font-weight="700" font-size="11" fill="var(--south)">S</text>';
+      s += '<g ' + TXT + ' font-weight="500" font-size="7.6" fill="currentColor" text-anchor="middle" opacity=".7">'
+        + '<text x="0" y="43.4">N</text><text x="-40.6" y="2.8">E</text><text x="40.6" y="2.8">O</text></g>';
+    }
+    s += '<path d="M0 ' + (detail ? -30.5 : -36) + 'L' + w + ' 0H' + (-w) + 'Z" fill="var(--south)"/>';
+    s += detail
+      ? '<path d="M0 30.5L' + w + ' 0H' + (-w) + 'Z" fill="var(--face, var(--lk-bg))" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>'
+      : '<path d="M0 36L' + w + ' 0H' + (-w) + 'Z" fill="currentColor" opacity=".38"/>';
+    s += '<circle r="' + (detail ? 3.4 : 4.6) + '" fill="currentColor"/><circle r="' + (detail ? 1.3 : 1.8) + '" fill="var(--lk-bg)"/>';
+    return s;
+  }
+
+  // 3. Cruz del Sur: las cinco estrellas (posiciones reales, enderezadas) y su eje apuntando al Sur
+  function cruz(detail){
+    var k = detail ? 1 : 1.32;
+    var s = '<path d="M-7.99 45.3A46 46 0 1 1 7.99 45.3" fill="none" stroke="currentColor" stroke-width="' + (detail ? 1.6 : 3.8) + '"/>';
+    if (detail){
+      s += '<path d="M-6.49 40.99A41.5 41.5 0 1 1 6.49 40.99" fill="none" stroke="currentColor" stroke-width=".5"/>';
+      s += ticks(41.5, 46, 90, function(a){ return a === 90; }, .9);
+    }
+    s += '<path d="M0 ' + (detail ? 24 : 26) + 'V37.5" fill="none" stroke="var(--south)" stroke-width="' + (detail ? 1.1 : 2.8) + '"' + (detail ? ' stroke-dasharray="2.2 2.4"' : '') + '/>';
+    var estrellas = [[0, 17.05, 8], [-18.4, -12.25, 6.6], [0, -31, 6.2], [14.8, -16.5, 5]];
+    if (detail) estrellas.push([7.25, -3.95, 3.2]);
+    s += '<path d="' + estrellas.map(function(e){ return star(e[0], e[1], e[2] * k); }).join('') + '" fill="currentColor"/>';
+    s += '<path d="M0 39.5L4.2 46L0 52.5L-4.2 46Z" fill="var(--south)"/>';
+    return s;
+  }
+
+  // 4. Sello de gala con la rosa al centro
+  var uid = 0;
+  function sello(){
+    var id = 'arco' + (++uid);
+    return '<circle r="58" fill="none" stroke="currentColor" stroke-width="1.6"/><circle r="55" fill="none" stroke="currentColor" stroke-width=".6"/>'
+      + '<circle r="38.5" fill="none" stroke="currentColor" stroke-width=".6"/>'
+      + '<path id="' + id + 'a" d="M-44 0A44 44 0 0 1 44 0" fill="none"/><path id="' + id + 'b" d="M-50.6 0A50.6 50.6 0 0 0 50.6 0" fill="none"/>'
+      + '<text ' + TXT + ' font-weight="600" font-size="9" letter-spacing="1.9" fill="currentColor"><textPath href="#' + id + 'a" startOffset="50%" text-anchor="middle">PRAXIS DEL SUR</textPath></text>'
+      + '<text ' + TXT + ' font-weight="500" font-size="6.6" letter-spacing="2" fill="currentColor"><textPath href="#' + id + 'b" startOffset="50%" text-anchor="middle">REVISTA DEL CIPS · 2027</textPath></text>'
+      + '<path d="' + star(-46.8, 0, 1.9) + star(46.8, 0, 1.9) + '" fill="var(--south)"/>'
+      + '<g transform="translate(0 5.4) scale(.6)">' + rosa(true) + '</g>';
+  }
+
+  var V = [
+    { id:'rosa', n:'1', name:'Rosa invertida', vb:'-54 -70 108 120', vbs:'-52 -56 104 104', draw:rosa,
+      idea:'Rosa de los vientos de ocho puntas, con el Sur arriba y la punta sur destacada.',
+      concept:'Una rosa de los vientos de ocho puntas, dibujada como en las cartas de navegación, pero con el Sur arriba: «nuestro norte es el sur». La punta sur es la más larga y la única maciza; las demás tienen una cara clara y otra oscura, como las rosas clásicas.',
+      traits:[['Símbolo','Rosa de ocho puntas con la S arriba y la punta sur en vino.'],['Detalle','Anillo graduado cada 10°. En pequeño queda una estrella de cuatro puntas.'],['Tono','Clásico y cartográfico: el de una revista con historia.']], cover:'light' },
+    { id:'instrumento', n:'2', name:'Instrumento', vb:'-50 -50 100 100', vbs:'-50 -50 100 100', draw:instrumento,
+      idea:'Brújula de precisión con esfera graduada, girada: S arriba, E y O cambiados.',
+      concept:'Una brújula de precisión: esfera graduada cada 5°, aguja fina y las letras en la corona. Está girada como un mapa invertido: la S arriba, la N abajo, y el Este y el Oeste cambiados de lado. Quien lo note encuentra la idea; quien no, ve un instrumento elegante.',
+      traits:[['Símbolo','Esfera con aguja; la mitad sur, maciza y en vino.'],['Detalle','Corona con S, E, O y N, y graduación fina. En pequeño, aro y aguja.'],['Tono','Preciso y académico: el más sobrio de los cuatro.']], cover:'dark' },
+    { id:'cruz', n:'3', name:'Cruz del Sur', vb:'-50 -50 100 104', vbs:'-50 -50 100 104', draw:cruz,
+      idea:'Las estrellas de la Cruz del Sur dentro de una brújula, señalando la marca del Sur.',
+      concept:'La Cruz del Sur es la constelación con la que se ha buscado siempre el Sur: su eje largo apunta hacia el polo sur celeste. Aquí aparecen sus cinco estrellas, sin líneas que las unan, y una línea punteada prolonga ese eje hasta la marca del Sur, que rompe el círculo.',
+      traits:[['Símbolo','Las cinco estrellas de la Cruz del Sur dentro de un círculo abierto.'],['Detalle','Las posiciones salen de las estrellas reales, enderezadas para que el eje sea vertical.'],['Tono','Poético y con contenido: el que más se presta a contar.']], cover:'dark' },
+    { id:'sello', n:'4', name:'Sello', vb:'-60 -60 120 120', vbs:'-52 -56 104 104', draw:function(d){ return d ? sello() : rosa(false); },
+      idea:'Versión de gala con el nombre en la corona, para portadas, certificados y redes.',
+      concept:'No sustituye al símbolo: es una versión de gala, con el nombre en la corona, para portadas, certificados de arbitraje, constancias y el perfil en redes. Puede llevar dentro cualquiera de los otros tres; aquí lleva la rosa.',
+      traits:[['Uso','Portadas, certificados, constancias y perfil en redes.'],['Detalle','Nombre y firma en la corona; el centro se puede cambiar.'],['Tono','Institucional y de archivo.']], cover:'light' }
+  ];
+
+  function sym(v, detail, cls){
+    return '<svg class="sym' + (cls ? ' ' + cls : '') + '" viewBox="' + (detail ? v.vb : v.vbs) + '" aria-hidden="true">' + v.draw(detail) + '</svg>';
+  }
+  function lockup(v, layout, detail){
+    return '<div class="lk lk-' + layout + '">' + sym(v, detail)
+      + '<span class="wm"><span class="wm-name">Praxis <i>del</i> Sur</span><span class="wm-sig">Revista del CIPS</span></span></div>';
+  }
+  var EJES = ['Estructura social y desigualdades','Procesos psicosociales y comunitarios','Género, racialidad e interseccionalidades','Medio ambiente y territorio','Epistemologías desde el Sur'];
+  var COLORS = [['Vino','--wine','#662426','Pantone S323-4 CVS. Texto sobre blanco: 11,4:1'],['Dorado','--gold','#B6A160','Pantone S10-3 CVS. Formas grandes, o sobre vino: 4,5:1'],['Gris oliva','--olive','#4B483D','Pantone 329-3 C. Estructura y texto: 9,2:1'],['Beige','--beige','#DED8C7','Pantone DS 20-9 C. Fondo cálido'],['Verde gris','--sage','#D9DFCE','Pantone DS 12-9 C. Fondo alternativo'],['Blanco','--paper','#FFFFFF','Fondo principal']];
+
+  function panel(v){
+    var cv = v.cover === 'dark' ? 'on-dark' : 'on-light';
+    return '<section class="panel" id="panel-' + v.id + '" role="tabpanel" aria-labelledby="tab-' + v.id + '" hidden>'
+      + '<div class="panel-head"><h2>' + v.n + ' · ' + v.name + '</h2><p>' + v.concept + '</p><ul class="traits">'
+      + v.traits.map(function(t){ return '<li><b>' + t[0] + '</b>' + t[1] + '</li>'; }).join('') + '</ul></div>'
+
+      + '<div class="block"><h3 class="sub">Símbolo</h3><div class="big">'
+      + '<figure class="tile on-light"><div class="stage">' + sym(v, true) + '</div><figcaption>Sobre blanco: gris oliva y dorado, con el Sur en vino</figcaption></figure>'
+      + '<figure class="tile on-dark"><div class="stage">' + sym(v, true) + '</div><figcaption>Sobre vino: el Sur en dorado</figcaption></figure>'
+      + '<figure class="tile on-light"><div class="sizes">'
+      + '<span>' + sym(v, true).replace('class="sym"', 'class="sym" width="96" height="96"') + '96 px</span>'
+      + '<span>' + sym(v, true).replace('class="sym"', 'class="sym" width="48" height="48"') + '48 px</span>'
+      + '<span>' + sym(v, false).replace('class="sym"', 'class="sym" width="32" height="32"') + '32 px</span>'
+      + '<span>' + sym(v, false).replace('class="sym"', 'class="sym" width="16" height="16"') + '16 px</span>'
+      + '</div><figcaption>Por debajo de 48 px se usa la versión simple (ícono del navegador, redes)</figcaption></figure>'
+      + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Con el nombre</h3><div class="lockups">'
+      + '<figure class="tile on-light"><div class="stage">' + lockup(v, 'h', true) + '</div><figcaption>Horizontal, para la cabecera y documentos</figcaption></figure>'
+      + '<figure class="tile on-dark"><div class="stage">' + lockup(v, 'v', true) + '</div><figcaption>Vertical, para portadas y carteles</figcaption></figure>'
+      + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Portada impresa y web</h3><div class="apps">'
+      + '<figure><div class="cover ' + cv + '">'
+      + '<div class="cover-top"><span>Vol. 1 · Núm. 1</span><span>2027</span></div>'
+      + '<div class="cover-mark">' + sym(v, true) + '</div>'
+      + '<div class="cover-title"><span class="wm-name">Praxis <i>del</i> Sur</span><span class="wm-sig">Revista del Centro de Investigaciones Psicológicas y Sociológicas</span></div>'
+      + '<div class="cover-foot"><span class="cover-theme">Ciencias sociales en y desde contextos de crisis</span><span class="cover-meta">La Habana · Acceso abierto</span></div>'
+      + '</div><figcaption>Portada del primer número (tamaño carta o A4).</figcaption></figure>'
+      + '<figure><div class="web">'
+      + '<div class="web-bar on-light">' + lockup(v, 'header', false)
+      + '<div class="web-nav"><span>Inicio</span><span>Convocatoria</span><span>Números</span><span>Envíos</span><span>Acerca de</span></div>'
+      + '<span class="btn btn-acc">Enviar contribución</span><span class="web-menu">Menú</span></div>'
+      + '<div class="hero on-dark"><div class="deco">' + sym(v, true) + '</div>'
+      + '<p class="hero-eyebrow">Convocatoria abierta · Vol. 1 (2027)</p>'
+      + '<h4>Ciencias sociales en y desde <em>contextos de crisis</em></h4>'
+      + '<p>Recibimos contribuciones del 1 de enero al 30 de marzo de 2027. El primer número sale el 10 de octubre, en el 44.º aniversario del CIPS.</p>'
+      + '<div class="hero-actions"><span class="btn btn-spark">Enviar contribución</span><span class="btn btn-ghost">Leer la convocatoria</span></div>'
+      + '<p class="draft">Textos y fechas: borrador del equipo</p></div>'
+      + '<div class="ejes"><span class="ejes-label">Ejes temáticos</span>' + EJES.map(function(e){ return '<span class="eje">' + e + '</span>'; }).join('') + '</div>'
+      + '</div><figcaption>Portada de la web durante la convocatoria.</figcaption></figure>'
+      + '</div></div>'
+
+      + '<div class="block"><h3 class="sub">Colores</h3><div class="palette">'
+      + COLORS.map(function(c){ return '<div class="sw"><div class="sw-color" style="background:var(' + c[1] + ')"></div><div class="sw-info"><b>' + c[0] + '</b><code>' + c[2] + '</code><span>' + c[3] + '</span></div></div>'; }).join('')
+      + '</div></div>'
+      + '</section>';
+  }
+
+  var marks = document.getElementById('marks'), tabs = document.getElementById('tabs'), panels = document.getElementById('panels');
+  marks.innerHTML = V.map(function(v){
+    return '<a class="pick" href="#' + v.id + '"><span class="pick-stage on-light" style="background:var(--paper)">' + sym(v, true) + '</span>'
+      + '<span class="pick-name"><span>' + v.n + '</span>' + v.name + '</span><span class="pick-idea">' + v.idea + '</span></a>';
+  }).join('');
+  tabs.innerHTML = V.map(function(v){
+    return '<button class="tab" role="tab" id="tab-' + v.id + '" aria-controls="panel-' + v.id + '" aria-selected="false" tabindex="-1" data-id="' + v.id + '">' + v.n + ' · ' + v.name + '</button>';
+  }).join('');
+  panels.innerHTML = V.map(panel).join('');
+
+  var ids = V.map(function(v){ return v.id; });
+  function show(id, focus){
+    if (ids.indexOf(id) < 0) id = ids[0];
+    ids.forEach(function(x){
+      var on = x === id, t = document.getElementById('tab-' + x);
+      document.getElementById('panel-' + x).hidden = !on;
+      t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+  }
+  function fromHash(scroll){
+    var id = (location.hash || '').replace('#', '');
+    show(id);
+    if (scroll && ids.indexOf(id) >= 0){
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      tabs.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+  tabs.addEventListener('click', function(e){ var b = e.target.closest('.tab'); if (b) location.hash = b.getAttribute('data-id'); });
+  tabs.addEventListener('keydown', function(e){
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var cur = ids.indexOf((document.activeElement && document.activeElement.getAttribute('data-id')) || ids[0]);
+    var next = ids[(cur + (e.key === 'ArrowRight' ? 1 : ids.length - 1)) % ids.length];
+    location.hash = next; show(next, true); e.preventDefault();
+  });
+  window.addEventListener('hashchange', function(){ fromHash(true); });
+  fromHash(false);
+})();
+</script>

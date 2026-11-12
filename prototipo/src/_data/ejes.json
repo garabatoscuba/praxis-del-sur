@@ -1,0 +1,7 @@
+[
+  { "slug": "estructura-social", "nombre": "Estructura social, desigualdades y políticas sociales", "corto": "Estructura social y desigualdades", "descripcion": "Clases y grupos sociales, movilidad, equidad y evaluación de políticas sociales en trabajo, juventudes, familias y comunidades." },
+  { "slug": "procesos-psicosociales", "nombre": "Procesos psicosociales, comunitarios y organizacionales", "corto": "Procesos psicosociales y comunitarios", "descripcion": "Psicología social crítica, transformación comunitaria, cambio organizacional, participación y empoderamiento psicosocial." },
+  { "slug": "genero-racialidad", "nombre": "Género, racialidad e interseccionalidades", "corto": "Género, racialidad e interseccionalidades", "descripcion": "Enfoques interseccionales en estudios sobre género, equidad, identidades, estudios raciales y movimientos sociales." },
+  { "slug": "medio-ambiente", "nombre": "Medio ambiente, territorio y sostenibilidad social", "corto": "Medio ambiente y territorio", "descripcion": "Conflictos socioambientales, justicia ecológica, percepciones sociales frente al cambio climático y desarrollo local sostenible." },
+  { "slug": "epistemologias", "nombre": "Teorías, metodologías y epistemologías desde el Sur", "corto": "Epistemologías desde el Sur", "descripcion": "Teoría social, enfoques metodológicos cualitativos, cuantitativos y participativos, descolonización del saber y conocimiento situado." }
+]

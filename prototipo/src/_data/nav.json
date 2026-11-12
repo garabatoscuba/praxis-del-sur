@@ -1,0 +1,17 @@
+[
+  { "label": "Inicio", "url": "index.html" },
+  { "label": "Convocatoria", "url": "convocatoria.html" },
+  { "label": "Números", "url": "numero.html", "children": [
+    { "label": "Número actual", "url": "numero.html" },
+    { "label": "Archivo", "url": "archivo.html" }
+  ] },
+  { "label": "Envíos", "url": "envios.html" },
+  { "label": "Acerca de", "url": "acerca.html", "children": [
+    { "label": "La revista", "url": "acerca.html" },
+    { "label": "Equipo editorial", "url": "equipo.html" },
+    { "label": "Políticas", "url": "politicas.html" },
+    { "label": "Flujo editorial", "url": "flujo.html" },
+    { "label": "Para revisores", "url": "revisores.html" },
+    { "label": "Contacto", "url": "contacto.html" }
+  ] }
+]

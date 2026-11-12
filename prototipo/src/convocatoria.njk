@@ -1,0 +1,95 @@
+---
+title: Convocatoria
+pkpPage: pages
+permalink: convocatoria.html
+---
+{#- Página estática (plugin Static Pages) con el texto de la convocatoria. -#}
+{%- set c = convocatoria -%}
+<div class="page ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Convocatoria" }] %}{% include "breadcrumbs.njk" %}
+    <p class="ps-eyebrow ps-page-eyebrow">Convocatoria · {{ c.volumen }}</p>
+    <h1 class="ps-page-title">{{ c.tituloHtml | safe }}</h1>
+    <p class="ps-page-lead">{{ c.tema }}</p>
+    <p class="ps-estado"><span class="ps-pendiente">{{ c.estado }}</span></p>
+
+    <div class="ps-with-toc">
+      <nav class="ps-toc" aria-label="En esta página">
+        <ol>
+          <li><a href="#presentacion">Presentación</a></li>
+          <li><a href="#ejes">Ejes temáticos</a></li>
+          <li><a href="#modalidades">Secciones y modalidades</a></li>
+          <li><a href="#formato">Formato y estructura</a></li>
+          <li><a href="#autoria">Datos de autoría</a></li>
+          <li><a href="#etica">Ética y originalidad</a></li>
+          <li><a href="#calendario">Calendario</a></li>
+          <li><a href="#envio">Envío y contacto</a></li>
+        </ol>
+      </nav>
+      <div class="ps-doc">
+        <section id="presentacion">
+          <h2>Presentación</h2>
+          {%- for p in c.presentacion %}<p>{{ p }}</p>{% endfor %}
+        </section>
+        <section id="ejes">
+          <h2>Ejes temáticos</h2>
+          <p>Además del tema central, se recibirán trabajos sobre:</p>
+          <dl class="ps-deflist">
+            {%- for e in ejes %}<div><dt>{{ e.nombre }}</dt><dd>{{ e.descripcion }}</dd></div>{% endfor %}
+          </dl>
+        </section>
+        <section id="modalidades">
+          <h2>Secciones y modalidades</h2>
+          <div class="ps-tabla-wrap">
+            <table class="ps-tabla">
+              <thead><tr><th scope="col">Sección</th><th scope="col">Evaluación</th><th scope="col">Extensión</th></tr></thead>
+              <tbody>
+                {%- for s in secciones %}
+                <tr>
+                  <th scope="row">{{ s.nombre }}<span class="ps-td-desc">{{ s.descripcion }}</span></th>
+                  <td>{% set badgeSeccion = s %}{% include "badge.njk" %}</td>
+                  <td class="ps-num">{{ s.palabras }} palabras</td>
+                </tr>
+                {%- endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section id="formato">
+          <h2>Formato y estructura</h2>
+          <p><b>Idiomas:</b> {{ c.idiomas }} <span class="ps-pendiente">{{ c.idiomasNota }}</span></p>
+          <h3>Estructura obligatoria del manuscrito</h3>
+          <dl class="ps-deflist">
+            {%- for e in c.estructura %}<div><dt>{{ e.t }}</dt><dd>{{ e.d }}</dd></div>{% endfor %}
+          </dl>
+        </section>
+        <section id="autoria">
+          <h2>Datos de autoría</h2>
+          <p>{{ c.autoriaNota }} Ese archivo contiene:</p>
+          <ul>{% for x in c.autoria %}<li>{{ x }}</li>{% endfor %}</ul>
+        </section>
+        <section id="etica">
+          <h2>Ética, originalidad y arbitraje</h2>
+          <ul>{% for x in c.etica %}<li>{{ x }}</li>{% endfor %}</ul>
+        </section>
+        <section id="calendario">
+          <h2>Calendario</h2>
+          <dl class="ps-fechas-lista">
+            <div><dt>Lanzamiento de la convocatoria</dt><dd>{{ c.apertura | fecha }}</dd></div>
+            <div><dt>Cierre de recepción</dt><dd>{{ c.cierre | fecha }}</dd></div>
+            <div><dt>Lanzamiento del primer número</dt><dd>{{ c.lanzamiento | fecha }}</dd></div>
+          </dl>
+        </section>
+        <section id="envio">
+          <h2>Envío y contacto</h2>
+          <p>{{ c.envio }}</p>
+          <p class="ps-actions"><a class="ps-btn ps-btn--wine" href="envios.html">Ir a envíos</a></p>
+          <div class="ps-nota">
+            <p><b>Pendiente en este borrador</b></p>
+            <ul>{% for x in c.pendientes %}<li>{{ x }}</li>{% endfor %}</ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

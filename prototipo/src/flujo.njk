@@ -1,0 +1,33 @@
+---
+title: Flujo editorial
+pkpPage: pages
+permalink: flujo.html
+---
+{#- Página estática con el flujo editorial; los pasos y plazos salen de flujo.json. -#}
+<div class="page ps-page">
+  <div class="ps-wrap">
+    {% set migas = [{ label: "Acerca de", url: "acerca.html" }, { label: "Flujo editorial" }] %}{% include "breadcrumbs.njk" %}
+    <h1 class="ps-page-title">Flujo editorial</h1>
+    <p class="ps-page-lead">El camino de una contribución, desde el envío hasta la publicación, con los responsables y los plazos de cada paso.</p>
+    <p class="ps-estado"><span class="ps-pendiente">{{ flujo.fuente }}</span></p>
+
+    <ol class="ps-flujo">
+      {%- for p in flujo.pasos %}
+      <li class="ps-paso">
+        <span class="ps-paso-num" aria-hidden="true">{{ loop.index }}</span>
+        <div class="ps-paso-body">
+          <h2>{{ p.titulo }}</h2>
+          <p class="ps-paso-meta"><span><b>Quién:</b> {{ p.quien }}</span><span class="ps-plazo">{{ p.plazo }}</span></p>
+          <p>{{ p.texto }}</p>
+          {%- if p.decisiones.length %}
+          <ul class="ps-decisiones">
+            {%- for d in p.decisiones %}<li><b>{{ d.t }}</b>{% if d.d %}<span>{{ d.d }}</span>{% endif %}</li>{% endfor %}
+          </ul>
+          {%- endif %}
+          {%- if p.pendiente %}<p><span class="ps-pendiente">{{ p.pendiente }}</span></p>{% endif %}
+        </div>
+      </li>
+      {%- endfor %}
+    </ol>
+  </div>
+</div>

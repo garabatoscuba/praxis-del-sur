@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "identidad",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs", "identidad", "4317"],
+      "port": 4317
+    },
+    {
+      "name": "prototipo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs", "prototipo/_site", "4318"],
+      "port": 4318
+    },
+    {
+      "name": "afinar",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs", "prototipo/_afinar", "4319"],
+      "port": 4319
+    }
+  ]
+}

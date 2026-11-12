@@ -1,0 +1,98 @@
+{#- Brújula de grabado de la portada (en OJS irá como js/brujula.js del tema hijo). Vista isométrica (30°): la caja gira
+    con el ratón (en el móvil, al bajar y subir o con el dedo) y la aguja vuelve siempre al Sur, como en una brújula de verdad.
+    Ajustes en _data/brujula.json; dibujo afinado con la usuaria en identidad/brujula-animada.html. -#}
+<div class="ps-brujula" data-brujula='{{ { rapidez: brujula.rapidez, peso: brujula.peso, liquido: brujula.liquido, arrastre: brujula.arrastre } | dump }}' role="img" aria-label="Brújula cuya aguja apunta siempre al Sur">
+  <svg viewBox="-150 -96 300 180" aria-hidden="true" focusable="false"></svg>
+</div>
+<script>
+(function(){
+  var cont = document.querySelector('[data-brujula]');
+  if (!cont) return;
+  var svg = cont.querySelector('svg'), NS = 'http://www.w3.org/2000/svg';
+  var A = JSON.parse(cont.getAttribute('data-brujula'));
+  var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var f = function(n){ return +n.toFixed(2); };
+  var K = 0.5, HZ = 0.866, R = 100, SUR = 112;   // isométrico: plano aplastado a la mitad, alturas a cos 30°
+  var TRAZO = '#DED8C7', FINO = 'rgba(222,216,199,.55)', ORO = '#B6A160';
+  function el(tag, at, padre){ var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (padre) padre.appendChild(e); return e; }
+  function plano(g, z){ return el('g', { transform: 'translate(0 ' + f(-z * HZ) + ') scale(1 ' + K + ')' }, g); }
+
+  // Dibujo: canto de la caja en una sola línea, aro, esfera con marcas y letras, sombra de la aguja, aguja y reflejo del cristal
+  var yT = f(-18 * HZ), g = el('g', {}, svg);
+  var gl = el('g', { fill: 'none', stroke: TRAZO, 'stroke-width': 1.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, g);
+  // el trazo guarda su grosor a cualquier tamaño (en el móvil la brújula es pequeña)
+  var NE = { 'vector-effect': 'non-scaling-stroke' };
+  el('path', Object.assign({ d: 'M' + (-R) + ' ' + yT + 'V0A' + R + ' ' + f(R * K) + ' 0 0 0 ' + R + ' 0V' + yT }, NE), gl);
+  el('ellipse', Object.assign({ cx: 0, cy: yT, rx: R, ry: f(R * K) }, NE), gl);
+  el('ellipse', Object.assign({ cx: 0, cy: yT, rx: 86, ry: f(86 * K), stroke: FINO, 'stroke-width': 1.1 }, NE), gl);
+  var esfera = el('g', {}, plano(g, 16)), d = '';
+  for (var a = 0; a < 360; a += 10){
+    var r1 = a % 30 === 0 ? 68 : 74, t = a * Math.PI / 180;
+    d += 'M' + f(Math.cos(t) * r1) + ' ' + f(Math.sin(t) * r1) + 'L' + f(Math.cos(t) * 80) + ' ' + f(Math.sin(t) * 80);
+  }
+  el('path', Object.assign({ d: d, stroke: FINO, 'stroke-width': 1, fill: 'none' }, NE), esfera);
+  el('circle', Object.assign({ r: 40, fill: 'none', stroke: FINO, 'stroke-width': .9 }, NE), esfera);
+  // S, O, N, E en el orden de una brújula de verdad (el Este a la derecha del Norte); la S en la dirección del Sur
+  [['S', 0, true], ['O', 90], ['N', 180], ['E', 270]].forEach(function(L){
+    var t = (L[1] + SUR) * Math.PI / 180, x = Math.cos(t) * 55, y = Math.sin(t) * 55;
+    var tx = el('text', { x: f(x), y: f(y), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'EB Garamond, Garamond, serif',
+      'font-size': L[2] ? 30 : 21, 'font-weight': L[2] ? 600 : 500, fill: L[2] ? ORO : TRAZO, transform: 'rotate(' + (L[1] + SUR + 90) + ' ' + f(x) + ' ' + f(y) + ')' }, esfera);
+    tx.textContent = L[0];
+  });
+  var sombra = el('g', {}, plano(el('g', { transform: 'translate(5 3)' }, g), 16));
+  el('path', { d: 'M66 0L0 -9L-66 0L0 9Z', fill: 'rgba(20,6,8,.30)' }, sombra);
+  var aguja = el('g', {}, plano(g, 24));
+  el('path', { d: 'M66 0L0 -9L0 9Z', fill: ORO }, aguja);
+  el('path', Object.assign({ d: 'M-66 0L0 -9L0 9Z', fill: 'none', stroke: TRAZO, 'stroke-width': 1.3, 'stroke-linejoin': 'round' }, NE), aguja);
+  el('circle', { r: 5, fill: TRAZO }, aguja);
+  var a0 = 204 * Math.PI / 180, a1 = 236 * Math.PI / 180;
+  el('path', { d: 'M' + f(Math.cos(a0) * 83) + ' ' + f(Math.sin(a0) * 83) + 'A83 83 0 0 1 ' + f(Math.cos(a1) * 83) + ' ' + f(Math.sin(a1) * 83),
+    fill: 'none', stroke: FINO, 'stroke-width': 2, 'stroke-linecap': 'round' }, plano(g, 16.5));
+
+  // Movimiento: la caja es un muelle sin rebote (gira con peso); la aguja quiere estar en el Sur, la frena el líquido
+  // y la arrastra un poco el giro de la caja. Pasos de 1/240 s para que sea igual de suave en cualquier pantalla.
+  var giro = 0, giroObj = 0, giroVel = 0, psi = SUR, psiVel = 0, corriendo = false, ult = 0, visible = true;
+  var kb = 4 + A.rapidez * 0.36, cb = 2 * Math.sqrt(kb);
+  var kn = 4 + A.peso * 0.3, cn = 2 * (0.15 + A.liquido * 0.0105) * Math.sqrt(kn), ar = A.arrastre / 100;
+  function pintar(){
+    esfera.setAttribute('transform', 'rotate(' + f(giro) + ')');
+    aguja.setAttribute('transform', 'rotate(' + f(psi) + ')');
+    sombra.setAttribute('transform', 'rotate(' + f(psi) + ')');
+  }
+  function paso(t){
+    var dt = Math.min(0.05, ult ? (t - ult) / 1000 : 1 / 60); ult = t;
+    for (var n = Math.max(1, Math.round(dt * 240)), h = dt / n, i = 0; i < n; i++){
+      giroVel += (kb * (giroObj - giro) - cb * giroVel) * h; giro += giroVel * h;
+      psiVel += (kn * (SUR - psi) - cn * (psiVel - ar * giroVel)) * h; psi += psiVel * h;
+    }
+    pintar();
+    var quieto = Math.abs(giroObj - giro) < 0.02 && Math.abs(giroVel) < 0.05 && Math.abs(psi - SUR) < 0.02 && Math.abs(psiVel) < 0.05;
+    if (quieto || !visible){ corriendo = false; ult = 0; return; }
+    requestAnimationFrame(paso);
+  }
+  function mover(){ if (reducir || !visible) return; if (!corriendo){ corriendo = true; requestAnimationFrame(paso); } }
+  pintar();
+  if (reducir) return;
+
+  // Solo se mueve mientras se ve; al volver a la pantalla (bajando o subiendo), la aguja vuelve a buscar el Sur.
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){
+    var v = es[0].isIntersecting;
+    if (v && !visible){ psiVel += 90; }
+    visible = v;
+    if (v) mover();
+  }).observe(cont);
+  setTimeout(function(){ psiVel += 90; mover(); }, 500);
+
+  var conRaton = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  window.addEventListener('pointermove', function(e){
+    if (e.pointerType !== 'mouse' || !visible) return;
+    giroObj = (e.clientX / window.innerWidth - 0.5) * 150; mover();
+  }, { passive: true });
+  if (!conRaton) window.addEventListener('scroll', function(){ if (visible){ giroObj = (window.scrollY || 0) * 0.35; mover(); } }, { passive: true });
+  var x0 = null, g0 = 0;
+  cont.addEventListener('pointerdown', function(e){ if (e.pointerType === 'mouse') return; x0 = e.clientX; g0 = giroObj; });
+  cont.addEventListener('pointermove', function(e){ if (x0 === null) return; giroObj = g0 + (e.clientX - x0) * 0.8; mover(); });
+  var soltar = function(){ x0 = null; };
+  cont.addEventListener('pointerup', soltar); cont.addEventListener('pointercancel', soltar);
+})();
+</script>

@@ -1,0 +1,7 @@
+{
+  "nota": "Movimiento del sitio: bloques que aparecen al entrar en pantalla (al bajar y al subir), líneas que se dibujan y respuesta al ratón. Valores elegidos por la usuaria en la herramienta de barras el 12 nov 2026 (coinciden con los recomendados).",
+  "distancia": 14,
+  "duracion": 700,
+  "escalon": 70,
+  "raton": 0.5
+}

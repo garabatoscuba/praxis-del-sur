@@ -1,0 +1,27 @@
+{
+  "fuente": "Documento «Flujo editorial según OJS» del equipo (borrador).",
+  "pasos": [
+    { "titulo": "Envío", "quien": "Autora o autor", "plazo": "Durante la convocatoria (90 días)", "texto": "Se registra en la plataforma, sube el manuscrito anonimizado y, aparte, el archivo con los datos de autoría.", "decisiones": [] },
+    { "titulo": "Evaluación inicial", "quien": "Editor o editora de la sección o del dossier", "plazo": "7 días", "texto": "Comprueba que el texto cumple los criterios básicos de la revista y el control de originalidad.", "pendiente": "Herramienta de originalidad por decidir", "decisiones": [
+      { "t": "Enviar a revisión", "d": "Secciones arbitradas" },
+      { "t": "Aceptar y omitir revisión", "d": "Secciones no arbitradas" },
+      { "t": "Rechazar", "d": "El envío se archiva" }
+    ] },
+    { "titulo": "Invitación a revisores", "quien": "Dos revisores externos a la institución", "plazo": "7 días para responder", "texto": "Cada revisor acepta o declina e indica el motivo, por ejemplo falta de tiempo o conflicto de intereses. Si no responde, el editor busca un reemplazo.", "decisiones": [] },
+    { "titulo": "Revisión doble ciego", "quien": "Revisores", "plazo": "60 días", "texto": "Evalúan el rigor científico, la originalidad, la claridad metodológica y la relevancia de los resultados según la guía de dictamen. OJS envía recordatorios antes y después del vencimiento.", "decisiones": [
+      { "t": "Aceptar el envío" },
+      { "t": "Publicable con modificaciones" },
+      { "t": "Reenviar para revisión" },
+      { "t": "No publicable" }
+    ] },
+    { "titulo": "Decisión editorial", "quien": "Comité Editorial", "plazo": "15 días", "texto": "Analiza los dictámenes y, si discrepan, puede pedir un tercer evaluador. Notifica a la persona autora una decisión justificada.", "decisiones": [
+      { "t": "Aceptar" },
+      { "t": "Publicable con modificaciones", "d": "La persona autora tiene 15 días" },
+      { "t": "Reenviar para revisión", "d": "30 días y segunda ronda" },
+      { "t": "Rechazar" }
+    ] },
+    { "titulo": "Corrección de estilo", "quien": "Corrector o correctora, con la persona autora y el editor", "plazo": "21 días", "texto": "Se mejoran la gramática, la claridad y el formato, y se aprueba la versión final.", "decisiones": [] },
+    { "titulo": "Producción", "quien": "Maquetación y persona autora", "plazo": "15 días de maquetación y 5 de pruebas", "texto": "El texto se convierte en sus formatos finales de lectura (PDF, HTML o XML) y la persona autora revisa las pruebas.", "decisiones": [] },
+    { "titulo": "Publicación", "quien": "Gestor o gestora de OJS", "plazo": "Al aprobar las pruebas", "texto": "El artículo se publica en línea con su DOI y después se agrupa en el número.", "pendiente": "Modalidad de publicación continua por decidir", "decisiones": [] }
+  ]
+}

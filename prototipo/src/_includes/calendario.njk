@@ -1,0 +1,320 @@
+{#- Calendario de la portada: marca dónde estamos según la fecha de hoy (en OJS irá como js/calendario.js del tema hijo).
+    La fecha se puede simular con ?hoy=2027-02-15, con window.PS_CAL.hoy o desde la pastilla «Simulacro». -#}
+<script>
+(function () {
+  var sec = document.querySelector('[data-cal]');
+  if (!sec) return;
+  var root = document.documentElement;
+  var ol = sec.querySelector('.ps-calendario'), pista = sec.querySelector('.ps-cal-pista');
+  var lis = Array.prototype.slice.call(ol.children);
+  var marca = sec.querySelector('.ps-cal-hoy'), marcaTxt = marca.querySelector('span');
+  var estadoEl = sec.querySelector('[data-cal-estado]');
+  var cortoEl = document.querySelector('[data-cal-corto]');
+  var cortoOriginal = cortoEl ? cortoEl.textContent : '';
+  var T = JSON.parse(sec.getAttribute('data-cal-textos'));
+  var DIA = 86400000;
+  var reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var corto = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'short' });
+  var largo = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+  function dia(iso) { var p = String(iso).split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+  function iso(t) { return new Date(t).toISOString().slice(0, 10); }
+  var F = [dia(sec.getAttribute('data-apertura')), dia(sec.getAttribute('data-cierre')), dia(sec.getAttribute('data-lanzamiento'))];
+
+  var cfg = window.PS_CAL || {};
+  if (cfg.opciones) sec.setAttribute('data-cal-opciones', cfg.opciones.join(' '));
+  if (cfg.anim) sec.setAttribute('data-cal-anim', cfg.anim);
+  function hoy() {
+    var s = cfg.hoy;
+    if (!s) { try { s = new URLSearchParams(location.search).get('hoy'); } catch (e) {} }
+    if (s) return dia(s);
+    var d = new Date();
+    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+  function tiene(o) { return (' ' + (sec.getAttribute('data-cal-opciones') || '') + ' ').indexOf(' ' + o + ' ') >= 0; }
+  function anim() { return sec.getAttribute('data-cal-anim') || 'columnas'; }
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function cuenta(n, uno, varios) { return n === 1 ? uno : varios.replace('{n}', n); }
+
+  // Dónde estamos: fase, cuánto de cada tramo está hecho (0 a 1) y en qué tramo está hoy.
+  var e = {};
+  function calcular() {
+    var h = hoy(), r = { h: h, lleno: [1, 1, 1], idx: -1, frac: 0 };
+    if (h < F[0]) { r.fase = 'antes'; r.lleno = [0, 0, 0]; }
+    else if (h <= F[1]) { r.fase = 'abierta'; r.idx = 0; r.frac = (h - F[0]) / (F[1] - F[0]); r.lleno = [r.frac, 0, 0]; }
+    else if (h < F[2]) { r.fase = 'evaluacion'; r.idx = 1; r.frac = (h - F[1]) / (F[2] - F[1]); r.lleno = [1, r.frac, 0]; }
+    else { r.fase = 'publicado'; r.idx = 2; r.frac = Math.min(0.5, 0.1 + (h - F[2]) / (365 * DIA) * 0.4); r.lleno = [1, 1, r.frac]; }
+    return r;
+  }
+  function textos() {
+    var dF = Math.round((F[0] - e.h) / DIA), dQ = Math.round((F[1] - e.h) / DIA);
+    var v = { apertura: T.apertura, cierre: T.cierre, lanzamiento: T.lanzamiento, volumen: T.volumen,
+      faltan: cuenta(dF, 'falta 1 día', 'faltan {n} días'),
+      quedan: dQ === 0 ? 'hoy es el último día' : cuenta(dQ, 'queda 1 día', 'quedan {n} días') };
+    var est = T.estados[e.fase];
+    var rellenar = function (s) { return s.replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); };
+    return { frase: rellenar(est.frase), corto: rellenar(est.corto) };
+  }
+
+  function render() {
+    e = calcular();
+    var conHoy = tiene('hoy'), conHitos = tiene('hitos');
+    sec.classList.toggle('con-hoy', conHoy);
+    sec.classList.toggle('con-hitos', conHitos);
+    sec.classList.toggle('is-antes', conHoy && e.fase === 'antes');
+    lis.forEach(function (li, i) { li.style.setProperty('--cal-lleno', conHoy ? e.lleno[i].toFixed(4) : '1'); });
+
+    // Frase de estado, también en la portada
+    if (tiene('estado')) {
+      var t = textos();
+      estadoEl.textContent = t.frase; estadoEl.hidden = false;
+      if (cortoEl) cortoEl.textContent = t.corto;
+      root.setAttribute('data-cal-fase', e.fase);
+    } else {
+      estadoEl.hidden = true;
+      if (cortoEl) cortoEl.textContent = cortoOriginal;
+      root.removeAttribute('data-cal-fase');
+    }
+
+    // Cada hito: cumplido, hoy o próximo (con cuenta atrás)
+    var proximo = -1;
+    for (var k = 0; k < F.length; k++) if (F[k] > e.h) { proximo = k; break; }
+    lis.forEach(function (li, i) {
+      var m = li.querySelector('[data-cal-marca]'), txt = '';
+      li.classList.remove('is-pasado', 'is-proximo', 'is-hoy');
+      if (conHitos) {
+        if (F[i] < e.h) { li.classList.add('is-pasado'); txt = 'Cumplido'; }
+        else if (F[i] === e.h) { li.classList.add('is-hoy'); txt = 'Hoy'; }
+        else if (i === proximo) { li.classList.add('is-proximo'); txt = 'Próximo · ' + cuenta(Math.round((F[i] - e.h) / DIA), 'falta 1 día', 'faltan {n} días'); }
+      }
+      m.textContent = txt; m.hidden = !txt;
+    });
+
+    marca.hidden = !conHoy;
+    marcaTxt.textContent = 'Hoy · ' + corto.format(new Date(e.h)).replace('.', '');
+    sec.classList.toggle('ps-cal--pluma', anim() !== 'columnas');
+    colocar();
+    estadoPluma();
+  }
+
+  // Posición de la marca de hoy, etiquetas de tramo que tapa y tiempos de la animación. Se mide al cambiar de tamaño, no al hacer scroll.
+  var geo = { unaFila: true, vertical: false, preW: 0, anchos: [], tops: [], olTop: 0, preTop: 0, hoyPos: 0, hoyY: 0, vh: 0 };
+  var mqMovil = window.matchMedia('(max-width: 760px)');
+  function colocar() {
+    var vertical = mqMovil.matches && tiene('vertical');
+    var unaFila = !vertical && lis.every(function (li) { return Math.abs(li.offsetTop - lis[0].offsetTop) < 4; });
+    var antes = sec.classList.contains('is-antes');
+    geo.unaFila = unaFila; geo.vertical = vertical;
+    geo.vh = window.innerHeight;
+    var r = ol.getBoundingClientRect(), y0 = (window.scrollY || 0);
+    geo.olTop = r.top + y0;
+    geo.tops = lis.map(function (li) { return li.getBoundingClientRect().top + y0; });
+    lis.forEach(function (li) { var tr = li.querySelector('.ps-cal-tramo'); if (tr) tr.classList.remove('is-tapado', 'a-la-derecha'); });
+
+    if (vertical) {
+      // Cada tramo va del punto de su fecha (16 px bajo su borde) al punto de la siguiente; «Hoy», en el hueco entre las dos.
+      var hueco = parseFloat(getComputedStyle(sec).getPropertyValue('--cal-hueco')) || 48;
+      geo.anchos = lis.map(function (li, i) { return i < lis.length - 1 ? li.offsetHeight : li.offsetHeight - 16; });
+      geo.preW = antes ? 64 : 0;
+      var my = ol.offsetTop;
+      if (e.idx >= 0) {
+        var lh = lis[e.idx], fin = lh.offsetTop + lh.offsetHeight - hueco;
+        my = fin + hueco * (tiene('escala') ? 0.62 : 0.5);
+      }
+      lis.forEach(function (li, i) {
+        var l = !tiene('hoy') ? 1 : i < e.idx ? 1 : i > e.idx ? 0 : clamp((my - (li.offsetTop + 16)) / geo.anchos[i]);
+        li.style.setProperty('--cal-lleno', l.toFixed(4));
+      });
+      if (!marca.hidden) {
+        marca.classList.remove('al-inicio');
+        marca.style.setProperty('--x', (ol.offsetLeft + 7) + 'px');
+        marca.style.setProperty('--y', (my + (e.idx < 0 ? 2 : 0)) + 'px');
+      }
+      geo.hoyY = pista.getBoundingClientRect().top + y0 + my;
+      tiempos();
+      alScroll();
+      return;
+    }
+
+    if (tiene('hoy')) lis.forEach(function (li, i) { li.style.setProperty('--cal-lleno', e.lleno[i].toFixed(4)); });
+    geo.preW = antes ? (unaFila ? lis[0].offsetLeft - ol.offsetLeft : ol.offsetWidth) : 0;
+    geo.anchos = lis.map(function (li) { return li.offsetWidth; });
+    if (!marca.hidden) {
+      var x, y, li = e.idx >= 0 ? lis[e.idx] : null;
+      if (li) { x = li.offsetLeft + e.frac * li.offsetWidth; y = li.offsetTop + 1; }
+      else { x = ol.offsetLeft; y = ol.offsetTop + 1; }
+      marca.style.setProperty('--x', x.toFixed(1) + 'px');
+      marca.style.setProperty('--y', y.toFixed(1) + 'px');
+      var w = marcaTxt.offsetWidth;
+      marca.classList.toggle('al-inicio', x - w / 2 < 0);
+      // Si la etiqueta del tramo choca con la de hoy, pasa al otro extremo del tramo; si aun así choca, se esconde.
+      if (li) {
+        var tr = li.querySelector('.ps-cal-tramo');
+        var ml = marca.classList.contains('al-inicio') ? x - 7 : x - w / 2, mr = ml + w;
+        var choca = function () { var tl = li.offsetLeft + tr.offsetLeft; return ml < tl + tr.offsetWidth + 12 && mr > tl - 12; };
+        if (tr && tr.offsetWidth && choca()) {
+          tr.classList.add('a-la-derecha');
+          if (choca()) { tr.classList.remove('a-la-derecha'); tr.classList.add('is-tapado'); }
+        }
+        geo.hoyPos = (unaFila ? geo.preW + geo.anchos.slice(0, e.idx).reduce(function (a, b) { return a + b; }, 0) : 0) + e.frac * li.offsetWidth;
+      } else geo.hoyPos = 0;
+    }
+    tiempos();
+    alScroll();
+  }
+
+  function durBase() { var n = parseFloat(getComputedStyle(root).getPropertyValue('--ps-mov-dur')); return isNaN(n) ? 700 : n; }
+  function lleno(i) { return parseFloat(lis[i].style.getPropertyValue('--cal-lleno')) || 0; }
+  function tiempos() {
+    var props = ['--cal-h-d0', '--cal-h-dd', '--cal-f-d0', '--cal-f-dd', '--cal-p-d0'];
+    lis.forEach(function (li) { props.forEach(function (p) { li.style.removeProperty(p); }); });
+    ol.style.removeProperty('--cal-pre-d0'); ol.style.removeProperty('--cal-pre-dd');
+    var dur = durBase(), a = anim();
+    if (a === 'linea') {
+      // Una sola pluma a velocidad constante: tramo tras tramo, nunca dos a la vez.
+      // De arriba abajo (o de izquierda a derecha); si en el móvil se entra subiendo, de abajo arriba.
+      var rev = sec.classList.contains('desde-abajo');
+      var total = geo.preW + geo.anchos.reduce(function (s, x) { return s + x; }, 0);
+      var v = geo.unaFila ? ol.offsetWidth / (dur * 2.4) : total / (dur * 3.6);
+      var piezas = [];
+      if (geo.preW) piezas.push({ tipo: 'pre', len: geo.preW });
+      lis.forEach(function (li, i) {
+        var l = lleno(i);
+        piezas.push({ tipo: 'h', li: li, i: i, len: geo.anchos[i] * l });
+        piezas.push({ tipo: 'f', li: li, i: i, len: geo.anchos[i] * (1 - l) });
+      });
+      if (rev) piezas.reverse();
+      var t = 150, hoyT = 150;
+      piezas.forEach(function (p) {
+        var dd = p.len / v;
+        if (p.tipo === 'pre') {
+          ol.style.setProperty('--cal-pre-d0', Math.round(t) + 'ms'); ol.style.setProperty('--cal-pre-dd', Math.round(dd) + 'ms');
+          if (e.idx < 0) hoyT = rev ? t + dd : t;
+        } else {
+          p.li.style.setProperty('--cal-' + p.tipo + '-d0', Math.round(t) + 'ms');
+          p.li.style.setProperty('--cal-' + p.tipo + '-dd', Math.round(dd) + 'ms');
+          // El punto está al principio del tramo hecho: se enciende cuando la pluma llega a él.
+          if (p.tipo === 'h') p.li.style.setProperty('--cal-p-d0', Math.round(rev ? t + dd : t) + 'ms');
+          if (p.tipo === 'h' && p.i === e.idx) hoyT = rev ? t : t + dd;
+        }
+        t += dd;
+      });
+      marca.style.setProperty('--cal-hoy-d', Math.round(hoyT) + 'ms');
+    } else if (a === 'columnas') {
+      var esc = parseFloat(getComputedStyle(root).getPropertyValue('--ps-mov-escalon')) || 0;
+      marca.style.setProperty('--cal-hoy-d', Math.round(e.idx < 0 ? dur * 0.25 : dur * 0.25 + dur * 1.5 * e.frac + esc * e.idx) + 'ms');
+    }
+  }
+
+  // Pegada al recorrido: la línea avanza mientras el calendario sube del 88 % al 40 % de la pantalla, y retrocede al subir.
+  var ult = {}, pend = false;
+  function poner(el, k, val) { var key = k + (el === ol ? 'o' : lis.indexOf(el)); if (ult[key] !== val) { ult[key] = val; el.style.setProperty(k, val); } }
+  function alScroll() {
+    pend = false;
+    if (anim() !== 'recorrido' || reducir) return;
+    var y = window.scrollY || 0, vh = geo.vh;
+    var p = function (top, tramo) { return clamp((vh * 0.88 - (top - y)) / (vh * tramo)); };
+    var visto = false;
+    if (geo.unaFila) {
+      var total = geo.preW + geo.anchos.reduce(function (a, b) { return a + b; }, 0);
+      var pos = p(geo.olTop, 0.48) * total, t = 0;
+      if (geo.preW) { poner(ol, '--cal-pp', clamp(pos / geo.preW).toFixed(4)); t = geo.preW; }
+      lis.forEach(function (li, i) {
+        var l = lleno(i), hw = geo.anchos[i] * l, fw = geo.anchos[i] * (1 - l);
+        li.classList.toggle('is-alcanzado', pos >= t);
+        poner(li, '--cal-ph', (hw ? clamp((pos - t) / hw) : 1).toFixed(4)); t += hw;
+        poner(li, '--cal-pf', (fw ? clamp((pos - t) / fw) : 1).toFixed(4)); t += fw;
+      });
+      visto = pos >= geo.hoyPos + 1;
+    } else if (geo.vertical) {
+      // La línea llega hasta una raya fija de la pantalla (el 70 % de su alto): baja contigo y sube contigo.
+      var pluma = y + vh * 0.7;
+      if (geo.preW) poner(ol, '--cal-pp', clamp((pluma - geo.olTop) / geo.preW).toFixed(4));
+      lis.forEach(function (li, i) {
+        var q = clamp((pluma - (geo.tops[i] + 16)) / geo.anchos[i]), l = lleno(i);
+        li.classList.toggle('is-alcanzado', pluma >= geo.tops[i] + 16);
+        poner(li, '--cal-ph', (l ? clamp(q / l) : 1).toFixed(4));
+        poner(li, '--cal-pf', (l < 1 ? clamp((q - l) / (1 - l)) : 1).toFixed(4));
+      });
+      visto = pluma >= geo.hoyY;
+    } else {
+      if (geo.preW) { var pp = p(geo.olTop, 0.3); poner(ol, '--cal-pp', pp.toFixed(4)); if (e.idx < 0) visto = pp > 0; }
+      lis.forEach(function (li, i) {
+        var q = p(geo.tops[i], 0.3), l = lleno(i), ph = l ? clamp(q / l) : 1, pf = l < 1 ? clamp((q - l) / (1 - l)) : 1;
+        li.classList.toggle('is-alcanzado', q > 0);
+        poner(li, '--cal-ph', ph.toFixed(4)); poner(li, '--cal-pf', pf.toFixed(4));
+        if (i === e.idx) visto = q >= e.frac;
+      });
+    }
+    marca.classList.toggle('is-visto', visto);
+  }
+  window.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(alScroll); } }, { passive: true });
+
+  // Cuándo se dibuja.
+  // «linea»: la pluma arranca cuando aparece el primer hito y se borra cuando ya no se ve ninguno (se repite al volver).
+  // «columnas»: la marca de hoy sigue al hito en cuyo tramo está (el primero, si aún no ha abierto).
+  var trazando = false, subiendo = false, yAnt = window.scrollY || 0;
+  window.addEventListener('scroll', function () { var y = window.scrollY || 0; if (y !== yAnt) { subiendo = y < yAnt; yAnt = y; } }, { passive: true });
+  function visible(li) { return !li.hasAttribute('data-rev') || li.getAttribute('data-rev') === 'in'; }
+  function parar() { trazando = false; sec.classList.remove('is-trazando'); }
+  function trazar() {
+    sec.classList.toggle('desde-abajo', geo.vertical && subiendo);
+    tiempos();
+    void sec.offsetWidth; // que el punto de partida (sin dibujar, en el sentido nuevo) quede aplicado antes de empezar
+    trazando = true; sec.classList.add('is-trazando');
+  }
+  function estadoPluma() {
+    var a = anim();
+    if (a === 'linea') {
+      var alguno = lis.some(visible);
+      if (alguno && !trazando) trazar(); else if (!alguno && trazando) parar();
+      marca.classList.toggle('is-visto', trazando);
+    } else {
+      if (trazando) parar();
+      if (a === 'columnas') marca.classList.toggle('is-visto', visible(lis[Math.max(e.idx, 0)]));
+    }
+  }
+  if (window.MutationObserver) {
+    var mo = new MutationObserver(estadoPluma);
+    lis.forEach(function (li) { mo.observe(li, { attributes: true, attributeFilter: ['data-rev'] }); });
+  }
+
+  // Hitos que se abren (con toque o teclado; con ratón, también al pasar)
+  sec.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.ps-cal-mas'); if (!b) return;
+    var li = b.closest('li'), abierto = !li.classList.contains('is-abierto');
+    li.classList.toggle('is-abierto', abierto); b.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+  });
+
+  // Simulacro: «Ver como si hoy fuera…»
+  var sim = document.querySelector('[data-cal-simula]');
+  if (sim) {
+    var pruebas = [['', 'hoy'], [iso(F[0] + 45 * DIA)], [iso(F[1] + 80 * DIA)], [iso(F[2] + DIA)]];
+    sim.innerHTML = 'Ver el calendario como si hoy fuera: ' + pruebas.map(function (p) {
+      return '<button type="button" data-cal-fecha="' + p[0] + '">' + (p[1] || largo.format(new Date(dia(p[0]))).replace('.', '')) + '</button>';
+    }).join(' · ');
+    sim.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-cal-fecha]'); if (!b) return;
+      cfg.hoy = b.getAttribute('data-cal-fecha') || null;
+      render();
+      sec.scrollIntoView({ block: 'center' });
+      if (window.__psMov) setTimeout(window.__psMov.repetir, 60);
+    });
+  }
+
+  if (window.ResizeObserver) new ResizeObserver(function () { colocar(); }).observe(pista);
+  window.addEventListener('resize', colocar);
+  window.__psCal = {
+    config: function (c) {
+      if (c.opciones) sec.setAttribute('data-cal-opciones', c.opciones.join(' '));
+      if (c.anim) sec.setAttribute('data-cal-anim', c.anim);
+      if ('hoy' in c) cfg.hoy = c.hoy;
+      parar(); subiendo = false;
+      render();
+    },
+    // Para la herramienta: la próxima entrada se dibuja hacia abajo, aunque se haya llegado subiendo.
+    haciaAbajo: function () { subiendo = false; },
+    seccion: sec
+  };
+  render();
+})();
+</script>

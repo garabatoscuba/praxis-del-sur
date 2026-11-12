@@ -1,0 +1,378 @@
+<title>Movimiento de la revista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: la página real a la izquierda (a pantalla completa en el teléfono) y el panel de barras a la derecha (abajo en el teléfono). */
+:root {
+  --bg: #ECE8DF; --panel: #FFFFFF; --fg: #1F1B18; --muted: #5C574E; --line: #E3DED2; --accent: #662426; --on-accent: #FFFFFF;
+  --gold: #B6A160; --chip: #F3F0E8; --stage: #D8D2C4;
+  --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "EB Garamond", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #15120F; --panel: #1F1B17; --fg: #F1ECE3; --muted: #BEB6A8; --line: #3A342C; --accent: #DDA9AB; --on-accent: #1F1B18; --gold: #CDBB80; --chip: #2A251F; --stage: #0E0C0A; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #15120F; --panel: #1F1B17; --fg: #F1ECE3; --muted: #BEB6A8; --line: #3A342C; --accent: #DDA9AB; --on-accent: #1F1B18; --gold: #CDBB80; --chip: #2A251F; --stage: #0E0C0A; color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.45; overflow: hidden; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.tool { display: grid; grid-template-columns: minmax(0, 1fr) 390px; height: 100%; }
+.stage { position: relative; overflow: hidden; background: var(--stage); display: flex; align-items: flex-start; justify-content: center; padding: 16px; }
+.box { flex: none; overflow: hidden; border-radius: 10px; background: #FFFFFF; box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.55); }
+.box iframe { display: block; border: 0; background: #FFFFFF; transform-origin: 0 0; }
+
+.panel { overflow-y: auto; background: var(--panel); border-left: 1px solid var(--line); padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 18px; }
+.asa { display: none; }
+.p-head h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.1; }
+.p-lead { margin: 6px 0 0; color: var(--muted); }
+.p-cuerpo { display: flex; flex-direction: column; gap: 22px; }
+.grupo { display: flex; flex-direction: column; gap: 14px; padding-top: 18px; border-top: 2px solid var(--fg); }
+.g-tit { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.15; }
+.g-lead { margin: -8px 0 0; color: var(--muted); font-size: 14px; }
+h3 { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+.fila-ver { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--chip); }
+.seg button { border: 0; background: transparent; padding: 6px 12px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--panel); color: var(--fg); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.lnk { border: 0; background: none; padding: 4px 2px; cursor: pointer; color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button { border: 1px solid var(--line); background: var(--chip); padding: 7px 12px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.presets button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+
+.ajustes { display: flex; flex-direction: column; gap: 16px; }
+.ajuste { display: grid; gap: 4px; padding-top: 12px; border-top: 1px solid var(--line); }
+.aj-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; }
+.aj-top label { font-weight: 700; }
+.aj-top output { color: var(--accent); font-weight: 600; }
+.aj-top output small { color: var(--muted); font-weight: 400; font-size: 13px; }
+.aj-pista { position: relative; }
+.aj-pista input { width: 100%; margin: 6px 0; height: 28px; accent-color: var(--accent); cursor: pointer; }
+.aj-rec { position: absolute; top: 2px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--gold); pointer-events: none; }
+.aj-ayuda { margin: 0; color: var(--muted); font-size: 14px; }
+.aj-usar { justify-self: start; font-size: 14px; }
+.aj-usar[hidden] { display: none; }
+
+.guardar { display: grid; gap: 8px; padding-top: 16px; border-top: 2px solid var(--fg); }
+.btn { border: 0; background: var(--accent); color: var(--on-accent); padding: 12px 18px; border-radius: 999px; font-weight: 700; cursor: pointer; }
+.estado { margin: 0; min-height: 1.4em; font-size: 14px; color: var(--muted); }
+.ahora-t { margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.ahora { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--chip); font-size: 13.5px; user-select: all; overflow-wrap: anywhere; }
+
+@media (max-width: 999px) {
+  .tool { display: block; }
+  .stage { position: fixed; inset: 0; padding: 0; background: #FFFFFF; }
+  .box { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+  .box iframe { width: 100% !important; height: 100% !important; transform: none !important; }
+  .solo-ancho { display: none !important; }
+  .panel {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; max-height: 72%; border-left: 0; border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0; box-shadow: 0 -18px 50px -20px rgba(0, 0, 0, 0.45);
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .panel.recogido { transform: translateY(calc(100% - 58px)); overflow: hidden; }
+  .asa { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; border: 0; background: none; padding: 4px 0 6px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .asa-raya { width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+  .p-head h1 { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .panel { transition: none; } }
+</style>
+
+<div class="tool">
+  <div class="stage" id="stage">
+    <div class="box" id="box"><iframe id="pagina" title="Página de Praxis del Sur" src="portada.html"></iframe></div>
+  </div>
+  <aside class="panel" id="panel" aria-label="Barras de ajuste del movimiento">
+    <div class="p-head">
+      <button class="asa" id="asa" type="button" aria-expanded="true" aria-controls="panel-cuerpo"><span class="asa-raya" aria-hidden="true"></span><span id="asa-txt">Recoger las barras</span></button>
+      <h1>Movimiento de la revista</h1>
+      <p class="p-lead">Baja y sube por la página y mueve las barras. La raya dorada marca lo que recomiendo.</p>
+    </div>
+    <div class="p-cuerpo" id="panel-cuerpo">
+      <div class="fila-ver">
+        <div class="seg solo-ancho" role="group" aria-label="Ver la página como">
+          <button type="button" data-ver="ordenador" aria-pressed="true">Ordenador</button>
+          <button type="button" data-ver="movil" aria-pressed="false">Móvil</button>
+        </div>
+        <div class="seg" role="group" aria-label="Qué página">
+          <button type="button" data-pag="portada.html" aria-pressed="true">Convocatoria</button>
+          <button type="button" data-pag="portada-numero.html" aria-pressed="false">Con número</button>
+          <button type="button" data-pag="articulo.html" aria-pressed="false">Artículo</button>
+        </div>
+      </div>
+      <div class="fila-ver">
+        <button class="lnk" id="repetir" type="button">Repetir la entrada</button>
+        <button class="lnk" id="arriba" type="button">Volver arriba</button>
+      </div>
+      <div id="grupos"></div>
+      <section class="guardar">
+        <button class="btn" id="guardar" type="button">Guardar para Claude</button>
+        <p class="estado" id="estado" role="status"></p>
+        <p class="ahora-t">Tus ajustes ahora</p>
+        <p class="ahora" id="ahora"></p>
+        <button class="lnk" id="copiar" type="button">Copiar esta línea</button>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  var seg = function (ms) { return (ms / 1000).toLocaleString('es-ES', { maximumFractionDigits: 2 }) + ' s'; };
+  var GRUPOS = [
+    { id: 'mov', titulo: 'Apariciones y detalles',
+      lead: 'Los bloques aparecen al entrar en pantalla, al bajar y al subir; las líneas se dibujan; tarjetas y enlaces responden al ratón.',
+      ajustes: [
+        { id: 'distancia', nombre: 'Cuánto se desplazan al aparecer', min: 0, max: 40, paso: 1, rec: 14,
+          palabras: function (v) { return v === 0 ? 'nada: solo se funden' : v <= 7 ? 'casi nada' : v <= 18 ? 'un poco' : v <= 28 ? 'bastante' : 'mucho'; },
+          medida: function (v) { return v + ' px'; },
+          ayuda: 'Al bajar suben desde abajo; al subir bajan desde arriba. A la izquierda solo se funden.' },
+        { id: 'duracion', nombre: 'Cuánto tardan en aparecer', min: 200, max: 1400, paso: 20, rec: 700,
+          palabras: function (v) { return v < 360 ? 'rápido' : v < 580 ? 'ágil' : v < 880 ? 'sereno' : v < 1140 ? 'lento' : 'muy lento'; },
+          medida: seg,
+          ayuda: 'También marca el ritmo de las líneas que se dibujan y de la brújula del fondo.' },
+        { id: 'escalon', nombre: 'Cascada entre bloques', min: 0, max: 200, paso: 5, rec: 70,
+          palabras: function (v) { return v === 0 ? 'todos a la vez' : v < 45 ? 'cascada leve' : v < 110 ? 'cascada clara' : 'cascada lenta'; },
+          medida: function (v) { return seg(v) + ' entre uno y otro'; },
+          ayuda: 'Lo que entra junto (las tarjetas de los ejes, las fechas) aparece uno tras otro.' },
+        { id: 'raton', nombre: 'Respuesta al pasar el ratón', min: 0, max: 100, paso: 5, rec: 50,
+          palabras: function (v) { return v < 10 ? 'sin elevarse' : v < 40 ? 'muy leve' : v < 70 ? 'leve' : 'marcada'; },
+          ayuda: 'Las tarjetas y portadas se elevan y la flecha avanza. Solo se nota con ratón, en el ordenador.' }
+      ],
+      presets: [
+        { nombre: 'Recomendado', v: { distancia: 14, duracion: 700, escalon: 70, raton: 50 } },
+        { nombre: 'Casi quieto', v: { distancia: 6, duracion: 500, escalon: 40, raton: 20 } },
+        { nombre: 'Solo se funde', v: { distancia: 0, duracion: 600, escalon: 50, raton: 30 } },
+        { nombre: 'Más presente', v: { distancia: 26, duracion: 960, escalon: 110, raton: 80 } }
+      ] },
+    { id: 'cab', titulo: 'Cabecera de la portada',
+      lead: 'Empieza transparente sobre el bloque vino y la barra blanca aparece al bajar.',
+      ajustes: [
+        { id: 'umbral', nombre: 'Cuándo aparece la barra', min: 0, max: 600, paso: 10, rec: 80,
+          palabras: function (v) { return v <= 20 ? 'en cuanto bajas' : v <= 140 ? 'al bajar un poco' : v <= 320 ? 'a media portada' : v <= 480 ? 'casi al final de la portada' : 'al terminar la portada'; },
+          medida: function (v) { return v + ' px bajados'; },
+          ayuda: 'Más a la derecha: tienes que bajar más antes de que salga la barra blanca.' },
+        { id: 'cduracion', nombre: 'Cuánto tarda en aparecer', min: 100, max: 900, paso: 20, rec: 380,
+          palabras: function (v) { return v < 170 ? 'de golpe' : v < 300 ? 'rápida' : v < 480 ? 'suave' : v < 680 ? 'pausada' : 'muy lenta'; },
+          medida: seg,
+          ayuda: 'Más a la derecha: el paso de transparente a blanca dura más.' },
+        { id: 'llegada', nombre: 'De dónde llega', min: 0, max: 100, paso: 5, rec: 35,
+          palabras: function (v) { return v < 10 ? 'se funde en su sitio' : v < 55 ? 'baja un poco mientras aparece' : v < 90 ? 'baja desde arriba' : 'cae entera desde arriba'; },
+          ayuda: 'A la izquierda la barra solo se funde; a la derecha se desliza desde arriba.' },
+        { id: 'transparencia', nombre: 'Transparencia de la barra', min: 0, max: 100, paso: 5, rec: 30,
+          palabras: function (v) { return v < 10 ? 'blanca, opaca' : v < 45 ? 'casi opaca, con un leve desenfoque' : v < 80 ? 'translúcida, tipo cristal' : 'muy translúcida'; },
+          ayuda: 'A la derecha la barra deja ver la página difuminada detrás.' },
+        { id: 'encoge', nombre: 'Cuánto se encoge al bajar', min: 0, max: 100, paso: 5, rec: 40,
+          palabras: function (v) { return v < 10 ? 'no cambia de altura' : v < 50 ? 'se encoge un poco' : v < 85 ? 'se encoge bastante' : 'queda muy baja'; },
+          ayuda: 'A la derecha la barra y el logo se hacen más bajos al bajar.' }
+      ],
+      presets: [
+        { nombre: 'Recomendado', v: { umbral: 80, cduracion: 380, llegada: 35, transparencia: 30, encoge: 40 } },
+        { nombre: 'Sobria', v: { umbral: 40, cduracion: 240, llegada: 0, transparencia: 0, encoge: 0 } },
+        { nombre: 'Cristal', v: { umbral: 60, cduracion: 420, llegada: 0, transparencia: 75, encoge: 30 } },
+        { nombre: 'Baja desde arriba', v: { umbral: 320, cduracion: 520, llegada: 100, transparencia: 15, encoge: 50 } }
+      ] }
+  ];
+  var AJ = []; GRUPOS.forEach(function (g) { g.ajustes.forEach(function (a) { a.grupo = g.id; AJ.push(a); }); });
+  var POR = {}; AJ.forEach(function (a) { POR[a.id] = a; });
+  var REC = {}; AJ.forEach(function (a) { REC[a.id] = a.rec; });
+  var CLAVE = 'ps-movimiento-ajustes';
+
+  function cargar() {
+    var s = null;
+    try { s = JSON.parse(localStorage.getItem(CLAVE) || 'null'); } catch (e) {}
+    var v = Object.assign({}, REC);
+    if (s) AJ.forEach(function (a) { if (typeof s[a.id] === 'number') v[a.id] = s[a.id]; });
+    return v;
+  }
+  function recordar() { try { localStorage.setItem(CLAVE, JSON.stringify(v)); } catch (e) {} }
+  var v = cargar();
+
+  var frame = document.getElementById('pagina');
+  var stage = document.getElementById('stage');
+  var box = document.getElementById('box');
+  var panel = document.getElementById('panel');
+  var estado = document.getElementById('estado');
+  var angosto = window.matchMedia('(max-width: 999px)');
+
+  // Las variables que usa el sitio, con los valores de las barras. La página de dentro las pide al cargar
+  // (window.__psAfinar), así entra ya con ellas.
+  function variables() {
+    return {
+      '--ps-cab-dur': String(v.cduracion), '--ps-cab-llegada': String(v.llegada / 100),
+      '--ps-cab-transp': String(v.transparencia / 100), '--ps-cab-encoge': String(v.encoge / 100),
+      '--ps-mov-dist': String(v.distancia), '--ps-mov-dur': String(v.duracion),
+      '--ps-mov-escalon': String(v.escalon), '--ps-mov-raton': String(v.raton / 100)
+    };
+  }
+  window.__psAfinar = variables;
+  function aplicar() {
+    var w = frame.contentWindow, d = frame.contentDocument;
+    if (!w || !d || !d.documentElement) return;
+    var vars = variables(), r = d.documentElement.style;
+    Object.keys(vars).forEach(function (k) { r.setProperty(k, vars[k]); });
+    if (w.PS_CABECERA) w.PS_CABECERA.umbral = v.umbral;
+    if (typeof w.__psCabecera === 'function') w.__psCabecera();
+  }
+  var tRepetir = 0;
+  function repetir(espera) {
+    clearTimeout(tRepetir);
+    tRepetir = setTimeout(function () {
+      try { if (typeof frame.contentWindow.__psMov === 'object') frame.contentWindow.__psMov.repetir(); } catch (e) {}
+    }, espera || 0);
+  }
+
+  // Grupos: título, combinaciones y barras
+  var cont = document.getElementById('grupos');
+  cont.innerHTML = GRUPOS.map(function (g) {
+    return '<section class="grupo" aria-labelledby="g-' + g.id + '">'
+      + '<h2 class="g-tit" id="g-' + g.id + '">' + g.titulo + '</h2><p class="g-lead">' + g.lead + '</p>'
+      + '<div><h3>Combinaciones listas</h3><div class="presets">'
+      + g.presets.map(function (p, i) { return '<button type="button" data-g="' + g.id + '" data-preset="' + i + '" aria-pressed="false">' + p.nombre + '</button>'; }).join('')
+      + '</div></div><div class="ajustes">'
+      + g.ajustes.map(function (a) {
+        var p = (a.rec - a.min) / (a.max - a.min);
+        return '<div class="ajuste">'
+          + '<div class="aj-top"><label for="r-' + a.id + '">' + a.nombre + '</label><output id="o-' + a.id + '" for="r-' + a.id + '"></output></div>'
+          + '<div class="aj-pista"><input type="range" id="r-' + a.id + '" min="' + a.min + '" max="' + a.max + '" step="' + a.paso + '">'
+          + '<span class="aj-rec" style="left:calc(10px + (100% - 20px) * ' + p + ')" title="Recomendado: ' + a.palabras(a.rec) + '"></span></div>'
+          + '<p class="aj-ayuda">' + a.ayuda + '</p>'
+          + '<button type="button" class="lnk aj-usar" data-usar="' + a.id + '">Usar lo recomendado: «' + a.palabras(a.rec) + '»</button>'
+          + '</div>';
+      }).join('')
+      + '</div></section>';
+  }).join('');
+  function cambio(ids) {
+    pintar();
+    if (ids.some(function (id) { return POR[id].grupo === 'mov'; })) repetir(350);
+  }
+  AJ.forEach(function (a) {
+    document.getElementById('r-' + a.id).addEventListener('input', function (e) { v[a.id] = Number(e.target.value); cambio([a.id]); });
+  });
+  cont.addEventListener('click', function (e) {
+    var u = e.target.closest('[data-usar]');
+    if (u) { var id = u.getAttribute('data-usar'); v[id] = REC[id]; cambio([id]); return; }
+    var b = e.target.closest('[data-preset]'); if (!b) return;
+    var g = GRUPOS.filter(function (x) { return x.id === b.getAttribute('data-g'); })[0];
+    var pv = g.presets[Number(b.getAttribute('data-preset'))].v;
+    Object.keys(pv).forEach(function (k) { v[k] = pv[k]; });
+    cambio(Object.keys(pv));
+  });
+
+  function texto(a) { return a.palabras(v[a.id]) + (a.medida ? ' (' + a.medida(v[a.id]) + ')' : ''); }
+  function pintar() {
+    AJ.forEach(function (a) {
+      document.getElementById('r-' + a.id).value = v[a.id];
+      document.getElementById('o-' + a.id).innerHTML = a.palabras(v[a.id]) + (a.medida ? ' <small>' + a.medida(v[a.id]) + '</small>' : '');
+      cont.querySelector('[data-usar="' + a.id + '"]').hidden = v[a.id] === a.rec;
+    });
+    GRUPOS.forEach(function (g) {
+      g.presets.forEach(function (p, i) {
+        var igual = Object.keys(p.v).every(function (k) { return p.v[k] === v[k]; });
+        cont.querySelector('[data-g="' + g.id + '"][data-preset="' + i + '"]').setAttribute('aria-pressed', igual ? 'true' : 'false');
+      });
+    });
+    document.getElementById('ahora').textContent = AJ.map(function (a) { return a.nombre + ': ' + texto(a); }).join(' · ')
+      + ' [' + AJ.map(function (a) { return a.id + ' ' + v[a.id]; }).join(', ') + ']';
+    recordar();
+    aplicar();
+  }
+
+  // Encajar la página: en pantallas anchas, a tamaño de portátil (1366 px) o de móvil (390 × 844), reducida si no cabe.
+  var ver = 'ordenador';
+  function encajar() {
+    if (angosto.matches) { frame.style.cssText = ''; box.style.cssText = ''; return; }
+    var aw = stage.clientWidth - 32, ah = stage.clientHeight - 32, s;
+    if (ver === 'ordenador') {
+      s = Math.min(1, aw / 1366);
+      frame.style.cssText = 'width:1366px;height:' + (ah / s) + 'px;transform:scale(' + s + ')';
+      box.style.cssText = 'width:' + (1366 * s) + 'px;height:' + ah + 'px';
+    } else {
+      s = Math.min(1, ah / 844, aw / 390);
+      frame.style.cssText = 'width:390px;height:844px;transform:scale(' + s + ')';
+      box.style.cssText = 'width:' + (390 * s) + 'px;height:' + (844 * s) + 'px';
+    }
+  }
+  if (window.ResizeObserver) new ResizeObserver(encajar).observe(stage);
+  window.addEventListener('resize', encajar);
+  document.querySelectorAll('.fila-ver').forEach(function (fila) {
+    fila.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.hasAttribute('data-ver')) {
+        ver = b.getAttribute('data-ver');
+        fila.querySelectorAll('[data-ver]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        encajar();
+      } else if (b.hasAttribute('data-pag')) {
+        fila.querySelectorAll('[data-pag]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        frame.src = b.getAttribute('data-pag');
+      } else if (b.id === 'arriba') {
+        try { frame.contentWindow.scrollTo({ top: 0, behavior: 'instant' }); } catch (err) {}
+      } else if (b.id === 'repetir') {
+        try { frame.contentWindow.scrollTo({ top: 0, behavior: 'instant' }); } catch (err) {}
+        repetir(60);
+      }
+    });
+  });
+
+  // Panel del teléfono: se recoge solo al bajar la página.
+  var asa = document.getElementById('asa'), asaTxt = document.getElementById('asa-txt'), base = 0;
+  function recoger(si) {
+    panel.classList.toggle('recogido', si);
+    asa.setAttribute('aria-expanded', si ? 'false' : 'true');
+    asaTxt.textContent = si ? 'Ver las barras' : 'Recoger las barras';
+    try { base = frame.contentWindow.scrollY || 0; } catch (e) { base = 0; }
+  }
+  asa.addEventListener('click', function () { recoger(!panel.classList.contains('recogido')); });
+
+  frame.addEventListener('load', function () {
+    aplicar();
+    var w = frame.contentWindow, d = frame.contentDocument;
+    try {
+      d.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (a && a.getAttribute('href').charAt(0) !== '#') { e.preventDefault(); estado.textContent = 'En esta herramienta los enlaces de la página no navegan.'; }
+      }, true);
+      w.addEventListener('scroll', function () {
+        if (!angosto.matches) return;
+        var y = w.scrollY || 0;
+        if (!panel.classList.contains('recogido') && y - base > 40) recoger(true);
+        if (y < base) base = y;
+      }, { passive: true });
+    } catch (e) {}
+  });
+
+  // Guardar para Claude
+  var dbP = null;
+  function db() {
+    if (!dbP) dbP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('db') : Promise.resolve(null);
+    return dbP;
+  }
+  document.getElementById('guardar').addEventListener('click', function () {
+    estado.textContent = 'Guardando…';
+    db().then(function (d) {
+      if (!d) { estado.textContent = 'Aquí no se puede guardar. Copia la línea de abajo y pégamela en el chat.'; return; }
+      var datos = {}; AJ.forEach(function (a) { datos[a.id] = v[a.id]; });
+      datos.resumen = document.getElementById('ahora').textContent;
+      datos.guardado = new Date().toISOString();
+      return d.doc('ajustes/elegidos').set(datos).then(function () { estado.textContent = 'Guardado. Ya puedo leer tus ajustes.'; });
+    }).catch(function (e) {
+      estado.textContent = 'No se pudo guardar (' + ((e && e.code) || 'error') + '). Copia la línea de abajo y pégamela en el chat.';
+    });
+  });
+  document.getElementById('copiar').addEventListener('click', function () {
+    var el = document.getElementById('ahora');
+    var hecho = function () { estado.textContent = 'Línea copiada.'; };
+    var sel = function () { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); estado.textContent = 'Línea seleccionada: cópiala.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(el.textContent).then(hecho, sel); else sel();
+  });
+
+  encajar();
+  pintar();
+})();
+</script>

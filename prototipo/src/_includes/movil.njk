@@ -1,0 +1,130 @@
+{#- El móvil: ejes apilados, en mazo o en lista; modalidades en pestañas y con la descripción al tocar.
+    Opciones en _data/movil.json (data-movil-* de la portada); window.PS_MOVIL las cambia (herramienta de elegir). Estilos en css/movil.css. -#}
+<script>
+(function () {
+  var pag = document.querySelector('.page_index_journal[data-movil-ejes]');
+  if (!pag) return;
+  var root = document.documentElement;
+  var mq = window.matchMedia('(max-width: 760px)');
+  var ATR = { ejes: 'data-movil-ejes', modGrupos: 'data-movil-mod', modDesc: 'data-movil-desc', compacto: 'data-movil-compacto' };
+  function aplicarCfg(c) {
+    Object.keys(ATR).forEach(function (k) { if (c && c[k]) pag.setAttribute(ATR[k], c[k]); });
+    // «Más ajustado» vale para todas las páginas: va en <html>.
+    root.setAttribute('data-movil-compacto', pag.getAttribute('data-movil-compacto'));
+  }
+  aplicarCfg(window.PS_MOVIL);
+  function modo(k) { return mq.matches ? pag.getAttribute(ATR[k]) : ''; }
+
+  // ---------- Ejes en mazo: la de arriba se pasa deslizando o con las flechas ----------
+  var ul = pag.querySelector('[data-ejes]');
+  var cartas = Array.prototype.slice.call(ul.children), activa = 0, n = cartas.length;
+  var cuenta = pag.querySelector('[data-mazo-cuenta]');
+  function ponerMazo() {
+    var enMazo = modo('ejes') === 'mazo';
+    cartas.forEach(function (c, i) {
+      var k = (i - activa + n) % n;
+      c.style.setProperty('--k', k);
+      if (k > 3) c.setAttribute('data-k-oculta', ''); else c.removeAttribute('data-k-oculta');
+      if (enMazo && k > 0) { c.setAttribute('inert', ''); c.setAttribute('aria-hidden', 'true'); }
+      else { c.removeAttribute('inert'); c.removeAttribute('aria-hidden'); }
+    });
+    if (cuenta) cuenta.textContent = (activa + 1) + ' de ' + n;
+  }
+  function pasar(d) {
+    activa = (activa + d + n) % n;
+    cartas.forEach(function (c) { c.style.setProperty('--ps-rev-delay', '0ms'); });
+    ponerMazo();
+  }
+  // La de arriba sale volando hacia un lado y pasa al fondo del mazo.
+  var volando = false;
+  function volar(d, desdeX) {
+    if (volando) return;
+    var c = cartas[activa];
+    if (d < 0) { pasar(-1); return; } // hacia atrás: la anterior vuelve arriba
+    volando = true;
+    c.style.translate = (-(c.offsetWidth + 40)) + 'px 0';
+    c.style.opacity = '0';
+    setTimeout(function () {
+      c.style.transition = 'none'; c.style.translate = ''; c.style.opacity = '';
+      pasar(1);
+      void c.offsetWidth; c.style.transition = '';
+      volando = false;
+    }, 280);
+  }
+  pag.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mazo]');
+    if (b) volar(+b.getAttribute('data-mazo'));
+  });
+  var x0 = 0, dx = 0, arr = null, movido = false;
+  ul.addEventListener('pointerdown', function (e) {
+    if (modo('ejes') !== 'mazo' || volando) return;
+    var c = cartas[activa]; if (!c.contains(e.target)) return;
+    arr = c; x0 = e.clientX; dx = 0; movido = false;
+  });
+  ul.addEventListener('pointermove', function (e) {
+    if (!arr) return;
+    dx = e.clientX - x0;
+    if (Math.abs(dx) > 6) { movido = true; arr.style.transition = 'none'; arr.style.translate = dx + 'px 0'; }
+  });
+  function soltar() {
+    if (!arr) return;
+    var c = arr; arr = null;
+    c.style.transition = '';
+    if (dx < -60) volar(1);
+    else if (dx > 60) { c.style.translate = ''; pasar(-1); }
+    else c.style.translate = '';
+  }
+  ul.addEventListener('pointerup', soltar);
+  ul.addEventListener('pointercancel', soltar);
+  ul.addEventListener('click', function (e) { if (movido) { e.preventDefault(); e.stopPropagation(); movido = false; } }, true);
+
+  // ---------- Ejes en lista: el título abre y cierra su descripción ----------
+  function alternar(el) { var a = el.classList.toggle('is-abierto'); el.setAttribute('aria-expanded', a ? 'true' : 'false'); }
+  ul.addEventListener('click', function (e) {
+    if (modo('ejes') !== 'lista' || e.target.closest('a')) return;
+    var c = e.target.closest('.ps-eje'); if (c && !c.classList.contains('ps-eje--tema')) alternar(c);
+  });
+
+  // ---------- Modalidades: pestañas y descripción al tocar ----------
+  var tabs = Array.prototype.slice.call(pag.querySelectorAll('[data-mod-tab]'));
+  var cols = Array.prototype.slice.call(pag.querySelectorAll('[data-mod-col]'));
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x, j) { x.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+      cols.forEach(function (c, j) { c.classList.toggle('is-activa', j === i); });
+    });
+  });
+  var mods = pag.querySelector('.ps-modalidades');
+  mods.addEventListener('click', function (e) {
+    if (modo('modDesc') !== 'tocar') return;
+    var li = e.target.closest('.ps-mod-list > li'); if (li) alternar(li);
+  });
+
+  // Teclado: lo que se abre al tocar también se abre con Intro o Espacio.
+  var abribles = function () {
+    return Array.prototype.slice.call(ul.querySelectorAll('.ps-eje:not(.ps-eje--tema)')).map(function (el) { return [el, modo('ejes') === 'lista']; })
+      .concat(Array.prototype.slice.call(mods.querySelectorAll('.ps-mod-list > li')).map(function (el) { return [el, modo('modDesc') === 'tocar']; }));
+  };
+  function accesible() {
+    abribles().forEach(function (p) {
+      var el = p[0];
+      if (p[1]) { el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0'); el.setAttribute('aria-expanded', el.classList.contains('is-abierto') ? 'true' : 'false'); }
+      else { el.removeAttribute('role'); el.removeAttribute('tabindex'); el.removeAttribute('aria-expanded'); }
+    });
+    var conTabs = modo('modGrupos') === 'pestanas';
+    cols.forEach(function (c, j) { if (conTabs) { c.setAttribute('role', 'tabpanel'); c.setAttribute('aria-labelledby', tabs[j].id); } else { c.removeAttribute('role'); c.removeAttribute('aria-labelledby'); } });
+  }
+  pag.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute('role') === 'button' && (e.target.matches('.ps-eje') || e.target.matches('.ps-mod-list > li'))) {
+      e.preventDefault(); alternar(e.target);
+    }
+  });
+
+  function todo() { ponerMazo(); accesible(); }
+  if (mq.addEventListener) mq.addEventListener('change', todo);
+  window.__psMovil = {
+    config: function (c) { aplicarCfg(c); activa = 0; todo(); }
+  };
+  todo();
+})();
+</script>
