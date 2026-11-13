@@ -235,12 +235,14 @@
 /* Escala de letra elegida (opción 4 de afinar/letras.html, 13 nov 2026): crece con la pantalla para que en un monitor grande
    no se quede en tamaños de pie de foto. Arriba, «Revista del CIPS» encima del nombre y el lema como segundo nivel; abajo, título,
    fechas y botones en una línea (el título en dos, hasta 38 px).
-   Cabecera de revista (opción 3 de afinar/cabecera.html): todo centrado, el sello del CIPS delante de la firma y la línea de datos
-   entre dos filetes, un poco más grande y más clara. Solo desde 761 px: el móvil queda como estaba. */
+   Cabecera de revista (opción 3 de afinar/cabecera.html): todo centrado, la línea de datos entre dos filetes y, al final,
+   «Revista del CIPS» con el sello del CIPS (la usuaria lo pidió abajo y el bloque más arriba). Solo desde 761 px: el móvil queda como estaba. */
 @media (min-width: 761px) {
-  .ps-hero-cielo { justify-items: center; text-align: center; }
-  .ps-hero-marca { display: flex; flex-direction: column; align-items: center; }
-  .ps-hero-firma { order: -1; gap: 10px; margin: 0 0 14px; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); }
+  /* el bloque, un poco por encima del centro del cielo (más aire abajo que arriba) */
+  .ps-hero-cielo { justify-items: center; text-align: center; padding-bottom: clamp(20px, 9vh, 110px); }
+  /* «Revista del CIPS» con el sello, al final del bloque, debajo de la línea de datos */
+  .ps-hero-marca { display: contents; }
+  .ps-hero-firma { order: 1; gap: 10px; margin: 22px 0 0; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); color: #F1ECE0; text-shadow: 0 1px 10px rgb(0 0 0 / 0.45); }
   .ps-hero-lema { margin-top: 14px; font-size: clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem); }
   .ps-esenciales { justify-content: center; margin-top: 26px; gap: 10px 26px; }
   .ps-esenciales li { gap: 10px; font-size: clamp(0.9375rem, 0.5rem + 0.52vw, 1.1875rem); }
@@ -274,7 +276,8 @@
    al horizonte ni a las dos personas del muro */
 @media (min-width: 761px) and (max-height: 760px) {
   .ps-hero-logo { width: min(clamp(330px, 50vw, 780px), 98vh); }
-  .ps-hero-firma { margin-bottom: 10px; }
+  .ps-hero-firma { margin-top: 14px; }
+  .ps-hero-cielo { padding-bottom: 28px; }
   .ps-hero-lema { margin-top: 8px; }
   .ps-esenciales { margin-top: 16px; }
   .ps-hero-folio { margin-top: 14px; padding-block: 6px; }
