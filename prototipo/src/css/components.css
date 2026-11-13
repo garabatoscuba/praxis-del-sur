@@ -9,6 +9,8 @@
   box-shadow: 0 10px 26px -14px rgba(31, 27, 24, 0.7);
 }
 .ps-simulacro summary::-webkit-details-marker { display: none; }
+.ps-simulacro { transition: opacity 0.3s, visibility 0.3s; }
+.ps-simulacro.is-tapando:not([open]) { opacity: 0; visibility: hidden; }
 .ps-simulacro summary::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ps-gold); }
 .ps-simulacro-panel {
   position: absolute; left: 0; bottom: calc(100% + 8px); width: min(340px, calc(100vw - 32px));
@@ -182,7 +184,6 @@
 .ps-hero-lead { margin-top: 22px; max-width: 58ch; font-size: var(--ps-step-1); line-height: 1.5; color: var(--ps-beige); }
 .ps-hero-meta { margin-top: 14px; font-size: 0.9375rem; color: var(--ps-beige); }
 .ps-hero .ps-actions { margin-top: 32px; }
-.ps-borrador { position: relative; z-index: 1; margin-top: clamp(32px, 5vw, 56px); font-size: 0.8125rem; letter-spacing: 0.08em; color: var(--ps-beige); }
 .ps-hero-grid--numero { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr); align-items: center; }
 .ps-brujula { width: 100%; max-width: 380px; aspect-ratio: 300 / 180; justify-self: center; touch-action: pan-y; }
 
@@ -202,7 +203,7 @@
   background: linear-gradient(180deg, rgb(22 18 15 / 0.8) 0%, rgb(22 18 15 / 0.62) 30%, rgb(22 18 15 / 0.4) 50%, rgb(22 18 15 / 0.1) 61%,
     rgb(22 18 15 / 0.2) 70%, rgb(22 18 15 / 0.56) 82%, rgb(22 18 15 / 0.8) 100%);
 }
-.ps-hero-cont { flex: 1; display: grid; grid-template-rows: auto 1fr auto auto; padding-top: var(--ps-head-h); padding-bottom: clamp(22px, 3vw, 36px); }
+.ps-hero-cont { flex: 1; display: grid; grid-template-rows: auto 1fr auto; padding-top: var(--ps-head-h); padding-bottom: clamp(22px, 3vw, 36px); }
 .ps-hero-cielo { min-height: calc(var(--ps-horiz) - var(--ps-head-h)); display: grid; align-content: center; justify-items: start; padding-block: 12px 20px; }
 .ps-hero-nombre { margin: 0; line-height: 0; }
 .ps-hero-logo { display: block; width: clamp(330px, 50vw, 780px); max-width: 100%; height: auto; color: var(--ps-paper); }
@@ -226,7 +227,6 @@
 .ps-hero.ps-hero--foto .ps-actions { margin: 0; flex-wrap: nowrap; gap: 10px; }
 .ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 9px 20px; font-size: 0.9375rem; white-space: nowrap; }
 .ps-hero--foto .ps-btn--ghost { background: rgb(20 16 14 / 0.12); border-color: rgb(255 255 255 / 0.7); }
-.ps-hero--foto .ps-borrador { grid-row: 4; margin-top: 16px; }
 .ps-hero--foto :is(.ps-hero-firma, .ps-hero-lema, .ps-esenciales li, .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: 0 1px 14px rgb(0 0 0 / 0.28); }
 /* Pantallas medianas: el título arriba y, debajo, fechas y botones */
 @media (max-width: 1100px) {

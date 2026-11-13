@@ -12,3 +12,12 @@
     {%- endif %}
   </div>
 </details>
+<script>
+// En el móvil, la pastilla taparía el botón «Enviar contribución» de la portada: se esconde mientras esos botones se ven.
+(function(){
+  var sim = document.querySelector('.ps-simulacro'), acc = document.querySelector('.ps-hero--foto .ps-actions');
+  if (!sim || !acc || !('IntersectionObserver' in window)) return;
+  var movil = window.matchMedia('(max-width: 760px)');
+  new IntersectionObserver(function(e){ sim.classList.toggle('is-tapando', e[0].isIntersecting && movil.matches); }).observe(acc);
+})();
+</script>

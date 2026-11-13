@@ -16,14 +16,13 @@
   html:not([data-movil-compacto="no"]) .ps-hero-lead { margin-top: 14px; font-size: 1.0625rem; line-height: 1.5; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions { margin-top: 22px; gap: 10px; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions .ps-btn { min-height: 42px; padding: 9px 18px; font-size: 0.9375rem; }
-  html:not([data-movil-compacto="no"]) .ps-borrador { margin-top: 16px; }
   /* Portada con foto: el nombre y la convocatoria arriba, en el cielo; lo esencial y los botones abajo, sobre la calle;
      las dos personas en medio, libres. La foto se encuadra sobre ellas. */
   html .ps-hero.ps-hero--foto { padding: 0; }
   .ps-hero-foto { object-position: 78% 50%; }
   .ps-hero-velo { background: linear-gradient(180deg, rgb(22 18 15 / 0.86) 0%, rgb(22 18 15 / 0.72) 30%, rgb(22 18 15 / 0.56) 50%, rgb(22 18 15 / 0.14) 60%,
     rgb(22 18 15 / 0.08) 70%, rgb(22 18 15 / 0.72) 86%, rgb(22 18 15 / 0.84) 100%); }
-  .ps-hero-cont { grid-template-rows: auto auto auto 1fr auto auto auto; padding-top: calc(var(--ps-head-h) + 6px); padding-bottom: 20px; }
+  .ps-hero-cont { grid-template-rows: auto auto auto 1fr auto auto; padding-top: calc(var(--ps-head-h) + 6px); padding-bottom: 20px; }
   .ps-hero-cielo, .ps-hero-pie { display: contents; }
   .ps-hero-marca { grid-row: 1; }
   .ps-hero-logo { width: 100%; }
@@ -36,7 +35,6 @@
   .ps-esenciales li { font-size: 0.8125rem; }
   html .ps-hero.ps-hero--foto .ps-actions { grid-row: 6; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; width: 100%; margin-top: 14px; justify-self: stretch; }
   html .ps-hero.ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 8px 10px; font-size: 0.9375rem; text-align: center; }
-  html .ps-hero.ps-hero--foto .ps-borrador { grid-row: 7; margin-top: 14px; }
   html:not([data-movil-compacto="no"]) .ps-section { padding-block: 44px; }
   html:not([data-movil-compacto="no"]) .ps-sec-head { gap: 10px; margin-bottom: 24px; }
   html:not([data-movil-compacto="no"]) .ps-sec-head p:not(.ps-eyebrow) { font-size: 1.0625rem; }

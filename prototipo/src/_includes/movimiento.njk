@@ -40,7 +40,8 @@
     '.obj_issue_summary', '.ps-issue-side > *', '.ps-acceso > *', '.ps-otros', '.pkp_footer_content > *'
   ].join(',');
   var todos = Array.prototype.slice.call(document.querySelectorAll(SEL)).filter(function (el) {
-    return !el.closest('.pkp_structure_head, .ps-simulacro') && !el.classList.contains('pkp_screen_reader');
+    // los botones de la portada con foto van pegados al borde de abajo de la pantalla: sin animación, siempre a la vista
+    return !el.closest('.pkp_structure_head, .ps-simulacro') && !el.classList.contains('pkp_screen_reader') && !el.matches('.ps-hero--foto .ps-actions');
   });
   // Si un bloque contiene otros que también aparecen, se animan los de dentro (en cascada) y no el de fuera.
   var marcados = new Set(todos);
