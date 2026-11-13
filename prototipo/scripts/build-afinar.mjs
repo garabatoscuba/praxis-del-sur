@@ -23,6 +23,7 @@ writeFileSync('_afinar/calendario.html', readFileSync('afinar/calendario.html', 
 writeFileSync('_afinar/movil.html', readFileSync('afinar/movil.html', 'utf8'));
 writeFileSync('_afinar/letras.html', readFileSync('afinar/letras.html', 'utf8'));
 writeFileSync('_afinar/cabecera.html', readFileSync('afinar/cabecera.html', 'utf8'));
+writeFileSync('_afinar/fondo.html', readFileSync('afinar/fondo.html', 'utf8'));
 // la foto de la portada, para que portada.html la encuentre
 cpSync('_artifact/img', '_afinar/img', { recursive: true });
 console.log('Listo: _afinar/index.html (movimiento), calendario.html, movil.html, portada.html, portada-numero.html y articulo.html');

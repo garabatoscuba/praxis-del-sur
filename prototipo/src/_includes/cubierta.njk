@@ -1,9 +1,12 @@
-{#- Portada del número dibujada en HTML. En OJS será la imagen de portada del número. -#}
+{#- Portada del número dibujada en HTML, con la foto del Malecón (las dos personas al centro) y un velo para que se lean los textos.
+    Arriba, el volumen y el año, el nombre y el tema; abajo, sobre la calle, el sello del CIPS. En OJS será la imagen de portada del número. -#}
 <div class="ps-cover ps-on-dark" role="img" aria-label="Portada del {{ numero.volumen }}.º volumen, número {{ numero.numero }}, {{ numero.anio }}: {{ numero.titulo }}">
+  <img class="ps-cover-foto" src="{{ revista.portadaFoto.movil }}" alt="" width="1200" height="860" loading="lazy" decoding="async">
+  <div class="ps-cover-velo" aria-hidden="true"></div>
   <div class="ps-cover-in">
     <div class="ps-cover-top"><span>Vol. {{ numero.volumen }} · Núm. {{ numero.numero }}</span><span>{{ numero.anio }}</span></div>
-    <div class="ps-cover-mark">{% set brujulaClase = "ps-cover-sym" %}{% include "brujula.njk" %}</div>
     <div class="ps-cover-name">{% logo "praxis-del-sur" %}</div>
     <div class="ps-cover-tema">{{ numero.titulo }}</div>
+    <div class="ps-cover-sello"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>{{ revista.firmaVisible }}</div>
   </div>
 </div>

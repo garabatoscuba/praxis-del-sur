@@ -39,8 +39,8 @@
       </div>
       <div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
         <ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
-          <li class="profile"><a href="acceso.html">Entrar</a></li>
-          <li class="ps-nav-cta"><a class="ps-btn ps-btn--wine ps-btn--small" href="envios.html">Enviar contribución</a></li>
+          {#- Un solo botón: «Entrar» (dentro se entra o se crea una cuenta). «Enviar contribución» va en la portada. -#}
+          <li class="ps-nav-cta"><a class="ps-btn ps-btn--wine ps-btn--small" href="acceso.html"{% if here == "acceso.html" %} aria-current="page"{% endif %}>Entrar</a></li>
         </ul>
       </div>
     </nav>

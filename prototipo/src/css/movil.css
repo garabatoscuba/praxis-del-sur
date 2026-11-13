@@ -16,27 +16,46 @@
   html:not([data-movil-compacto="no"]) .ps-hero-lead { margin-top: 14px; font-size: 1.0625rem; line-height: 1.5; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions { margin-top: 22px; gap: 10px; }
   html:not([data-movil-compacto="no"]) .ps-hero .ps-actions .ps-btn { min-height: 42px; padding: 9px 18px; font-size: 0.9375rem; }
-  /* Portada con foto: el nombre y la convocatoria arriba, en el cielo; lo esencial y los botones abajo, sobre la calle;
-     las dos personas en medio, libres. La foto se encuadra sobre ellas. */
-  html .ps-hero.ps-hero--foto { padding: 0; }
-  .ps-hero-foto { object-position: 78% 50%; }
-  .ps-hero-velo { background: linear-gradient(180deg, rgb(22 18 15 / 0.86) 0%, rgb(22 18 15 / 0.72) 30%, rgb(22 18 15 / 0.56) 50%, rgb(22 18 15 / 0.14) 60%,
-    rgb(22 18 15 / 0.08) 70%, rgb(22 18 15 / 0.72) 86%, rgb(22 18 15 / 0.84) 100%); }
-  .ps-hero-cont { grid-template-rows: auto auto auto 1fr auto auto auto; padding-top: calc(var(--ps-head-h) + 6px); padding-bottom: 20px; }
-  .ps-hero-cielo, .ps-hero-pie { display: contents; }
-  .ps-hero-marca { grid-row: 1; }
-  .ps-hero-logo { width: 100%; }
-  .ps-hero-lema { font-size: 1.0625rem; }
-  .ps-hero-conv { grid-row: 2; margin-top: 22px; }
-  .ps-hero--foto .ps-hero-title { font-size: 1.5rem; }
-  .ps-hero-fechas { grid-row: 3; margin-top: 12px; }
-  .ps-hero-fechas dd { font-size: 1.0625rem; }
-  .ps-esenciales { grid-row: 5; margin: 0; gap: 6px 16px; }
+  /* Portada con foto en el móvil: como en el ordenador, todo centrado. Arriba, en el cielo, el nombre, el lema, lo esencial, la
+     línea de datos entre filetes y «Revista del CIPS»; abajo, en la banda negra, la convocatoria y los botones; las dos personas en
+     medio, libres. La foto sube (más calle): mide al menos --ps-foto-min de alto, anclada abajo, para que la banda quepa bajo los
+     pies de las personas. El bloque de arriba se centra entre la barra y el horizonte: el mismo cielo arriba que abajo.
+     Horizonte = alto − 0,352 × alto de la foto (está al 64,8 % de la foto). */
+  html .ps-hero.ps-hero--foto {
+    --ps-foto-min: 880px;
+    --ps-horiz-m: calc(100svh - 0.352 * max(100svh, var(--ps-foto-min)));
+    padding: 0;
+  }
+  .ps-hero-foto { top: auto; bottom: 0; height: max(100%, var(--ps-foto-min)); object-position: 78% 50%; }
+  .ps-hero-velo { background: linear-gradient(180deg, rgb(22 18 15 / 0.84) 0%, rgb(22 18 15 / 0.7) 30%, rgb(22 18 15 / 0.5) 44%, rgb(22 18 15 / 0.12) 54%,
+    rgb(22 18 15 / 0.06) 62%, rgb(22 18 15 / 0.3) 72%, rgb(22 18 15 / 0.5) 100%); }
+  .ps-hero-cont { grid-template-rows: auto 1fr auto; padding-top: var(--ps-head-h); padding-bottom: 0; }
+  .ps-hero-cielo { grid-row: 1; min-height: calc(var(--ps-horiz-m) - var(--ps-head-h)); align-content: center; justify-items: center; text-align: center; padding-block: 6px; }
+  .ps-hero-marca { display: contents; }
+  .ps-hero-nombre { justify-self: stretch; display: grid; justify-items: center; }
+  .ps-hero-logo { width: min(100%, 460px); }
+  .ps-hero-firma { order: 1; justify-content: center; margin: 12px 0 0; color: #F1ECE0; }
+  .ps-hero-lema { margin-top: 8px; font-size: 1.0625rem; }
+  .ps-esenciales { justify-content: center; margin-top: 14px; gap: 6px 16px; }
   .ps-esenciales li { font-size: 0.8125rem; }
-  .ps-hero-folio { grid-row: 6; margin-top: 12px; gap: 2px 10px; font-size: 0.6875rem; letter-spacing: 0.1em; }
-  /* en el móvil, sin la ciudad, para que quepa en una línea y no empuje lo esencial hacia las personas */
+  .ps-hero-folio {
+    justify-content: center; margin-top: 12px; padding: 6px 12px; gap: 2px 10px; font-size: 0.6875rem; letter-spacing: 0.1em; color: #EFEAE0;
+    border-top: 1px solid rgb(222 216 199 / 0.45); border-bottom: 1px solid rgb(222 216 199 / 0.45);
+  }
+  /* en el móvil, sin la ciudad, para que quepa en una línea */
   .ps-hero-folio span:nth-of-type(3), .ps-hero-folio i:nth-of-type(3) { display: none; }
-  html .ps-hero.ps-hero--foto .ps-actions { grid-row: 7; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; width: 100%; margin-top: 14px; justify-self: stretch; }
+  /* la banda negra al 62 % con la convocatoria, centrada, de borde a borde y hasta abajo */
+  .ps-hero-pie { grid-row: 3; position: relative; isolation: isolate; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 0; padding: 24px 0 20px; }
+  .ps-hero-pie::before {
+    content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: calc(50% - 50vw); right: calc(50% - 50vw);
+    background: rgb(16 13 11 / 0.62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .ps-hero-conv { justify-items: center; }
+  .ps-hero--foto .ps-hero-title { font-size: 1.25rem; }
+  .ps-hero-fechas { justify-content: center; margin-top: 12px; }
+  .ps-hero-fechas dd { font-size: 1.0625rem; }
+  .ps-hero--foto :is(.ps-hero-conv .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: none; }
+  html .ps-hero.ps-hero--foto .ps-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; width: 100%; margin-top: 14px; justify-self: stretch; }
   html .ps-hero.ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 8px 10px; font-size: 0.9375rem; text-align: center; }
   html:not([data-movil-compacto="no"]) .ps-section { padding-block: 44px; }
   html:not([data-movil-compacto="no"]) .ps-sec-head { gap: 10px; margin-bottom: 24px; }
@@ -128,4 +147,13 @@
 @media (max-width: 380px) {
   /* teléfonos estrechos: los dos botones de la portada siguen uno al lado del otro y en una línea */
   html .ps-hero.ps-hero--foto .ps-actions .ps-btn { padding-inline: 6px; font-size: 0.875rem; }
+}
+
+@media (max-width: 760px) and (max-height: 680px) {
+  /* móviles bajos: el bloque de arriba, más junto y un poco por encima del centro, para no llegar a las cabezas de las personas */
+  .ps-hero-cielo { padding-block: 2px 14px; }
+  .ps-hero-lema { margin-top: 6px; }
+  .ps-esenciales { margin-top: 10px; }
+  .ps-hero-folio { margin-top: 10px; }
+  .ps-hero-firma { margin-top: 8px; }
 }

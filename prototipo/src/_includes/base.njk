@@ -33,10 +33,52 @@
 </div>
 {% include "footer.njk" %}
 </div>
-{% include "simulacro.njk" %}
 <script>
 window.PS_CABECERA = { umbral: {{ cabecera.umbral }} };
 (function () {
+  // Cada página nueva abre arriba, salvo que el enlace lleve a una sección (#…). Dentro del visor de claude.ai la página va en un
+  // marco y el visor conserva la posición al cambiar de página: scrollIntoView sube también el marco.
+  if (!location.hash) {
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    var arriba = function () {
+      window.scrollTo(0, 0);
+      if (window.parent !== window) { try { document.documentElement.scrollIntoView({ block: 'start', behavior: 'instant' }); } catch (e) {} }
+    };
+    arriba();
+    window.addEventListener('pageshow', function (e) { if (!e.persisted) arriba(); });
+  }
+
+  // Índice lateral («En esta página»): marca la sección por la que vas. Se mide al cargar y al cambiar de tamaño, no en cada scroll.
+  var toc = document.querySelector('.ps-toc');
+  if (toc) {
+    var enlaces = [].slice.call(toc.querySelectorAll('a[href^="#"]')), tops = [], actual = null, pend = false;
+    var secciones = enlaces.map(function (a) { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+    var margen = function () { return (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 80) + 40; };
+    var medirToc = function () {
+      var y = window.scrollY || 0;
+      tops = secciones.map(function (s) { return s ? s.getBoundingClientRect().top + y : Infinity; });
+      marcar();
+    };
+    var marcar = function () {
+      pend = false;
+      var y = (window.scrollY || 0) + margen(), i = 0;
+      for (var k = 0; k < tops.length; k++) if (tops[k] <= y) i = k;
+      // al llegar al final de la página, la última sección
+      if ((window.scrollY || 0) + window.innerHeight >= document.documentElement.scrollHeight - 4) i = tops.length - 1;
+      if (actual === i) return;
+      actual = i;
+      enlaces.forEach(function (a, k) {
+        a.classList.toggle('is-actual', k === i);
+        if (k === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+      });
+    };
+    window.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(marcar); } }, { passive: true });
+    window.addEventListener('resize', medirToc);
+    if (window.ResizeObserver) new ResizeObserver(medirToc).observe(document.body);
+    enlaces.forEach(function (a, k) { a.addEventListener('click', function () { setTimeout(function () { actual = null; marcar(); }, 60); }); });
+    medirToc();
+  }
+
   // Cabecera: en la portada va transparente sobre el bloque vino y la barra aparece al bajar.
   var head = document.querySelector('.pkp_structure_head');
   var sobre = head && head.classList.contains('ps-head--sobre');

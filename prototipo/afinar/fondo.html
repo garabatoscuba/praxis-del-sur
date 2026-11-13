@@ -1,0 +1,189 @@
+<title>Fondo de la convocatoria</title>
+<meta name="description" content="La portada de Praxis del Sur con un fondo semitransparente detrás de la convocatoria, en ordenador, tableta y móvil, para elegir.">
+<style>
+/* La herramienta: barra arriba con el color, la forma, la manera en el móvil y la pantalla; debajo, la portada de verdad
+   (portada.html). «Tu pantalla» la enseña a tamaño real; móvil y tabletas, a su tamaño real reducido para que quepan.
+   El fondo se inyecta como CSS en la portada. */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.45;display:flex;flex-direction:column}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--surface)}
+.barra h1{margin:0;font-size:15px;font-weight:700}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:6px 12px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.seg button i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1px rgb(0 0 0 / .25)}
+.et{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ir{font:inherit;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.desc{flex:1 1 100%;margin:0;color:var(--muted);font-size:13.5px}
+.desc b{color:var(--fg)}
+.escena{flex:1;min-height:0;position:relative;display:grid;place-items:center;overflow:hidden;background:#D8D2C4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .escena{background:#0E0C0A}}
+:root[data-theme="dark"] .escena{background:#0E0C0A}
+.marco{width:100%;height:100%;overflow:hidden;background:#4A4844}
+.escena.disp .marco{border-radius:14px;box-shadow:0 0 0 6px #1F1B18,0 24px 60px -30px rgb(0 0 0 / .6)}
+.escena.disp.movil .marco{border-radius:24px}
+iframe{display:block;border:0;width:100%;height:100%;transform-origin:0 0;background:#4A4844}
+.pie{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:12.5px;color:#3A352E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pie{color:#BEB6A8}}
+:root[data-theme="dark"] .pie{color:#BEB6A8}
+</style>
+<header class="barra">
+  <h1>Fondo de la convocatoria</h1>
+  <div class="seg" role="group" aria-label="Color del fondo">
+    <button type="button" data-c="no" aria-pressed="false">Sin fondo</button>
+    <button type="button" data-c="blanco" aria-pressed="false"><i style="background:#fff"></i>Blanco</button>
+    <button type="button" data-c="negro" aria-pressed="true"><i style="background:#14100E"></i>Negro</button>
+    <button type="button" data-c="vino" aria-pressed="false"><i style="background:#662426"></i>Vino</button>
+    <button type="button" data-c="beige" aria-pressed="false"><i style="background:#DED8C7"></i>Beige</button>
+    <button type="button" data-c="verde" aria-pressed="false"><i style="background:#D9DFCE"></i>Verde gris</button>
+    <button type="button" data-c="oliva" aria-pressed="false"><i style="background:#4B483D"></i>Oliva</button>
+  </div>
+  <div class="seg" role="group" aria-label="Forma en ordenador y tableta">
+    <button type="button" data-f="tarjeta" aria-pressed="false">Tarjeta</button>
+    <button type="button" data-f="banda" aria-pressed="true">Banda a todo el ancho</button>
+  </div>
+  <span class="et">En el móvil</span>
+  <div class="seg" role="group" aria-label="Manera en el móvil">
+    <button type="button" data-m="conv" aria-pressed="true">La convocatoria en la banda</button>
+    <button type="button" data-m="botones" aria-pressed="false">Solo los botones en la banda</button>
+  </div>
+  <div class="seg" role="group" aria-label="Pantalla">
+    <button type="button" data-p="real" aria-pressed="true">Tu pantalla</button>
+    <button type="button" data-p="tabh" aria-pressed="false">Tableta horizontal</button>
+    <button type="button" data-p="tabv" aria-pressed="false">Tableta vertical</button>
+    <button type="button" data-p="movil" aria-pressed="false">Móvil</button>
+  </div>
+  <button type="button" class="ir" id="ir">Ver con la sección de abajo ↓</button>
+  <p class="desc" id="desc" aria-live="polite"></p>
+</header>
+<main class="escena" id="escena"><div class="marco" id="marco"><iframe id="portada" src="portada.html" title="Portada de Praxis del Sur"></iframe></div><p class="pie" id="pie" hidden></p></main>
+<script>
+(function(){
+  // Colores del Manual del CIPS. Los claros (blanco, beige, verde gris) llevan el texto oscuro; los oscuros, claro.
+  var COL = {
+    blanco: { bg: 'rgb(255 255 255 / .9)', claro: true, n: 'Blanco al 90 %' },
+    negro: { bg: 'rgb(16 13 11 / .62)', n: 'Negro al 62 %' },
+    vino: { bg: 'rgb(102 36 38 / .88)', n: 'Vino al 88 %' },
+    beige: { bg: 'rgb(222 216 199 / .92)', claro: true, n: 'Beige al 92 %' },
+    verde: { bg: 'rgb(217 223 206 / .92)', claro: true, n: 'Verde gris al 92 %' },
+    oliva: { bg: 'rgb(75 72 61 / .84)', n: 'Gris oliva al 84 %' }
+  };
+  var BANDA = 'background:var(--fondo);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)';
+  var OSCURO = { eye: '#4B483D', tit: '#1F1B18', em: '#662426', dt: '#5C574E', dd: '#1F1B18' };
+  var CSS = [
+    // la pastilla «Simulacro» no es parte del diseño: aquí no se enseña
+    '.ps-simulacro{display:none}',
+    // ---------- Ordenador y tableta (761 px o más): la línea de la convocatoria ----------
+    '@media (min-width: 761px){',
+    // tarjeta: sale un poco por los lados (margen negativo igual al relleno), para que la línea conserve su ancho y no se monte
+    'html[data-fondo] .ps-hero-pie{--pi:min(clamp(16px,2.2vw,36px),calc(var(--ps-gutter) - 8px));position:relative;isolation:isolate;padding:clamp(18px,1.8vw,28px) var(--pi);margin-inline:calc(-1 * var(--pi));border-radius:6px;' + BANDA + '}',
+    'html[data-fondo] .ps-hero--foto :is(.ps-eyebrow,.ps-hero-title,.ps-hero-fechas dd){text-shadow:none}',
+    // la tarjeta va más cerca del borde de abajo, para no subir hasta los pies de las personas
+    'html[data-fondo]:not([data-forma="banda"]) .ps-hero-cont{padding-bottom:clamp(12px,1.4vw,22px)}',
+    // banda: el mismo fondo, de borde a borde y hasta abajo
+    'html[data-fondo][data-forma="banda"] .ps-hero-cont{padding-bottom:0}',
+    'html[data-fondo][data-forma="banda"] .ps-hero-pie{background:none;border-radius:0;-webkit-backdrop-filter:none;backdrop-filter:none;padding-inline:0;margin-inline:0;padding-block:clamp(20px,2vw,30px) clamp(22px,2.4vw,36px)}',
+    'html[data-fondo][data-forma="banda"] .ps-hero-pie::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);' + BANDA + '}',
+    // fondos claros: texto oscuro, el título en vino y el segundo botón con borde vino
+    'html[data-fondo-claro] .ps-hero-conv .ps-eyebrow{color:' + OSCURO.eye + '}',
+    'html[data-fondo-claro] .ps-hero--foto .ps-hero-title{color:' + OSCURO.tit + '}',
+    'html[data-fondo-claro] .ps-hero--foto .ps-hero-title em{color:' + OSCURO.em + '}',
+    'html[data-fondo-claro] .ps-hero-fechas dt{color:' + OSCURO.dt + '}',
+    'html[data-fondo-claro] .ps-hero-fechas dd{color:' + OSCURO.dd + '}',
+    'html[data-fondo-claro] .ps-hero--foto .ps-btn--ghost{background:transparent;border-color:#662426;color:#662426}',
+    '}',
+    // pantallas bajas: menos relleno, para no tocar los pies de las personas
+    '@media (min-width: 761px) and (max-height: 800px){html[data-fondo] .ps-hero-pie{padding-block:14px}html[data-fondo][data-forma="banda"] .ps-hero-pie{padding-block:14px 18px}}',
+
+    // ---------- Móvil (hasta 760 px): siempre banda de borde a borde, abajo ----------
+    '@media (max-width: 760px){',
+    // la banda: una capa bajo el primer elemento que va en ella, hasta el final de la portada (que recorta lo que sobra)
+    'html[data-fondo] .ps-hero--foto{overflow:hidden}',
+    // 1 · la convocatoria en la banda: arriba el nombre, lo esencial y la línea de datos; abajo, en la banda, la convocatoria y los botones
+    'html[data-fondo][data-movil="conv"] .ps-esenciales{grid-row:2;margin-top:16px}',
+    'html[data-fondo][data-movil="conv"] .ps-hero-folio{grid-row:3}',
+    'html[data-fondo][data-movil="conv"] .ps-hero-conv{grid-row:5;margin-top:0;position:relative}',
+    'html[data-fondo][data-movil="conv"] .ps-hero-fechas{grid-row:6;margin-top:10px}',
+    'html[data-fondo][data-movil="conv"] .ps-hero-conv::before{content:"";position:absolute;z-index:-1;top:-18px;height:200vh;left:calc(50% - 50vw);width:100vw;' + BANDA + '}',
+    // la foto ocupa justo la primera pantalla (las personas, en su sitio) y la portada se alarga lo que haga falta para que la banda
+    // empiece bajo sus pies; debajo de la foto, el mismo oscuro de la calle
+    'html[data-fondo][data-movil="conv"] .ps-hero.ps-hero--foto{min-height:max(100svh, calc(73.5svh + 14px + var(--banda-alto, 230px)));background:#1A1714}',
+    'html[data-fondo][data-movil="conv"] :is(.ps-hero-foto,.ps-hero-velo){height:100svh;bottom:auto}',
+    'html[data-fondo][data-movil="conv"] .ps-hero--foto :is(.ps-hero-conv .ps-eyebrow,.ps-hero-title,.ps-hero-fechas dd){text-shadow:none}',
+    'html[data-fondo-claro][data-movil="conv"] .ps-hero-conv .ps-eyebrow{color:' + OSCURO.eye + '}',
+    'html[data-fondo-claro][data-movil="conv"] .ps-hero--foto .ps-hero-title{color:' + OSCURO.tit + '}',
+    'html[data-fondo-claro][data-movil="conv"] .ps-hero--foto .ps-hero-title em{color:' + OSCURO.em + '}',
+    'html[data-fondo-claro][data-movil="conv"] .ps-hero-fechas dt{color:' + OSCURO.dt + '}',
+    'html[data-fondo-claro][data-movil="conv"] .ps-hero-fechas dd{color:' + OSCURO.dd + '}',
+    // 2 · solo los botones en la banda (con lo esencial y la línea de datos); la convocatoria se queda arriba, como ahora
+    'html[data-fondo][data-movil="botones"] .ps-esenciales{position:relative}',
+    'html[data-fondo][data-movil="botones"] .ps-esenciales::before{content:"";position:absolute;z-index:-1;top:-12px;height:200vh;left:calc(50% - 50vw);width:100vw;' + BANDA + '}',
+    'html[data-fondo][data-movil="botones"] .ps-hero--foto :is(.ps-esenciales li,.ps-hero-folio){text-shadow:none}',
+    'html[data-fondo-claro][data-movil="botones"] .ps-esenciales li{color:' + OSCURO.tit + '}',
+    'html[data-fondo-claro][data-movil="botones"] .ps-hero-folio{color:' + OSCURO.eye + '}',
+    'html[data-fondo-claro] .ps-hero--foto .ps-btn--ghost{background:transparent;border-color:#662426;color:#662426}',
+    '}'
+  ].join('\n');
+  var f = document.getElementById('portada'), marco = document.getElementById('marco'), esc = document.getElementById('escena'), desc = document.getElementById('desc'), pie = document.getElementById('pie');
+  var c = 'negro', forma = 'banda', movil = 'conv', pant = 'real';
+  var DISP = { tabh: [1024, 768, 'una tableta horizontal'], tabv: [820, 1180, 'una tableta vertical'], movil: [390, 664, 'un móvil'] };
+  function aplicar(){
+    try {
+      var d = f.contentDocument; if (!d || !d.documentElement) return;
+      var h = d.documentElement;
+      if (!d.getElementById('ps-fondo')) { var st = d.createElement('style'); st.id = 'ps-fondo'; st.textContent = CSS; (d.head || h).appendChild(st); }
+      if (c === 'no') { h.removeAttribute('data-fondo'); h.removeAttribute('data-fondo-claro'); h.style.removeProperty('--fondo'); }
+      else {
+        h.setAttribute('data-fondo', c); h.style.setProperty('--fondo', COL[c].bg);
+        if (COL[c].claro) h.setAttribute('data-fondo-claro', ''); else h.removeAttribute('data-fondo-claro');
+      }
+      h.setAttribute('data-forma', forma); h.setAttribute('data-movil', movil);
+    } catch (e) {}
+    var t = c === 'no' ? '<b>Sin fondo</b>, como está ahora.' : '<b>' + COL[c].n + '</b>, ' + (forma === 'banda' ? 'en banda de borde a borde' : 'en tarjeta') + ' en ordenador y tableta. ';
+    if (c !== 'no') t += movil === 'conv'
+      ? 'En el móvil, la convocatoria (título, fechas y botones) baja a la banda; lo esencial y la línea de datos suben bajo el nombre.'
+      : 'En el móvil, la banda va detrás de lo esencial, la línea de datos y los botones; la convocatoria se queda arriba, como ahora.';
+    desc.innerHTML = t;
+  }
+  function encajar(){
+    var p = DISP[pant];
+    esc.classList.toggle('disp', !!p); esc.classList.toggle('movil', pant === 'movil');
+    if (!p) { marco.style.width = marco.style.height = ''; f.style.width = f.style.height = f.style.transform = ''; pie.hidden = true; return; }
+    var s = Math.min(1, (esc.clientWidth - 40) / p[0], (esc.clientHeight - 48) / p[1]);
+    f.style.width = p[0] + 'px'; f.style.height = p[1] + 'px'; f.style.transform = 'scale(' + s + ')';
+    marco.style.width = Math.round(p[0] * s) + 'px'; marco.style.height = Math.round(p[1] * s) + 'px';
+    pie.hidden = false; pie.textContent = 'Lo que se ve sin bajar en ' + p[2] + ' (' + p[0] + ' × ' + p[1] + ' px)' + (s < 1 ? ', aquí reducido al ' + Math.round(s * 100) + ' %' : '') + '. Puedes bajar dentro.';
+  }
+  f.addEventListener('load', aplicar);
+  function grupo(attr, fn){
+    document.querySelectorAll('[' + attr + ']').forEach(function(b){
+      b.addEventListener('click', function(){
+        document.querySelectorAll('[' + attr + ']').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        fn(b.getAttribute(attr));
+      });
+    });
+  }
+  grupo('data-c', function(x){ c = x; aplicar(); });
+  grupo('data-f', function(x){ forma = x; aplicar(); });
+  grupo('data-m', function(x){ movil = x; aplicar(); });
+  grupo('data-p', function(x){ pant = x; encajar(); });
+  window.addEventListener('resize', encajar);
+  // ver la unión con «Sobre la revista»: el final de la portada arriba y la sección de abajo entrando
+  var abajo = false, ir = document.getElementById('ir');
+  ir.addEventListener('click', function(){
+    try {
+      var w = f.contentWindow, hero = f.contentDocument.querySelector('.ps-hero--foto');
+      var y = abajo ? 0 : hero.offsetTop + hero.offsetHeight - w.innerHeight * 0.5;
+      w.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      abajo = !abajo; ir.textContent = abajo ? 'Volver arriba ↑' : 'Ver con la sección de abajo ↓';
+    } catch (e) {}
+  });
+  encajar(); aplicar();
+})();
+</script>

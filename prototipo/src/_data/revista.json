@@ -1,8 +1,10 @@
 {
   "nombre": "Praxis del Sur",
   "firma": "Revista del CIPS",
+  "firmaVisible": "Una revista del CIPS",
   "institucion": "Centro de Investigaciones Psicológicas y Sociológicas",
   "institucionCorta": "CIPS",
+  "institucionWeb": "https://www.cips.cu/",
   "lema": "Ciencias sociales críticas desde el Sur Global, con anclaje en Cuba.",
   "descripcion": "Revista académica de acceso abierto del Centro de Investigaciones Psicológicas y Sociológicas (CIPS), dedicada a difundir investigaciones y a promover el debate del pensamiento crítico y descolonial desde la perspectiva del Sur Global, en particular para Cuba, América Latina y el Caribe.",
   "mision": "Constituir un espacio abierto y riguroso para difundir conocimientos sobre la realidad social y promover el debate de temas relevantes desde la perspectiva del Sur Global, particularmente para Cuba, América Latina y el Caribe.",
@@ -91,5 +93,10 @@
     "credito": null,
     "nota": "Pendiente: autoría y permiso de la foto, y confirmar que es el Malecón. El original está en identidad/fotos."
   },
-  "ciudad": "La Habana, Cuba"
+  "ciudad": "La Habana, Cuba",
+  "creditos": {
+    "texto": "Desarrollado y diseñado por",
+    "nombre": "Estudio Garabatos",
+    "url": "https://estudiogarabatos.com"
+  }
 }
