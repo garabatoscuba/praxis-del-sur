@@ -28,7 +28,8 @@ cabeceraSobreHeroe: true
       <div class="ps-hero-cielo">
         <div class="ps-hero-marca">
           <h1 id="hero-nombre" class="ps-hero-nombre">{% logo "praxis-del-sur", "ps-hero-logo", revista.nombre %}</h1>
-          <p class="ps-hero-firma">{{ revista.firma }}</p>
+          {#- El sello del CIPS: su isotipo (trazado desde el logo del sitio del CIPS), en dorado. -#}
+          <p class="ps-hero-firma"><svg class="ps-hero-sello" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>{{ revista.firma }}</p>
           <p class="ps-hero-lema">{{ revista.lema }}</p>
         </div>
         <ul class="ps-esenciales">
@@ -36,6 +37,10 @@ cabeceraSobreHeroe: true
           <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{{ iconos[e.icono] | safe }}</svg>{{ e.titulo }}</li>
           {%- endfor %}
         </ul>
+        {#- Línea de datos, como en la cabecera de una revista impresa. El ISSN es de ejemplo hasta que llegue el real (revista.issn). -#}
+        <p class="ps-hero-folio">
+          <span>e-ISSN {{ revista.issn or revista.issnEjemplo }}</span><i aria-hidden="true">·</i><span>{{ c.volumen }}</span><i aria-hidden="true">·</i><span>{{ revista.ciudad }}</span><i aria-hidden="true">·</i><span>{{ revista.licencia.corta }}</span>
+        </p>
       </div>
       <div class="ps-hero-pie">
         <div class="ps-hero-conv">

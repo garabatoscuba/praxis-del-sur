@@ -62,6 +62,8 @@
   "idiomas": "Español",
   "idiomasNota": "La convocatoria admite inglés y portugués; el equipo propone solo español en el primer número.",
   "issn": null,
+  "issnEjemplo": "0000-0000",
+  "issnNota": "ISSN falso, solo para el simulacro (la usuaria lo pidió para ver cómo luce). Cuando llegue el real, va en \"issn\" y este deja de usarse.",
   "indexacion": [
     {
       "plazo": "Corto plazo (1 a 2 años)",
@@ -88,5 +90,6 @@
     "alt": "Dos personas junto al muro del Malecón, frente al mar, bajo un cielo nublado",
     "credito": null,
     "nota": "Pendiente: autoría y permiso de la foto, y confirmar que es el Malecón. El original está en identidad/fotos."
-  }
+  },
+  "ciudad": "La Habana, Cuba"
 }

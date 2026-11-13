@@ -207,11 +207,16 @@
 .ps-hero-cielo { min-height: calc(var(--ps-horiz) - var(--ps-head-h)); display: grid; align-content: center; justify-items: start; padding-block: 12px 20px; }
 .ps-hero-nombre { margin: 0; line-height: 0; }
 .ps-hero-logo { display: block; width: clamp(330px, 50vw, 780px); max-width: 100%; height: auto; color: var(--ps-paper); }
-.ps-hero-firma { margin-top: 12px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ps-beige); }
+.ps-hero-firma { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ps-beige); }
 .ps-hero-lema { margin-top: 10px; text-wrap: balance; font-family: var(--ps-serif); font-style: italic; font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.4375rem); line-height: 1.35; color: #F3EFE6; }
 .ps-esenciales { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .ps-esenciales li { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 600; color: var(--ps-paper); }
 .ps-esenciales svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--ps-gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+/* Línea de datos de revista: ISSN, volumen, ciudad y licencia */
+.ps-hero-folio { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-beige); }
+.ps-hero-folio i { font-style: normal; color: var(--ps-gold); }
+/* Sello del CIPS (su isotipo) delante de «Revista del CIPS» */
+.ps-hero-sello { display: block; width: 1.5em; height: 1.5em; flex: none; fill: var(--ps-gold); }
 .ps-hero-pie {
   grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 18px 36px;
 }
@@ -227,23 +232,25 @@
 .ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 9px 20px; font-size: 0.9375rem; white-space: nowrap; }
 .ps-hero--foto .ps-btn--ghost { background: rgb(20 16 14 / 0.12); border-color: rgb(255 255 255 / 0.7); }
 .ps-hero--foto :is(.ps-hero-firma, .ps-hero-lema, .ps-esenciales li, .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: 0 1px 14px rgb(0 0 0 / 0.28); }
-/* Pantallas medianas: el título arriba y, debajo, fechas y botones */
-@media (max-width: 1100px) {
-  .ps-hero-pie { grid-template-columns: auto minmax(0, 1fr); }
-  .ps-hero-conv { grid-column: 1 / -1; }
-  .ps-hero.ps-hero--foto .ps-actions { justify-self: end; }
-}
 /* Escala de letra elegida (opción 4 de afinar/letras.html, 13 nov 2026): crece con la pantalla para que en un monitor grande
    no se quede en tamaños de pie de foto. Arriba, «Revista del CIPS» encima del nombre y el lema como segundo nivel; abajo, título,
-   fechas y botones en una línea (el título en dos, hasta 38 px). Solo desde 761 px: el móvil queda como estaba. */
+   fechas y botones en una línea (el título en dos, hasta 38 px).
+   Cabecera de revista (opción 3 de afinar/cabecera.html): todo centrado, el sello del CIPS delante de la firma y la línea de datos
+   entre dos filetes, un poco más grande y más clara. Solo desde 761 px: el móvil queda como estaba. */
 @media (min-width: 761px) {
-  .ps-hero-marca { display: flex; flex-direction: column; align-items: flex-start; }
-  .ps-hero-firma { order: -1; margin: 0 0 14px; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); }
+  .ps-hero-cielo { justify-items: center; text-align: center; }
+  .ps-hero-marca { display: flex; flex-direction: column; align-items: center; }
+  .ps-hero-firma { order: -1; gap: 10px; margin: 0 0 14px; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); }
   .ps-hero-lema { margin-top: 14px; font-size: clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem); }
-  .ps-esenciales { margin-top: 26px; gap: 10px 26px; }
-  .ps-esenciales li { gap: 10px; font-size: clamp(0.9375rem, 0.7rem + 0.3vw, 1.125rem); }
+  .ps-esenciales { justify-content: center; margin-top: 26px; gap: 10px 26px; }
+  .ps-esenciales li { gap: 10px; font-size: clamp(0.9375rem, 0.5rem + 0.52vw, 1.1875rem); }
   .ps-esenciales svg { width: 1.45em; height: 1.45em; }
   .ps-hero-pie { gap: 18px 28px; }
+  .ps-hero-folio {
+    justify-content: center; margin-top: 22px; padding: 9px 20px; color: #EFEAE0;
+    border-top: 1px solid rgb(222 216 199 / 0.45); border-bottom: 1px solid rgb(222 216 199 / 0.45);
+    font-size: clamp(0.8125rem, 0.5rem + 0.4vw, 1rem);
+  }
   .ps-hero-conv .ps-eyebrow { font-size: clamp(0.8125rem, 0.6rem + 0.25vw, 0.9375rem); white-space: nowrap; }
   .ps-hero--foto .ps-hero-title { font-size: clamp(1.75rem, 0.9rem + 1.45vw, 2.375rem); text-wrap: balance; }
   .ps-hero-fechas { column-gap: 22px; }
@@ -253,6 +260,25 @@
 }
 /* el lema, en una sola línea donde cabe */
 @media (min-width: 1101px) { .ps-hero-lema { white-space: nowrap; } }
+/* Tabletas y portátiles pequeños: la misma línea de abajo (título | fechas | botones), más compacta. La usuaria no quiere que
+   esa estructura se rompa: las fechas van una debajo de la otra y, en las pantallas más estrechas, también los botones. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .ps-hero-pie { gap: 16px 22px; }
+  .ps-hero-fechas { flex-direction: column; gap: 8px; }
+  .ps-hero--foto .ps-actions .ps-btn { padding-inline: 16px; }
+}
+@media (min-width: 761px) and (max-width: 900px) {
+  .ps-hero.ps-hero--foto .ps-actions { flex-direction: column; align-items: stretch; }
+}
+/* Pantallas bajas (portátiles de 1366 × 657, por ejemplo): menos aire en la cabecera, para que la línea de datos no llegue
+   al horizonte ni a las dos personas del muro */
+@media (min-width: 761px) and (max-height: 760px) {
+  .ps-hero-logo { width: min(clamp(330px, 50vw, 780px), 98vh); }
+  .ps-hero-firma { margin-bottom: 10px; }
+  .ps-hero-lema { margin-top: 8px; }
+  .ps-esenciales { margin-top: 16px; }
+  .ps-hero-folio { margin-top: 14px; padding-block: 6px; }
+}
 .ps-brujula svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .ps-hero-grid--numero .ps-hero-title { font-size: var(--ps-step-4); }
 .ps-hero-cover { max-width: 360px; width: 100%; }
