@@ -208,13 +208,12 @@
 .ps-hero-nombre { margin: 0; line-height: 0; }
 .ps-hero-logo { display: block; width: clamp(330px, 50vw, 780px); max-width: 100%; height: auto; color: var(--ps-paper); }
 .ps-hero-firma { margin-top: 12px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ps-beige); }
-.ps-hero-lema { margin-top: 10px; max-width: 40ch; font-family: var(--ps-serif); font-style: italic; font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.4375rem); line-height: 1.35; color: #F3EFE6; }
+.ps-hero-lema { margin-top: 10px; text-wrap: balance; font-family: var(--ps-serif); font-style: italic; font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.4375rem); line-height: 1.35; color: #F3EFE6; }
 .ps-esenciales { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .ps-esenciales li { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 600; color: var(--ps-paper); }
 .ps-esenciales svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--ps-gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .ps-hero-pie {
   grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 18px 36px;
-  padding-top: 18px; border-top: 1px solid color-mix(in srgb, var(--ps-beige) 45%, transparent);
 }
 .ps-hero-conv { display: grid; gap: 10px; justify-items: start; }
 .ps-hero-conv .ps-eyebrow { font-size: 0.75rem; letter-spacing: 0.13em; }
@@ -234,6 +233,26 @@
   .ps-hero-conv { grid-column: 1 / -1; }
   .ps-hero.ps-hero--foto .ps-actions { justify-self: end; }
 }
+/* Escala de letra elegida (opción 4 de afinar/letras.html, 13 nov 2026): crece con la pantalla para que en un monitor grande
+   no se quede en tamaños de pie de foto. Arriba, «Revista del CIPS» encima del nombre y el lema como segundo nivel; abajo, título,
+   fechas y botones en una línea (el título en dos, hasta 38 px). Solo desde 761 px: el móvil queda como estaba. */
+@media (min-width: 761px) {
+  .ps-hero-marca { display: flex; flex-direction: column; align-items: flex-start; }
+  .ps-hero-firma { order: -1; margin: 0 0 14px; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); }
+  .ps-hero-lema { margin-top: 14px; font-size: clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem); }
+  .ps-esenciales { margin-top: 26px; gap: 10px 26px; }
+  .ps-esenciales li { gap: 10px; font-size: clamp(0.9375rem, 0.7rem + 0.3vw, 1.125rem); }
+  .ps-esenciales svg { width: 1.45em; height: 1.45em; }
+  .ps-hero-pie { gap: 18px 28px; }
+  .ps-hero-conv .ps-eyebrow { font-size: clamp(0.8125rem, 0.6rem + 0.25vw, 0.9375rem); white-space: nowrap; }
+  .ps-hero--foto .ps-hero-title { font-size: clamp(1.75rem, 0.9rem + 1.45vw, 2.375rem); text-wrap: balance; }
+  .ps-hero-fechas { column-gap: 22px; }
+  .ps-hero-fechas dt { font-size: 0.75rem; }
+  .ps-hero-fechas dd { font-size: clamp(1.1875rem, 0.8rem + 0.5vw, 1.3125rem); }
+  .ps-hero--foto .ps-actions .ps-btn { min-height: 50px; padding: 12px 22px; font-size: clamp(1rem, 0.85rem + 0.2vw, 1.125rem); }
+}
+/* el lema, en una sola línea donde cabe */
+@media (min-width: 1101px) { .ps-hero-lema { white-space: nowrap; } }
 .ps-brujula svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .ps-hero-grid--numero .ps-hero-title { font-size: var(--ps-step-4); }
 .ps-hero-cover { max-width: 360px; width: 100%; }

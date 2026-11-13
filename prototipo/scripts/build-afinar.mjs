@@ -2,7 +2,7 @@
 // Usa la versión para claude.ai (ejecutar antes scripts/build-artifact.mjs).
 // A cada página le añade al principio un script que toma los valores de las barras de la herramienta
 // (window.__psAfinar en la página de fuera), para que entre ya con ellos.
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 rmSync('_afinar', { recursive: true, force: true });
 mkdirSync('_afinar');
@@ -21,4 +21,7 @@ writeFileSync('_afinar/articulo.html', conPrevio(readFileSync('_artifact/articul
 writeFileSync('_afinar/index.html', readFileSync('afinar/movimiento.html', 'utf8'));
 writeFileSync('_afinar/calendario.html', readFileSync('afinar/calendario.html', 'utf8'));
 writeFileSync('_afinar/movil.html', readFileSync('afinar/movil.html', 'utf8'));
+writeFileSync('_afinar/letras.html', readFileSync('afinar/letras.html', 'utf8'));
+// la foto de la portada, para que portada.html la encuentre
+cpSync('_artifact/img', '_afinar/img', { recursive: true });
 console.log('Listo: _afinar/index.html (movimiento), calendario.html, movil.html, portada.html, portada-numero.html y articulo.html');

@@ -13,11 +13,18 @@
   </div>
 </details>
 <script>
-// En el móvil, la pastilla taparía el botón «Enviar contribución» de la portada: se esconde mientras esos botones se ven.
+// La pastilla taparía la línea de la convocatoria de la portada (en el móvil y en pantallas medianas, donde el texto empieza
+// pegado al borde): se esconde mientras esa línea se ve y la pastilla la pisa. En monitores anchos queda a la vista.
 (function(){
-  var sim = document.querySelector('.ps-simulacro'), acc = document.querySelector('.ps-hero--foto .ps-actions');
-  if (!sim || !acc || !('IntersectionObserver' in window)) return;
-  var movil = window.matchMedia('(max-width: 760px)');
-  new IntersectionObserver(function(e){ sim.classList.toggle('is-tapando', e[0].isIntersecting && movil.matches); }).observe(acc);
+  var sim = document.querySelector('.ps-simulacro'), acc = document.querySelector('.ps-hero--foto .ps-actions'), cont = document.querySelector('.ps-hero-cont');
+  if (!sim || !acc || !cont || !('IntersectionObserver' in window)) return;
+  var visible = false;
+  function pisa(){
+    var c = cont.getBoundingClientRect(), izq = c.left + parseFloat(getComputedStyle(cont).paddingLeft);
+    return izq < sim.getBoundingClientRect().right + 8;
+  }
+  function poner(){ sim.classList.toggle('is-tapando', visible && pisa()); }
+  new IntersectionObserver(function(e){ visible = e[0].isIntersecting; poner(); }).observe(acc);
+  window.addEventListener('resize', poner);
 })();
 </script>

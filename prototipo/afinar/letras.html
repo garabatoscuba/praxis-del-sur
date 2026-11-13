@@ -1,0 +1,109 @@
+<title>Letras de la portada</title>
+<meta name="description" content="La portada de Praxis del Sur a tamaño real, con tres escalas de letra para comparar.">
+<style>
+/* La herramienta: una barra arriba con las escalas y, debajo, la portada de verdad (portada.html) a tamaño real en tu pantalla.
+   Cada escala es CSS que se inyecta en la portada (solo en pantallas de más de 760 px: el móvil no cambia). */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;--accent:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;--accent:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;--accent:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.45;display:flex;flex-direction:column}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--surface)}
+.barra h1{margin:0;font-size:15px;font-weight:700}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:6px 13px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.desc{flex:1 1 360px;margin:0;color:var(--muted);font-size:13.5px}
+.desc b{color:var(--fg)}
+.escena{flex:1;min-height:0;display:grid;place-items:center;background:#D8D2C4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .escena{background:#0E0C0A}}
+:root[data-theme="dark"] .escena{background:#0E0C0A}
+iframe{display:block;border:0;width:100%;height:100%;background:#4A4844}
+.escena.movil iframe{width:390px;height:min(760px,calc(100% - 32px));border-radius:22px;box-shadow:0 0 0 7px #1F1B18}
+@media (max-width:700px){.escena.movil iframe{width:100%;height:100%;border-radius:0;box-shadow:none}}
+</style>
+<header class="barra">
+  <h1>Letras de la portada</h1>
+  <div class="seg" role="group" aria-label="Escala de letra">
+    <button type="button" data-v="0" aria-pressed="false">Como está</button>
+    <button type="button" data-v="1" aria-pressed="false">1 · Un punto más</button>
+    <button type="button" data-v="2" aria-pressed="false">2 · Más ancho</button>
+    <button type="button" data-v="3" aria-pressed="false">3 · Lema protagonista</button>
+    <button type="button" data-v="4" aria-pressed="true">4 · La 3, abajo en línea</button>
+  </div>
+  <div class="seg" role="group" aria-label="Pantalla">
+    <button type="button" data-p="real" aria-pressed="true">Tu pantalla</button>
+    <button type="button" data-p="movil" aria-pressed="false">Móvil</button>
+  </div>
+  <p class="desc" id="desc" aria-live="polite"></p>
+</header>
+<main class="escena" id="escena"><iframe id="portada" src="portada.html" title="Portada de Praxis del Sur"></iframe></main>
+<script>
+(function(){
+  // Las escalas. Solo en pantallas de más de 760 px; en el móvil la portada queda como está.
+  // Todas crecen con la pantalla (vw) hasta un tope, para que en un monitor grande no se queden en tamaños de pie de foto.
+  var BASE = [
+    // 1 · todo un punto más grande y creciendo con la pantalla; abajo, el título en una línea y, debajo, fechas y botones
+    'html[data-letras="1"] .ps-hero-firma, html[data-letras="2"] .ps-hero-firma, html[data-letras="3"] .ps-hero-firma, html[data-letras="4"] .ps-hero-firma{font-size:clamp(.8125rem,.55rem + .35vw,1rem)}',
+    'html[data-letras="1"] .ps-hero-lema, html[data-letras="2"] .ps-hero-lema{font-size:clamp(1.375rem,.75rem + 1vw,2.125rem)}',
+    'html[data-letras="1"] .ps-esenciales li, html[data-letras="2"] .ps-esenciales li, html[data-letras="3"] .ps-esenciales li, html[data-letras="4"] .ps-esenciales li{font-size:clamp(.9375rem,.7rem + .3vw,1.125rem);gap:10px}',
+    'html[data-letras] .ps-esenciales{gap:10px 26px}',
+    'html[data-letras="1"] .ps-esenciales svg, html[data-letras="2"] .ps-esenciales svg, html[data-letras="3"] .ps-esenciales svg, html[data-letras="4"] .ps-esenciales svg{width:1.45em;height:1.45em}',
+    'html[data-letras="1"] .ps-hero-conv .ps-eyebrow, html[data-letras="2"] .ps-hero-conv .ps-eyebrow, html[data-letras="3"] .ps-hero-conv .ps-eyebrow, html[data-letras="4"] .ps-hero-conv .ps-eyebrow{font-size:clamp(.8125rem,.6rem + .25vw,.9375rem)}',
+    'html[data-letras="1"] .ps-hero--foto .ps-hero-title, html[data-letras="2"] .ps-hero--foto .ps-hero-title, html[data-letras="3"] .ps-hero--foto .ps-hero-title{font-size:clamp(1.875rem,.9rem + 1.9vw,3.25rem)}',
+    'html[data-letras="1"] .ps-hero-pie, html[data-letras="2"] .ps-hero-pie, html[data-letras="3"] .ps-hero-pie{grid-template-columns:auto auto minmax(0,1fr);gap:18px 40px}',
+    'html[data-letras="1"] .ps-hero-conv, html[data-letras="2"] .ps-hero-conv, html[data-letras="3"] .ps-hero-conv{grid-column:1 / -1}',
+    'html[data-letras="1"] .ps-hero-fechas dt, html[data-letras="2"] .ps-hero-fechas dt, html[data-letras="3"] .ps-hero-fechas dt, html[data-letras="4"] .ps-hero-fechas dt{font-size:.75rem}',
+    'html[data-letras="1"] .ps-hero-fechas dd, html[data-letras="2"] .ps-hero-fechas dd, html[data-letras="3"] .ps-hero-fechas dd{font-size:clamp(1.25rem,.8rem + .6vw,1.625rem)}',
+    'html[data-letras="1"] .ps-hero--foto .ps-actions, html[data-letras="2"] .ps-hero--foto .ps-actions, html[data-letras="3"] .ps-hero--foto .ps-actions{justify-self:end}',
+    'html[data-letras="1"] .ps-hero--foto .ps-actions .ps-btn, html[data-letras="2"] .ps-hero--foto .ps-actions .ps-btn, html[data-letras="3"] .ps-hero--foto .ps-actions .ps-btn, html[data-letras="4"] .ps-hero--foto .ps-actions .ps-btn{min-height:50px;padding:12px 26px;font-size:clamp(1rem,.85rem + .2vw,1.125rem)}',
+    // 2 · además, más ancho en pantallas grandes (la barra de arriba se alinea) y el nombre más grande
+    'html[data-letras="2"] .ps-hero-cont, html[data-letras="2"] .pkp_head_wrapper{max-width:min(1480px,88vw)}',
+    'html[data-letras="2"] .ps-hero-logo{width:clamp(330px,54vw,1060px)}',
+    // 3 · el lema pasa a ser el segundo nivel: más grande, en una línea; la firma, encima del nombre como en una cabecera
+    'html[data-letras="3"] .ps-hero-marca, html[data-letras="4"] .ps-hero-marca{display:flex;flex-direction:column;align-items:flex-start}',
+    'html[data-letras="3"] .ps-hero-firma, html[data-letras="4"] .ps-hero-firma{order:-1;margin:0 0 14px}',
+    'html[data-letras="3"] .ps-hero-lema, html[data-letras="4"] .ps-hero-lema{margin-top:14px;font-size:clamp(1.75rem,.9rem + 1.3vw,2.375rem);white-space:nowrap}',
+    'html[data-letras="3"] .ps-esenciales, html[data-letras="4"] .ps-esenciales{margin-top:26px}',
+    // 4 · arriba como la 3; abajo, grande pero en una línea (título | fechas | botones), como estaba
+    'html[data-letras="4"] .ps-hero-pie{gap:18px 28px}',
+    'html[data-letras="4"] .ps-hero-conv .ps-eyebrow{white-space:nowrap}',
+    'html[data-letras="4"] .ps-hero--foto .ps-hero-title{font-size:clamp(1.75rem,.9rem + 1.45vw,2.375rem);text-wrap:balance}',
+    'html[data-letras="4"] .ps-hero-fechas{column-gap:22px}',
+    'html[data-letras="4"] .ps-hero-fechas dd{font-size:clamp(1.1875rem,.8rem + .5vw,1.3125rem)}',
+    'html[data-letras="4"] .ps-hero--foto .ps-actions .ps-btn{padding:12px 22px}'
+  ].join('\n');
+  var CSS = '@media (min-width: 761px){\n' + BASE + '\n}';
+  var DESC = {
+    0: '<b>Como está</b> (ya con el lema en una línea y sin la raya de abajo): en un monitor grande, todo menos el nombre se queda en 12 a 15 px.',
+    1: '<b>Un punto más:</b> todo crece con la pantalla. En un monitor de 1920 px, el lema pasa de 23 a 31 px, lo esencial de 14 a 17 y el título de la convocatoria de 32 a 50. Abajo, el título va en una línea y las fechas y los botones debajo.',
+    2: '<b>Más ancho:</b> lo de la 1, y en pantallas grandes la portada usa más ancho (hasta 1480 px) y el nombre crece hasta unos 1000 px. La barra de arriba se alinea con él.',
+    4: '<b>La 3, abajo en línea:</b> arriba como la 3 (lema grande y «Revista del CIPS» encima del nombre). Abajo, los tamaños grandes, pero título, fechas y botones uno al lado del otro, como estaba: el título va en dos líneas (hasta 38 px) para que todo quepa.',
+    3: '<b>Lema protagonista:</b> lo de la 1, con el lema como segundo nivel (hasta 38 px, siempre en una línea) y «Revista del CIPS» encima del nombre, como en la cabecera de una revista impresa.'
+  };
+  var f = document.getElementById('portada'), esc = document.getElementById('escena'), desc = document.getElementById('desc'), v = '4';
+  function aplicar(){
+    try {
+      var d = f.contentDocument; if (!d || !d.documentElement) return;
+      if (!d.getElementById('ps-letras')) { var st = d.createElement('style'); st.id = 'ps-letras'; st.textContent = CSS; (d.head || d.documentElement).appendChild(st); }
+      if (v === '0') d.documentElement.removeAttribute('data-letras'); else d.documentElement.setAttribute('data-letras', v);
+    } catch (e) {}
+    desc.innerHTML = DESC[v];
+  }
+  f.addEventListener('load', aplicar);
+  function grupo(attr, fn){
+    document.querySelectorAll('[' + attr + ']').forEach(function(b){
+      b.addEventListener('click', function(){
+        document.querySelectorAll('[' + attr + ']').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        fn(b.getAttribute(attr));
+      });
+    });
+  }
+  grupo('data-v', function(x){ v = x; aplicar(); });
+  grupo('data-p', function(x){ esc.classList.toggle('movil', x === 'movil'); });
+  aplicar();
+})();
+</script>
