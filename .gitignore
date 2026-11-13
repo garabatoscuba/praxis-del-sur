@@ -2,6 +2,8 @@ node_modules/
 _site/
 _artifact/
 _afinar/
+_pages/
+_publico/
 dist/
 .cache/
 *.log

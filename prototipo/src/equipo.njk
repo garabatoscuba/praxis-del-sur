@@ -15,11 +15,13 @@ permalink: equipo.html
         <h2>{{ g.rol }}</h2>
         <ul>
           {%- for p in g.personas %}
-          <li{% if p.pendiente %} class="is-pendiente"{% endif %}>
-            <span class="ps-persona">{{ p.nombre }}</span>
+          {#- En la versión pública (site.publico) los nombres propios salen como «Por confirmar» hasta que se apruebe la estructura. -#}
+          {%- set oculto = site.publico and p.privado %}
+          <li{% if p.pendiente or oculto %} class="is-pendiente"{% endif %}>
+            <span class="ps-persona">{% if oculto %}Por confirmar{% else %}{{ p.nombre }}{% endif %}</span>
             {%- if p.cargo %}<span class="ps-cargo">{{ p.cargo }}</span>{% endif %}
             {%- if p.afiliacion %}<span class="ps-afil">{{ p.afiliacion }}</span>{% endif %}
-            {%- if p.nota %}<span class="ps-pendiente">{{ p.nota }}</span>{% endif %}
+            {%- if p.nota and not oculto %}<span class="ps-pendiente">{{ p.nota }}</span>{% endif %}
           </li>
           {%- endfor %}
         </ul>

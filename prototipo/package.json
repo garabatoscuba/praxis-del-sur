@@ -6,7 +6,8 @@
   "scripts": {
     "build": "eleventy",
     "build:artifact": "node scripts/build-artifact.mjs",
-    "dev": "eleventy --serve --port=4318"
+    "dev": "eleventy --serve --port=4318",
+    "publicar": "node scripts/publicar-pages.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.8",

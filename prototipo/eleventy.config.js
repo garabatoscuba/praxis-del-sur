@@ -7,7 +7,9 @@ import { join } from 'node:path';
 
 export default function (eleventyConfig) {
   const artifact = process.env.ARTIFACT === '1';
-  eleventyConfig.addGlobalData('site', { artifact });
+  // PUBLICO=1: la versión que se sube a GitHub Pages (npm run publicar), sin los nombres propios del equipo
+  const publico = process.env.PUBLICO === '1';
+  eleventyConfig.addGlobalData('site', { artifact, publico });
 
   if (!artifact) {
     eleventyConfig.addPassthroughCopy({ 'src/css': 'css', 'src/img': 'img' });
@@ -16,6 +18,8 @@ export default function (eleventyConfig) {
   }
 
   // Foto de la portada: versiones ligeras hechas desde identidad/fotos/malecon-original.webp
+  // Icono de la pestaña: la «a» del logo de la usuaria
+  eleventyConfig.addPassthroughCopy({ '../identidad/logo/a.svg': 'img/favicon.svg' });
   eleventyConfig.addPassthroughCopy({ '../identidad/fotos/malecon-1600.webp': 'img/malecon-1600.webp', '../identidad/fotos/malecon-1200.webp': 'img/malecon-1200.webp' });
 
   const CSS = ['tokens.css', 'base.css', 'components.css', 'movimiento.css', 'movil.css'];

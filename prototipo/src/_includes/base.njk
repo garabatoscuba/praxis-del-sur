@@ -8,12 +8,14 @@
 {%- endif %}
 <title>{% if title and page.url != "/" %}{{ title }} | {% endif %}{{ revista.nombre }}{% if page.url == "/" %} · {{ revista.firma }}{% endif %}</title>
 <meta name="description" content="{{ descripcion or revista.descripcion }}">
+{#- Simulacro con textos en borrador: que los buscadores no lo muestren aunque esté publicado. Se quita en la revista real. #}
+<meta name="robots" content="noindex, nofollow">
 {%- if site.artifact %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
 {%- else %}
-<link rel="icon" href="img/simbolo.svg" type="image/svg+xml">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 {%- endif %}
 {% estilos %}
 <style>:root { --ps-cab-dur: {{ cabecera.duracion }}; --ps-cab-llegada: {{ cabecera.llegada }}; --ps-cab-transp: {{ cabecera.transparencia }}; --ps-cab-encoge: {{ cabecera.encoge }}; --ps-mov-dist: {{ movimiento.distancia }}; --ps-mov-dur: {{ movimiento.duracion }}; --ps-mov-escalon: {{ movimiento.escalon }}; --ps-mov-raton: {{ movimiento.raton }}; }</style>
