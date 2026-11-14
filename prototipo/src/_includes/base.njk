@@ -45,7 +45,8 @@ window.PS_CABECERA = { umbral: {{ cabecera.umbral }} };
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     var arriba = function () {
       window.scrollTo(0, 0);
-      if (window.parent !== window) { try { document.documentElement.scrollIntoView({ block: 'start', behavior: 'instant' }); } catch (e) {} }
+      // (no dentro de las herramientas para elegir, que enseñan varias páginas a la vez: build-afinar.mjs pone __psEnHerramienta)
+      if (window.parent !== window && !window.__psEnHerramienta) { try { document.documentElement.scrollIntoView({ block: 'start', behavior: 'instant' }); } catch (e) {} }
     };
     arriba();
     window.addEventListener('pageshow', function (e) { if (!e.persisted) arriba(); });

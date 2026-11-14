@@ -6,7 +6,9 @@ import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 
 rmSync('_afinar', { recursive: true, force: true });
 mkdirSync('_afinar');
-const previo = '<script>try{var f=window.parent!==window&&window.parent.__psAfinar;'
+// (__psSinCarga: la herramienta pide que la página de dentro no enseñe la pantalla de carga)
+const previo = '<script>try{if(window.parent!==window&&window.parent.__psSinCarga){sessionStorage.setItem("ps-carga","1");window.__psEnHerramienta=true;}'
+  + 'var f=window.parent!==window&&window.parent.__psAfinar;'
   + 'if(f){var o=f(),r=document.documentElement.style;for(var k in o)r.setProperty(k,o[k]);}'
   + 'var c=window.parent!==window&&window.parent.__psCalAfinar;if(c)window.PS_CAL=c();'
   + 'var m=window.parent!==window&&window.parent.__psMovilAfinar;if(m)window.PS_MOVIL=m();}catch(e){}</script>';
@@ -18,6 +20,9 @@ const conPrevio = (html) => html.replace(/<body[^>]*>/, (m) => m + previo);
 writeFileSync('_afinar/portada.html', esqueleto(readFileSync('_artifact/index.html', 'utf8')));
 writeFileSync('_afinar/portada-numero.html', conPrevio(readFileSync('_artifact/inicio-publicada.html', 'utf8')));
 writeFileSync('_afinar/articulo.html', conPrevio(readFileSync('_artifact/articulo-pensar-la-crisis-desde-el-sur.html', 'utf8')));
+writeFileSync('_afinar/envios.html', conPrevio(readFileSync('_artifact/envios.html', 'utf8')));
+writeFileSync('_afinar/acceso.html', conPrevio(readFileSync('_artifact/acceso.html', 'utf8')));
+writeFileSync('_afinar/botones.html', readFileSync('afinar/botones.html', 'utf8'));
 writeFileSync('_afinar/index.html', readFileSync('afinar/movimiento.html', 'utf8'));
 writeFileSync('_afinar/calendario.html', readFileSync('afinar/calendario.html', 'utf8'));
 writeFileSync('_afinar/movil.html', readFileSync('afinar/movil.html', 'utf8'));

@@ -1,0 +1,211 @@
+<title>Tipos de botón</title>
+<meta name="description" content="Siete maneras de dibujar los botones de Praxis del Sur, puestas en las páginas de verdad, en móvil, tableta y ordenador a la vez.">
+<script>window.__psSinCarga = true; /* las páginas de dentro no enseñan la pantalla de carga */</script>
+<style>
+/* La herramienta: arriba, el tipo de botón, la página y la vista; debajo, las páginas de verdad (portada.html, articulo.html,
+   envios.html, acceso.html) en móvil, tableta y ordenador a la vez. Cada tipo es CSS que se inyecta en las páginas. */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;--wine:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.45;display:flex;flex-direction:column}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--surface)}
+.barra h1{margin:0;font-size:15px;font-weight:700}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:6px 12px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.seg button .rec{font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 7px;border-radius:999px;background:var(--wine);color:#fff}
+.et{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chk{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--wine);margin:0}
+.desc{flex:1 1 100%;margin:0;color:var(--muted);font-size:14px;max-width:110ch}
+.desc b{color:var(--fg)}
+.escena{flex:1;min-height:0;overflow:auto;background:#D8D2C4;padding:16px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .escena{background:#0E0C0A}}
+:root[data-theme="dark"] .escena{background:#0E0C0A}
+.vistas{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:20px}
+.vista{margin:0;display:grid;gap:8px;justify-items:center}
+.vista figcaption{font-size:12.5px;font-weight:600;color:#3A352E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .vista figcaption{color:#BEB6A8}}
+:root[data-theme="dark"] .vista figcaption{color:#BEB6A8}
+.marco{position:relative;overflow:hidden;border-radius:12px;background:#4A4844;box-shadow:0 0 0 5px #1F1B18,0 24px 60px -30px rgb(0 0 0 / .6)}
+.marco.movil{border-radius:22px}
+/* en un teléfono, la página baja entera y cada pantalla ocupa el ancho */
+@media (max-width:700px){html,body{height:auto}body{display:block}.escena{overflow:visible}}
+.marco iframe{position:absolute;left:0;top:0;display:block;border:0;transform-origin:0 0;background:#F6F2E9}
+</style>
+<header class="barra">
+  <h1>Tipos de botón</h1>
+  <div class="seg" role="group" aria-label="Tipo de botón" id="tipos"></div>
+  <span class="et">Página</span>
+  <div class="seg" role="group" aria-label="Página">
+    <button type="button" data-g="portada" aria-pressed="true">Portada</button>
+    <button type="button" data-g="menu" aria-pressed="false">Menú</button>
+    <button type="button" data-g="articulo" aria-pressed="false">Artículo</button>
+    <button type="button" data-g="envios" aria-pressed="false">Envíos</button>
+    <button type="button" data-g="acceso" aria-pressed="false">Entrar</button>
+  </div>
+  <span class="et">Vista</span>
+  <div class="seg" role="group" aria-label="Vista">
+    <button type="button" data-v="todas" aria-pressed="true">Las tres</button>
+    <button type="button" data-v="movil" aria-pressed="false">Móvil</button>
+    <button type="button" data-v="tableta" aria-pressed="false">Tableta</button>
+    <button type="button" data-v="ordenador" aria-pressed="false">Ordenador</button>
+  </div>
+  <label class="chk"><input type="checkbox" id="solo"> Solo en el móvil (el resto, como está)</label>
+  <p class="desc" id="desc" aria-live="polite"></p>
+</header>
+<main class="escena" id="escena"><div class="vistas" id="vistas"></div></main>
+<script>
+(function(){
+  // ---------- Los tipos de botón ----------
+  // Afectan a todos los botones del sitio: .ps-btn (portada, barra, envíos, entrar, copiar cita), las descargas del artículo
+  // (.obj_galley_link) y «Buscar» del menú del móvil (.pkp_search, solo hasta 1080 px: en el ordenador es la lupa).
+  var B = 'html[data-boton="X"] .ps-btn', T = {
+    pastilla: { n: 'Pastilla', d: 'Como está ahora: esquinas redondas del todo.', css: '' },
+    suave: { n: 'Rectángulo suave', d: 'Rectángulos con las esquinas apenas redondeadas (5 px). El más sobrio: el de muchas revistas académicas y bibliotecas.', css: [
+      'html[data-boton="suave"]{--ps-boton-radio:5px}'
+    ] },
+    corte: { n: 'Esquina cortada', d: 'Rectos, con la esquina de arriba a la derecha cortada en diagonal, como una ficha de archivo o la pestaña de una carpeta. Distinto sin hacer ruido; el corte también se dibuja en los que solo tienen borde.', css: [
+      'html[data-boton="corte"]{--ps-boton-radio:0}',
+      'html[data-boton="corte"] :is(.ps-btn,.obj_galley_link){--c:12px;position:relative;clip-path:polygon(0 0,calc(100% - var(--c)) 0,100% var(--c),100% 100%,0 100%)}',
+      'html[data-boton="corte"] .ps-btn--small{--c:9px}',
+      'html[data-boton="corte"] :is(.ps-btn--ghost,.ps-btn--line,.obj_galley_link)::after{content:"";position:absolute;top:calc(var(--c) / 2 - 3px);right:calc(var(--c) / 2 - 2.5px - var(--c) * 0.7071);width:calc(var(--c) * 1.4142 + 2px);height:0;border-top:3px solid;border-top-color:inherit;transform:rotate(45deg);pointer-events:none}',
+      '@media (max-width:1080px){html[data-boton="corte"] .pkp_search{--c:12px;position:relative;clip-path:polygon(0 0,calc(100% - var(--c)) 0,100% var(--c),100% 100%,0 100%)}',
+      'html[data-boton="corte"] .pkp_search::after{content:"";position:absolute;top:calc(var(--c) / 2 - 3px);right:calc(var(--c) / 2 - 2.5px - var(--c) * 0.7071);width:calc(var(--c) * 1.4142 + 2px);height:0;border-top:3px solid;border-top-color:inherit;transform:rotate(45deg);pointer-events:none}}'
+    ] },
+    celda: { n: 'Celda con flecha', d: 'Rectos, con una celda al final que lleva una flecha (→), separada por una raya fina. Dice «esto te lleva a algo» y, al pasar el ratón, la flecha avanza. Editorial y claro en el móvil.', css: [
+      'html[data-boton="celda"]{--ps-boton-radio:0}',
+      'html[data-boton="celda"] .ps-btn{--celda:44px;position:relative;padding-right:calc(var(--celda) + 16px)!important;overflow:hidden}',
+      'html[data-boton="celda"] .ps-btn--small{--celda:34px;padding-right:calc(var(--celda) + 12px)!important}',
+      'html[data-boton="celda"] .ps-btn::after{content:"→";position:absolute;top:0;bottom:0;right:0;width:var(--celda);display:grid;place-items:center;border-left:1.5px solid;border-left-color:inherit;font-weight:400;font-size:1.1em;transition:transform .25s}',
+      'html[data-boton="celda"] .ps-btn--gold::after{border-left-color:rgb(31 27 24 / .28);background:rgb(31 27 24 / .07)}',
+      'html[data-boton="celda"] .ps-btn--wine::after{border-left-color:rgb(255 255 255 / .3);background:rgb(0 0 0 / .12)}',
+      'html[data-boton="celda"] .ps-btn:hover::after{transform:translateX(3px)}',
+      'html[data-boton="celda"] [data-copiar].ps-btn::after{content:"⧉"}',
+      '@media (max-width:760px){html[data-boton="celda"] .ps-hero--foto .ps-actions .ps-btn{--celda:34px;padding-left:8px!important;padding-right:calc(var(--celda) + 8px)!important}}',
+      'html[data-boton="celda"] .obj_galley_link{border-radius:0}'
+    ] },
+    editorial: { n: 'Editorial', d: 'Uno solo es botón: el principal, recto y con la letra en versalitas espaciadas, como un titulillo de revista. El secundario deja de ser caja y pasa a ser un enlace con un filete dorado debajo y una flecha. Jerarquía muy clara.', css: [
+      'html[data-boton="editorial"]{--ps-boton-radio:0}',
+      'html[data-boton="editorial"] .ps-btn{text-transform:uppercase;letter-spacing:.13em;font-size:.8125rem!important;font-weight:700}',
+      'html[data-boton="editorial"] .ps-btn--small{font-size:.75rem!important}',
+      'html[data-boton="editorial"] :is(.ps-btn--ghost,.ps-btn--line){border-color:transparent!important;background:none!important;padding-inline:2px!important;gap:8px}',
+      'html[data-boton="editorial"] :is(.ps-btn--ghost,.ps-btn--line){text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.55em;text-decoration-color:var(--ps-gold)}',
+      'html[data-boton="editorial"] :is(.ps-btn--ghost,.ps-btn--line)::after{content:"→";font-weight:400;letter-spacing:0;transition:transform .25s}',
+      'html[data-boton="editorial"] :is(.ps-btn--ghost,.ps-btn--line):hover{color:inherit}',
+      'html[data-boton="editorial"] :is(.ps-btn--ghost,.ps-btn--line):hover::after{transform:translateX(3px)}',
+      'html[data-boton="editorial"] .ps-btn--line{color:var(--ps-wine)}',
+      'html[data-boton="editorial"] .obj_galley_link{border-radius:0;text-transform:uppercase;letter-spacing:.13em;font-size:.8125rem}',
+      '@media (max-width:760px){html[data-boton="editorial"] .ps-hero.ps-hero--foto .ps-actions{grid-template-columns:minmax(0,1fr)!important;justify-items:center;gap:14px!important}html[data-boton="editorial"] .ps-hero.ps-hero--foto .ps-actions .ps-btn--gold{justify-self:stretch}html[data-boton="editorial"] .ps-hero.ps-hero--foto .ps-actions .ps-btn--ghost{min-height:30px!important}}',
+      '@media (max-width:1080px){html[data-boton="editorial"] .pkp_search{border-radius:0;text-transform:uppercase;letter-spacing:.13em;font-size:.8125rem}}'
+    ] },
+    unida: { n: 'Botonera unida', d: 'Rectos y, donde van dos juntos, pegados en un solo bloque, como los mandos de un aparato. En el móvil forman una barra de lado a lado partida en dos. Los que van solos, rectos.', css: [
+      'html[data-boton="unida"]{--ps-boton-radio:0}',
+      'html[data-boton="unida"] .ps-actions{gap:0!important}',
+      'html[data-boton="unida"] .ps-actions .ps-btn + .ps-btn{margin-left:-1.5px}',
+      'html[data-boton="unida"] .ps-hero--foto .ps-btn--ghost{border-color:#B6A160!important;background:rgb(20 16 14 / .35)}',
+      '@media (max-width:760px){html[data-boton="unida"] .ps-hero.ps-hero--foto .ps-actions{gap:0!important}html[data-boton="unida"] .ps-hero.ps-hero--foto .ps-actions .ps-btn{min-height:50px!important}}',
+      '@media (max-width:1080px){html[data-boton="unida"] .pkp_search{border-radius:0}html[data-boton="unida"] .pkp_site_nav_menu{column-gap:0}}'
+    ] },
+    pestana: { n: 'Pestaña de índice', d: 'Redondeados solo arriba y con un filete más grueso abajo, como las pestañas de un índice de archivo (va con el menú «Índice de revista»). Se ven como algo que se toca sin ser pastilla.', css: [
+      'html[data-boton="pestana"]{--ps-boton-radio:9px 9px 0 0}',
+      'html[data-boton="pestana"] :is(.ps-btn--gold,.ps-btn--wine,.entry_details .obj_galley_link:not(.html)){box-shadow:inset 0 -3px 0 rgb(0 0 0 / .24)}',
+      'html[data-boton="pestana"] :is(.ps-btn--ghost,.ps-btn--line,.obj_galley_link.html){border-bottom-width:3px}',
+      '@media (max-width:1080px){html[data-boton="pestana"] .pkp_search{border-bottom-width:3px}}'
+    ] }
+  };
+  var ORDEN = ['pastilla', 'suave', 'corte', 'celda', 'editorial', 'unida', 'pestana'], REC = 'editorial';
+  var CSS = ORDEN.map(function (k) { return [].concat(T[k].css).join('\n'); }).join('\n')
+    // la pastilla «Simulacro» no es parte del diseño
+    + '\n.ps-simulacro{display:none}';
+
+  // ---------- Las páginas y las vistas ----------
+  var PAG = { portada: 'portada.html', menu: 'portada.html', articulo: 'articulo.html', envios: 'envios.html', acceso: 'acceso.html' };
+  // dónde mirar en cada página (el primer botón que importa); la portada y el menú, arriba del todo
+  var MIRA = { articulo: '.entry_details .obj_galley_link', envios: '.pkp_structure_main .ps-btn--wine', acceso: '.pkp_structure_main .ps-btn' };
+  var DISP = { movil: [390, 844, 'Móvil'], tableta: [820, 1180, 'Tableta vertical'], ordenador: [1440, 900, 'Ordenador'] };
+  var tipo = REC, pag = 'portada', vista = window.innerWidth <= 700 ? 'movil' : 'todas', solo = false;
+  document.querySelectorAll('button[data-v]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === vista ? 'true' : 'false'); });
+  var vistas = document.getElementById('vistas'), esc = document.getElementById('escena'), desc = document.getElementById('desc');
+  var frames = {};
+
+  var tipos = document.getElementById('tipos');
+  ORDEN.forEach(function (k) {
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-t', k); b.setAttribute('aria-pressed', k === tipo ? 'true' : 'false');
+    b.textContent = T[k].n; if (k === REC) { var r = document.createElement('span'); r.className = 'rec'; r.textContent = 'Recomendado'; b.appendChild(r); }
+    tipos.appendChild(b);
+  });
+
+  function aplicar(clave) {
+    var f = frames[clave]; if (!f) return;
+    try {
+      var d = f.contentDocument; if (!d || !d.documentElement) return;
+      var h = d.documentElement;
+      if (!d.getElementById('ps-botones')) { var st = d.createElement('style'); st.id = 'ps-botones'; st.textContent = CSS; (d.body || h).appendChild(st); }
+      var t = (solo && clave !== 'movil') ? 'pastilla' : tipo;
+      h.setAttribute('data-boton', t);
+    } catch (e) {}
+  }
+  function mirar(clave) {
+    var f = frames[clave]; if (!f) return;
+    try {
+      var d = f.contentDocument, w = f.contentWindow;
+      // el menú del móvil y la tableta: abierto
+      var tog = d.querySelector('.pkp_site_nav_toggle'), abierto = d.documentElement.classList.contains('ps-menu-abierto');
+      if (tog && getComputedStyle(tog).display !== 'none' && (pag === 'menu') !== abierto) tog.click();
+      var sel = MIRA[pag], el = sel && d.querySelector(sel);
+      if (el) { var r = el.getBoundingClientRect(); w.scrollTo({ top: Math.max(0, r.top + w.scrollY - w.innerHeight * 0.4), behavior: 'instant' }); }
+    } catch (e) {}
+  }
+  function montar() {
+    vistas.innerHTML = ''; frames = {};
+    var claves = vista === 'todas' ? ['movil', 'tableta', 'ordenador'] : [vista];
+    // las tres a la misma altura en pantalla, que quepan a lo ancho y a lo alto
+    var estrecho = window.innerWidth <= 700;
+    var W = esc.clientWidth - 32, H = estrecho ? Infinity : esc.clientHeight - 32 - 28;
+    var sumaAnchos = claves.reduce(function (a, k) { return a + DISP[k][0] / DISP[k][1]; }, 0);
+    var alto = Math.min(H, (W - 20 * (claves.length - 1)) / sumaAnchos);
+    if (claves.length === 1) alto = Math.min(H, DISP[claves[0]][1], W * DISP[claves[0]][1] / DISP[claves[0]][0]);
+    alto = Math.max(alto, 320);
+    claves.forEach(function (k) {
+      var p = DISP[k], s = alto / p[1];
+      var fig = document.createElement('figure'); fig.className = 'vista';
+      var m = document.createElement('div'); m.className = 'marco' + (k === 'movil' ? ' movil' : '');
+      m.style.width = Math.round(p[0] * s) + 'px'; m.style.height = Math.round(alto) + 'px';
+      var f = document.createElement('iframe'); f.title = p[2]; f.style.width = p[0] + 'px'; f.style.height = p[1] + 'px'; f.style.transform = 'scale(' + s + ')';
+      f.addEventListener('load', function () { aplicar(k); setTimeout(function () { mirar(k); }, 350); });
+      f.src = PAG[pag];
+      m.appendChild(f); frames[k] = f;
+      var cap = document.createElement('figcaption'); cap.textContent = p[2] + ' · ' + p[0] + ' × ' + p[1] + (s < 0.995 ? ' · al ' + Math.round(s * 100) + ' %' : '');
+      fig.appendChild(m); fig.appendChild(cap); vistas.appendChild(fig);
+    });
+    contar();
+  }
+  function contar() {
+    desc.innerHTML = '<b>' + T[tipo].n + '.</b> ' + T[tipo].d + (solo && tipo !== 'pastilla' ? ' <b>Solo en el móvil:</b> la tableta y el ordenador siguen con pastillas.' : '')
+      + ' Puedes bajar dentro de cada pantalla y pasar el ratón por los botones.';
+  }
+  function todos() { Object.keys(frames).forEach(aplicar); contar(); }
+  function grupo(attr, fn) {
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[' + attr + ']'); if (!b || b.tagName !== 'BUTTON') return;
+      document.querySelectorAll('button[' + attr + ']').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      fn(b.getAttribute(attr));
+    });
+  }
+  grupo('data-t', function (x) { tipo = x; todos(); });
+  grupo('data-g', function (x) {
+    var antes = PAG[pag]; pag = x;
+    // portada y menú son la misma página: no se vuelve a cargar
+    if (PAG[x] === antes) Object.keys(frames).forEach(mirar); else montar();
+  });
+  grupo('data-v', function (x) { vista = x; montar(); });
+  document.getElementById('solo').addEventListener('change', function (e) { solo = e.target.checked; todos(); });
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(montar, 200); });
+  montar();
+})();
+</script>

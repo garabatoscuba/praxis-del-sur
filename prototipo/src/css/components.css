@@ -25,18 +25,27 @@
 .ps-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 46px; padding: 11px 24px; border: 1.5px solid transparent; border-radius: var(--ps-boton-radio);
-  font-family: var(--ps-sans); font-size: 1rem; font-weight: 600; line-height: 1.2; text-decoration: none;
+  font-family: var(--ps-sans); font-size: 0.8125rem; font-weight: 700; line-height: 1.2; letter-spacing: 0.13em; text-transform: uppercase; text-decoration: none;
   cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
-.ps-btn--small { min-height: 38px; padding: 7px 18px; font-size: 0.9375rem; }
+.ps-btn--small { min-height: 38px; padding: 7px 18px; font-size: 0.75rem; }
 .ps-btn--wine { background: var(--ps-wine); color: var(--ps-paper); }
 .ps-btn--wine:hover { background: var(--ps-wine-dark); }
 .ps-btn--gold { background: var(--ps-gold); color: var(--ps-ink); }
 .ps-btn--gold:hover { background: var(--ps-gold-light); }
-.ps-btn--ghost { border-color: color-mix(in srgb, var(--ps-beige) 65%, transparent); color: var(--ps-paper); }
-.ps-btn--ghost:hover { background: color-mix(in srgb, var(--ps-beige) 14%, transparent); border-color: var(--ps-beige); }
-.ps-btn--line { border-color: var(--ps-wine); color: var(--ps-wine); background: transparent; }
-.ps-btn--line:hover { background: var(--ps-wine); color: var(--ps-paper); }
+/* Tipo «Editorial» (afinar/botones.html, 13 nov 2026): solo el principal es botón; el secundario (--ghost sobre oscuro,
+   --line sobre claro) es un enlace en versalitas con un filete dorado debajo y una flecha. El filete es un fondo medido desde
+   el contenido (no un subrayado), para que vaya bajo el texto y la flecha juntos y el área que se toca siga siendo la de un botón. */
+.ps-btn--ghost, .ps-btn--line {
+  gap: 0; padding-inline: 2px; border-color: transparent;
+  background: linear-gradient(var(--ps-gold), var(--ps-gold)) left calc(50% + 0.8em) / 100% 1.5px no-repeat content-box border-box;
+}
+.ps-btn--ghost { color: var(--ps-paper); }
+.ps-btn--line { color: var(--ps-wine); }
+.ps-btn--ghost::after, .ps-btn--line::after { content: "→"; margin-left: 0.6em; font-weight: 400; letter-spacing: 0; transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1); }
+button.ps-btn--line::after { content: none; }
+.ps-btn--ghost:hover, .ps-btn--line:hover { background-image: linear-gradient(currentColor, currentColor); }
+.ps-btn--ghost:hover::after, .ps-btn--line:hover::after { transform: translateX(3px); }
 .ps-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 .ps-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
@@ -193,7 +202,7 @@
   .pkp_navigation_primary li ul a[aria-current] { color: var(--ps-wine); font-weight: 600; background: none; }
   .ps-menu-folio { display: block; grid-area: folio; margin-top: 22px; padding-top: 14px; border-top: 2px solid var(--ps-ink); text-align: center; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive); }
   .pkp_navigation_search_wrapper { grid-area: buscar; margin-top: 12px; }
-  .pkp_search { display: flex; justify-content: center; gap: 8px; min-height: 46px; padding: 10px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); color: var(--ps-wine); }
+  .pkp_search { display: flex; justify-content: center; gap: 8px; min-height: 46px; padding: 10px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); color: var(--ps-wine); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
   .pkp_search span { position: static; width: auto; height: auto; clip-path: none; }
   .pkp_navigation_user { grid-area: entrar; margin-top: 12px; padding: 0; }
   .ps-nav-cta { margin: 0; width: 100%; }
@@ -271,8 +280,8 @@
 .ps-hero-fechas dt { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ps-beige); }
 .ps-hero-fechas dd { font-family: var(--ps-serif); font-size: 1.1875rem; line-height: 1.2; color: var(--ps-paper); font-variant-numeric: lining-nums; white-space: nowrap; }
 .ps-hero.ps-hero--foto .ps-actions { margin: 0; flex-wrap: nowrap; gap: 10px; }
-.ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 9px 20px; font-size: 0.9375rem; white-space: nowrap; }
-.ps-hero--foto .ps-btn--ghost { background: rgb(20 16 14 / 0.12); border-color: rgb(255 255 255 / 0.7); }
+.ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 9px 20px; white-space: nowrap; }
+.ps-hero--foto .ps-actions .ps-btn--ghost { padding-inline: 2px; }
 .ps-hero--foto :is(.ps-hero-firma, .ps-esenciales li, .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: 0 1px 14px rgb(0 0 0 / 0.28); }
 /* Escala de letra elegida (opción 4 de afinar/letras.html, 13 nov 2026): crece con la pantalla para que en un monitor grande
    no se quede en tamaños de pie de foto. Arriba, el nombre y, como segundo nivel, la convocatoria (antetítulo y título); abajo,
@@ -308,15 +317,15 @@
   .ps-hero-fechas { column-gap: 22px; }
   .ps-hero-fechas dt { font-size: 0.75rem; }
   .ps-hero-fechas dd { font-size: clamp(0.9375rem, 0.5rem + 0.52vw, 1.1875rem); }
-  /* la letra de los botones, como la de «Entrar» en la barra (15 px) */
-  .ps-hero--foto .ps-actions .ps-btn { min-height: 46px; padding: 10px 20px; font-size: 0.9375rem; }
+  .ps-hero--foto .ps-actions .ps-btn { min-height: 46px; padding: 10px 22px; }
+  .ps-hero--foto .ps-actions .ps-btn--ghost { padding-inline: 2px; margin-left: 14px; }
 }
 /* el título de la convocatoria, en una sola línea donde cabe */
 @media (min-width: 1101px) { .ps-hero--foto .ps-hero-title { white-space: nowrap; } }
 /* Tabletas y portátiles pequeños: la banda de abajo (fechas | botones) sigue en una línea, más compacta */
 @media (min-width: 761px) and (max-width: 1100px) {
   .ps-hero-pie { gap: 14px 22px; }
-  .ps-hero--foto .ps-actions .ps-btn { padding-inline: 16px; }
+  .ps-hero--foto .ps-actions .ps-btn:not(.ps-btn--ghost) { padding-inline: 16px; }
 }
 /* Pantallas bajas (portátiles de 1366 × 657, por ejemplo): menos aire en la cabecera, para que la línea de datos no llegue
    al horizonte ni a las dos personas del muro */
@@ -595,7 +604,7 @@ a:has(> .ps-cover), a.cover { text-decoration: none; }
 .obj_article_summary .meta { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 1rem; color: var(--ps-muted); }
 .obj_article_summary .pages { font-variant-numeric: tabular-nums; }
 .galleys_links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.obj_galley_link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 4px 14px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; color: var(--ps-wine); text-decoration: none; }
+.obj_galley_link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 4px 14px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ps-wine); text-decoration: none; }
 .obj_galley_link:hover { background: var(--ps-wine); color: var(--ps-paper); }
 
 /* ---------- Número (objects/issue_toc.tpl) ---------- */
@@ -710,7 +719,7 @@ ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
 .entry_details > .item { padding-block: 20px; border-top: 1px solid var(--ps-line); }
 .entry_details > .item:first-child { border-top: 0; padding-top: 0; }
 .entry_details .galleys_links { flex-direction: column; }
-.entry_details .obj_galley_link { width: 100%; min-height: 48px; font-size: 1rem; letter-spacing: 0.02em; background: var(--ps-wine); color: var(--ps-paper); }
+.entry_details .obj_galley_link { width: 100%; min-height: 48px; font-size: 0.8125rem; background: var(--ps-wine); color: var(--ps-paper); }
 .entry_details .obj_galley_link:hover { background: var(--ps-wine-dark); }
 .entry_details .obj_galley_link.html { background: transparent; color: var(--ps-wine); }
 .entry_details .obj_galley_link.html:hover { background: var(--ps-wine); color: var(--ps-paper); }
