@@ -1,7 +1,8 @@
 {#- Pantalla de carga de la portada: «5 · Horizonte + sello», con la salida «Se funde» (elegida en identidad/carga.html, 13 nov 2026).
     La pantalla oscura, cerrada del todo; encima de la línea del horizonte se arma el sello del CIPS y aparece «Una revista del CIPS».
     La línea dorada es la barra de carga: crece mientras llega la foto, en un solo movimiento que frena al llegar al borde, y ahí la
-    pantalla se abre hacia arriba y hacia abajo mientras el sello se funde; la portada entra como siempre.
+    pantalla se abre hacia arriba y hacia abajo mientras el sello se funde; la portada entra como siempre. Nada de la página cambia
+    de tamaño ni de sitio durante la apertura (eso la obligaba a pintarse de nuevo a trozos en pantallas grandes).
     Sale solo la primera vez que se abre la portada en una visita (sessionStorage), dura como mínimo unos 3,5 s para que dé tiempo a
     leer, y no sale con «reducir movimiento», si se llega a una sección (#…), si el navegador no deja guardar la visita ni sin script.
     En OJS irá en el tema hijo (indexJournal.tpl + js/carga.js). Estilos en css/movimiento.css. -#}
@@ -45,6 +46,19 @@
   // a los 300 ms entra la portada; a los 1150 se quita la pantalla y, cuando acaba el acercamiento de la foto, todo vuelve a ser normal.
   var ARRANCA = 250, LINEA_RETRASO = 200, LINEA_DUR = 3000, CURVA = 'cubic-bezier(.42,0,.32,1)', MAX = 9000;
 
+  // Mientras la pantalla está cerrada, la página no se desplaza (sin tocar la barra de desplazamiento: ver movimiento.css).
+  var cerrada = function () { return root.classList.contains('ps-cargando') && !root.classList.contains('ps-carga-abre'); };
+  var frenar = function (e) { if (cerrada()) e.preventDefault(); };
+  var teclas = function (e) { if (cerrada() && /^(ArrowDown|ArrowUp|PageDown|PageUp|Home|End| )$/.test(e.key)) e.preventDefault(); };
+  window.addEventListener('wheel', frenar, { passive: false });
+  window.addEventListener('touchmove', frenar, { passive: false });
+  window.addEventListener('keydown', teclas);
+  var soltar = function () {
+    window.removeEventListener('wheel', frenar, { passive: false });
+    window.removeEventListener('touchmove', frenar, { passive: false });
+    window.removeEventListener('keydown', teclas);
+  };
+
   // La foto de la portada: la línea no llega al borde hasta que esté (como mucho, MAX).
   function vigilarFoto() {
     var img = document.querySelector('.ps-hero-foto');
@@ -59,6 +73,7 @@
     if (abierta) return; abierta = true;
     capa.classList.add('abre');
     root.classList.add('ps-carga-abre');
+    soltar();
     setTimeout(window.__psCargaLista, 300);
     setTimeout(function () { capa.classList.add('fin'); }, 1150);
     setTimeout(window.__psCargaFin, 300 + 1700);

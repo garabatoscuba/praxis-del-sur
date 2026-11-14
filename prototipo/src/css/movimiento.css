@@ -193,8 +193,9 @@ html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { dis
    el script de carga.njk (nunca con «reducir movimiento» ni sin script). La línea va a la altura del horizonte de la foto:
    las mismas cuentas que .ps-hero--foto (--ps-horiz en components.css; --ps-horiz-m en movil.css). */
 .ps-carga { display: none; }
-html.ps-cargando { overflow: hidden; }
-html.ps-cargando.ps-carga-abre { overflow: visible; }
+/* Sin overflow: hidden en html: en Windows quitaba la barra de desplazamiento, y al volver al abrirse la pantalla la página
+   entera se recolocaba 15 px y se volvía a pintar en mitad de la animación (trozos negros y blancos en pantallas grandes,
+   13 nov 2026). El scroll se frena con el script mientras la pantalla está cerrada. */
 html.ps-cargando .ps-carga {
   --h: calc(100vh * 0.72 - 0.072 * max(100vh, 71.7vw));
   display: block; position: fixed; inset: 0; z-index: 3000;
@@ -205,7 +206,8 @@ html.ps-cargando .ps-carga {
 html.ps-cargando .ps-carga.abre { pointer-events: none; }
 html.ps-cargando .ps-carga.fin { display: none; }
 /* las dos mitades se solapan 2 px: no queda rendija por la que se vea la foto */
-.ps-carga-arriba, .ps-carga-abajo { position: absolute; left: 0; right: 0; background: #14100E; transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); will-change: transform; }
+/* casi opacas (99,8 %), no del todo: así el navegador pinta la portada de debajo mientras espera y, al abrirse, ya está lista */
+.ps-carga-arriba, .ps-carga-abajo { position: absolute; left: 0; right: 0; background: rgb(20 16 14 / 0.998); transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); will-change: transform; }
 .ps-carga-arriba { top: 0; height: calc(var(--h) + 1px); }
 .ps-carga-abajo { top: calc(var(--h) - 1px); bottom: 0; }
 .ps-carga.abre .ps-carga-arriba { transform: translateY(-101%); }
@@ -226,10 +228,8 @@ html.ps-cargando .ps-carga.fin { display: none; }
 .ps-carga.va .ps-carga-t { opacity: 1; }
 /* se funde: se desvanece y se desenfoca un poco mientras se abre la pantalla */
 .ps-carga.abre .ps-carga-firma { opacity: 0; transform: scale(0.94); filter: blur(3px); transition: opacity 0.55s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.55s ease; }
-/* detrás, la portada espera: la foto, un poco más cerca, y la banda de abajo, sin su contenido; al abrirse, la foto se aleja
-   despacio y las fechas y los botones suben (lo de arriba entra con movimiento.njk, que espera a la carga) */
-html.ps-cargando .ps-hero--foto { overflow: clip; }
-html.ps-cargando .ps-hero-foto { transform: scale(1.07); }
+/* detrás, la portada espera con la banda de abajo sin su contenido; al abrirse, las fechas y los botones suben (lo de arriba
+   entra con movimiento.njk, que espera a la carga). La foto no se acerca ni se aleja: escalarla entera bajo la banda con
+   desenfoque obligaba a repintarla en cada fotograma. */
 html.ps-cargando .ps-hero-pie > * { opacity: 0; transform: translateY(12px); }
-html.ps-cargando.ps-carga-lista .ps-hero-foto { transform: none; transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
 html.ps-cargando.ps-carga-lista .ps-hero-pie > * { opacity: 1; transform: none; transition: opacity 0.7s var(--ps-mov-e) 0.3s, transform 0.7s var(--ps-mov-e) 0.3s; }
