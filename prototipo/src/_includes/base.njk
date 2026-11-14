@@ -23,6 +23,9 @@
 </head>
 <body class="pkp_page_{{ pkpPage or 'index' }} pkp_op_{{ pkpOp or 'index' }} has_site_logo">
 {%- endif %}
+{%- if carga %}
+{% include "carga.njk" %}
+{%- endif %}
 <div class="pkp_structure_page{% if cabeceraSobreHeroe %} ps-sobre-heroe{% endif %}">
 {% include "header.njk" %}
 <div class="pkp_structure_content">
@@ -96,12 +99,23 @@ window.PS_CABECERA = { umbral: {{ cabecera.umbral }} };
   var toggle = document.querySelector('.pkp_site_nav_toggle');
   var menu = document.getElementById('siteNavMenu');
   if (toggle && menu) {
-    toggle.addEventListener('click', function () {
-      menuAbierto = menu.classList.toggle('is_open');
-      toggle.setAttribute('aria-expanded', menuAbierto ? 'true' : 'false');
-      toggle.querySelector('span').textContent = menuAbierto ? 'Cerrar' : 'Menú';
+    // el menú del móvil se abre en círculo desde la hamburguesa
+    var ponerMenu = function (abrir) {
+      var r = toggle.getBoundingClientRect();
+      menu.style.setProperty('--menu-x', Math.round(r.left + r.width / 2) + 'px');
+      menu.style.setProperty('--menu-y', Math.round(r.top + r.height / 2) + 'px');
+      menuAbierto = abrir;
+      menu.classList.toggle('is_open', abrir);
+      head.classList.toggle('ps-menu-abierto', abrir);
+      document.documentElement.classList.toggle('ps-menu-abierto', abrir);
+      toggle.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      toggle.querySelector('span').textContent = abrir ? 'Cerrar' : 'Menú';
       cabecera();
-    });
+    };
+    toggle.addEventListener('click', function () { ponerMenu(!menuAbierto); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menuAbierto) { ponerMenu(false); toggle.focus(); } });
+    // si se agranda la ventana con el menú abierto, se cierra
+    window.matchMedia('(min-width: 1081px)').addEventListener('change', function (m) { if (m.matches && menuAbierto) ponerMenu(false); });
   }
   function select(el) {
     var range = document.createRange(); range.selectNodeContents(el);

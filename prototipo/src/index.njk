@@ -3,6 +3,7 @@ title: Inicio
 pkpPage: index
 permalink: index.html
 cabeceraSobreHeroe: true
+carga: true
 ---
 {#- Portada durante la convocatoria (enero a marzo de 2027). Equivale a pages/indexJournal.tpl. -#}
 {%- set c = convocatoria -%}
@@ -29,8 +30,8 @@ cabeceraSobreHeroe: true
         <div class="ps-hero-marca">
           {#- El nombre, como texto de verdad (lo leen los buscadores y los lectores de pantalla) y, encima, el logo en SVG, que es lo que se ve. -#}
           <h1 id="hero-nombre" class="ps-hero-nombre"><span class="pkp_screen_reader">{{ revista.nombre }}</span>{% logo "praxis-del-sur", "ps-hero-logo" %}</h1>
-          {#- El sello del CIPS: su isotipo (trazado desde el logo del sitio del CIPS), en dorado. -#}
-          <p class="ps-hero-firma"><svg class="ps-hero-sello" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>{{ revista.firmaVisible }}</p>
+          {#- El sello del CIPS: su vector oficial, en su color (pedido por la usuaria). -#}
+          <p class="ps-hero-firma">{% selloCips "ps-hero-sello" %}{{ revista.firmaVisible }}</p>
         </div>
         <ul class="ps-esenciales">
           {%- for e in revista.esenciales %}

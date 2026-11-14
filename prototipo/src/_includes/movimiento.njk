@@ -95,8 +95,13 @@
     if (root.scrollHeight <= window.innerHeight + 4) els.forEach(function (el) { el.setAttribute('data-rev', 'in'); });
   }
   // Espera a las fuentes (como mucho 0,45 s) para que el texto no cambie de letra a mitad de la entrada.
-  var fuentes = document.fonts && document.fonts.ready;
-  if (fuentes) Promise.race([fuentes, new Promise(function (r) { setTimeout(r, 450); })]).then(empezar); else empezar();
+  function arrancar() {
+    var fuentes = document.fonts && document.fonts.ready;
+    if (fuentes) Promise.race([fuentes, new Promise(function (r) { setTimeout(r, 450); })]).then(empezar); else empezar();
+  }
+  // Con la pantalla de carga de la portada (carga.njk), las entradas empiezan cuando se abre.
+  if (root.classList.contains('ps-cargando') && !root.classList.contains('ps-carga-lista')) document.addEventListener('ps:carga-lista', arrancar, { once: true });
+  else arrancar();
 
   // Para la herramienta de barras: vuelve a hacer la entrada con los valores nuevos.
   window.__psMov.repetir = function () {

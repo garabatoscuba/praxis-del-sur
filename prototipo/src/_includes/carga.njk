@@ -1,0 +1,96 @@
+{#- Pantalla de carga de la portada: «5 · Horizonte + sello», con la salida «Se funde» (elegida en identidad/carga.html, 13 nov 2026).
+    La pantalla oscura, cerrada del todo; encima de la línea del horizonte se arma el sello del CIPS y aparece «Una revista del CIPS».
+    La línea dorada es la barra de carga: crece mientras llega la foto, en un solo movimiento que frena al llegar al borde, y ahí la
+    pantalla se abre hacia arriba y hacia abajo mientras el sello se funde; la portada entra como siempre.
+    Sale solo la primera vez que se abre la portada en una visita (sessionStorage), dura como mínimo unos 3,5 s para que dé tiempo a
+    leer, y no sale con «reducir movimiento», si se llega a una sección (#…), si el navegador no deja guardar la visita ni sin script.
+    En OJS irá en el tema hijo (indexJournal.tpl + js/carga.js). Estilos en css/movimiento.css. -#}
+<script>
+(function () {
+  var root = document.documentElement, ver = false;
+  try {
+    ver = !location.hash && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) && !sessionStorage.getItem('ps-carga');
+    if (ver) sessionStorage.setItem('ps-carga', '1');
+  } catch (e) { ver = false; }
+  if (!ver) return;
+  root.classList.add('ps-cargando');
+  // Termina la carga: la portada vuelve a ser la de siempre y empiezan sus entradas (movimiento.njk espera este aviso).
+  var avisada = false;
+  window.__psCargaLista = function () {
+    if (avisada) return; avisada = true;
+    root.classList.add('ps-carga-lista');
+    document.dispatchEvent(new Event('ps:carga-lista'));
+  };
+  window.__psCargaFin = function () {
+    window.__psCargaLista();
+    root.classList.remove('ps-cargando', 'ps-carga-abre', 'ps-carga-lista');
+  };
+  // Por si algo falla más abajo: a los 12 s la pantalla se quita sola.
+  setTimeout(window.__psCargaFin, 12000);
+})();
+</script>
+<div class="ps-carga" aria-hidden="true">
+  <div class="ps-carga-arriba"></div>
+  <div class="ps-carga-abajo"></div>
+  <span class="ps-carga-linea"></span>
+  <div class="ps-carga-firma">{% selloCips "ps-carga-sello" %}<span class="ps-carga-t">{{ revista.firmaVisible }}</span></div>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('ps-cargando')) return;
+  var capa = document.querySelector('.ps-carga'), linea = capa.querySelector('.ps-carga-linea');
+  var t0 = performance.now(), foto = false, abierta = false;
+  // Tiempos de la pantalla elegida (ms desde que se ve): se arma el sello; la línea crece de los 450 a los 3450; se abre;
+  // a los 300 ms entra la portada; a los 1150 se quita la pantalla y, cuando acaba el acercamiento de la foto, todo vuelve a ser normal.
+  var ARRANCA = 250, LINEA_RETRASO = 200, LINEA_DUR = 3000, CURVA = 'cubic-bezier(.42,0,.32,1)', MAX = 9000;
+
+  // La foto de la portada: la línea no llega al borde hasta que esté (como mucho, MAX).
+  function vigilarFoto() {
+    var img = document.querySelector('.ps-hero-foto');
+    if (!img || img.complete) { foto = true; return; }
+    var listo = function () { foto = true; };
+    img.addEventListener('load', listo, { once: true });
+    img.addEventListener('error', listo, { once: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', vigilarFoto, { once: true }); else vigilarFoto();
+
+  function abrir() {
+    if (abierta) return; abierta = true;
+    capa.classList.add('abre');
+    root.classList.add('ps-carga-abre');
+    setTimeout(window.__psCargaLista, 300);
+    setTimeout(function () { capa.classList.add('fin'); }, 1150);
+    setTimeout(window.__psCargaFin, 300 + 1700);
+  }
+
+  setTimeout(function () {
+    capa.classList.add('va');
+    if (!linea.animate) {
+      // Sin animaciones web: la línea crece con CSS y se abre a su hora, o al llegar la foto.
+      capa.classList.add('va-css');
+      (function esperar() {
+        var t = performance.now() - t0;
+        if ((foto && t > ARRANCA + LINEA_RETRASO + LINEA_DUR) || t > MAX) abrir(); else setTimeout(esperar, 100);
+      })();
+      return;
+    }
+    // La línea va en la tarjeta gráfica (fluida aunque la página esté ocupada). Si a 2/3 del recorrido la foto aún no ha llegado,
+    // va frenando poco a poco hasta casi pararse, y en cuanto llega recupera su paso, sin tirones: solo cambia su velocidad, suave.
+    var anim = linea.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: LINEA_DUR, delay: LINEA_RETRASO, easing: CURVA, fill: 'forwards' });
+    var vel = 1, ult = performance.now();
+    (function paso(ahora) {
+      if (abierta) return;
+      var dt = Math.min(100, ahora - ult); ult = ahora;
+      var espera = !foto && performance.now() - t0 < MAX && (anim.currentTime || 0) > LINEA_RETRASO + LINEA_DUR * 0.66;
+      var meta = espera ? 0.05 : 1;
+      var nueva = vel + (meta - vel) * Math.min(1, dt / 220);
+      if (Math.abs(nueva - meta) < 0.004) nueva = meta;
+      if (nueva !== vel) { vel = nueva; anim.updatePlaybackRate ? anim.updatePlaybackRate(vel) : (anim.playbackRate = vel); }
+      requestAnimationFrame(paso);
+    })(ult);
+    anim.finished.then(abrir, abrir);
+  }, ARRANCA);
+})();
+</script>

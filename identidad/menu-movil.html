@@ -1,0 +1,293 @@
+<title>Menú del móvil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"EB Garamond",Garamond,serif;
+  --wine:#662426;--gold:#B6A160;--beige:#DED8C7;--olive:#4B483D;--paper:#FFFFFF;--tint:#F3F0E8;--ink:#1F1B18;
+  --e:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;line-height:1.5;padding-inline:max(16px, env(safe-area-inset-left, 0px));-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin-inline:auto}
+h1,h2,h3{margin:0;font-weight:400}
+p{margin:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.intro{padding-block:36px 14px;display:grid;gap:8px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.intro h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,48px);line-height:1.05}
+.lead{max-width:68ch;color:var(--muted)}
+.controles{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding-block:12px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.zona{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px 40px;align-items:start;padding-block:10px 64px}
+@media (max-width:820px){.zona{grid-template-columns:minmax(0,1fr);justify-items:center}}
+.marco{position:relative;border-radius:30px;box-shadow:0 0 0 8px #1F1B18,0 30px 70px -30px rgba(0,0,0,.6);overflow:hidden;background:#222}
+.ficha{display:grid;gap:12px;max-width:52ch}
+.ficha h2{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.1}
+.ficha p{color:var(--muted)}
+.ficha .vig b{display:block;color:var(--fg);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.ficha .rec{display:inline-block;justify-self:start;padding:3px 10px;border-radius:999px;background:var(--wine);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em}
+.ficha .pista{font-size:14px}
+
+/* ---------- El teléfono ---------- */
+.tel{position:relative;width:390px;height:760px;overflow:hidden;transform-origin:0 0;font-family:var(--ui);color:var(--ink);background:#4A4844}
+:where(.tel) button{font:inherit;color:inherit}
+.tel a{color:inherit;text-decoration:none}
+.tel svg{display:block}
+.pag{position:absolute;inset:0;color:#fff;text-align:center}
+.pag img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:78% 50%}
+.pag .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgb(22 18 15 / .82),rgb(22 18 15 / .55) 40%,rgb(22 18 15 / .1) 62%,rgb(22 18 15 / .5))}
+.pag .cab{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:16px 18px}
+.la-a{height:26px;width:auto;color:currentColor}
+.ham{position:relative;width:44px;height:44px;margin-right:-10px;padding:0;border:0;background:none;cursor:pointer}
+.ham::before,.ham::after{content:"";position:absolute;left:10px;width:24px;height:2px;border-radius:1px;background:currentColor}
+.ham::before{top:14px;box-shadow:0 7px 0 currentColor}.ham::after{top:28px}
+.pag .nombre{position:absolute;top:150px;left:0;right:0;display:grid;justify-items:center;gap:12px;padding-inline:18px}
+.pag .logo{width:100%;max-width:340px;height:auto}
+.pag .firma{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.sello{width:16px;height:16px;fill:var(--gold);flex:none}
+.pag .conv{font-family:var(--serif);font-size:20px;margin-top:20px}
+.pag .conv em{color:#EEDFAA}
+.pag .pie{position:absolute;left:0;right:0;bottom:0;padding:18px;background:rgb(16 13 11 / .62);display:grid;gap:10px}
+.pag .pie .b2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:999px;border:1.5px solid transparent;font-weight:600;font-size:15px;white-space:nowrap;cursor:pointer}
+.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.btn.oro{background:var(--gold);color:#1F1B18}
+.btn.vino{background:var(--wine);color:#fff}
+.btn.lin{border-color:rgba(255,255,255,.7);color:#fff}
+.btn.lin-vino{border-color:var(--wine);color:var(--wine)}
+.btn.lin-claro{border-color:rgba(255,255,255,.55);color:#fff}
+.btn.ancho{width:100%}
+.menu{position:absolute;inset:0;z-index:10;visibility:hidden}
+.tel[data-abierto] .menu.actual{visibility:visible}
+.cerrar{width:44px;height:44px;margin-right:-10px;display:grid;place-items:center;padding:0;border:0;background:none;cursor:pointer}
+.cerrar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.m-top{display:flex;justify-content:space-between;align-items:center;padding:16px 18px}
+
+/* entradas en cascada (--i) */
+.menu [style*="--i"]{opacity:0;transform:translateY(12px);transition:opacity .45s var(--e),transform .45s var(--e)}
+.tel[data-abierto] .menu.actual [style*="--i"]{opacity:1;transform:none;transition-delay:calc(160ms + var(--i) * 55ms)}
+
+/* 1 · Portada vino: se abre en círculo desde la hamburguesa */
+.m1{background:var(--wine);color:#F1ECE0;display:flex;flex-direction:column;clip-path:circle(0 at calc(100% - 30px) 38px);transition:clip-path .6s var(--e),visibility 0s .6s}
+.tel[data-abierto] .m1.actual{clip-path:circle(150% at calc(100% - 30px) 38px);transition:clip-path .65s var(--e)}
+.m1 .la-a{color:#F1ECE0}
+.m1-nav{flex:1;overflow:auto;padding:18px 26px 0}
+.m1-nav ol{list-style:none;margin:0;padding:0}
+.m1-nav li{border-bottom:1px solid rgb(222 216 199 / .2)}
+.m1-l{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 0;border:0;background:none;font-family:var(--serif)!important;font-size:34px;line-height:1.1;text-align:left;cursor:pointer;color:#fff}
+.m1-l.act{color:var(--gold)}
+.m1-l.act::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);margin-left:auto}
+.m1-l i{position:relative;width:18px;height:18px;flex:none}
+.m1-l i::before,.m1-l i::after{content:"";position:absolute;left:0;right:0;top:8px;height:1.5px;background:currentColor;transition:transform .3s var(--e)}
+.m1-l i::after{transform:rotate(90deg)}
+.m1-l[aria-expanded="true"] i::after{transform:rotate(0)}
+.m1-tag{margin-left:auto;padding:3px 10px;border-radius:999px;background:var(--gold);color:#1F1B18;font-family:var(--ui);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.m1-sub{list-style:none;margin:0;padding:0 0 0 2px;display:grid;gap:2px;max-height:0;overflow:hidden;transition:max-height .4s var(--e)}
+.m1-l[aria-expanded="true"] + .m1-sub{max-height:320px;padding-bottom:14px}
+.m1-sub li{border:0}
+.m1-sub a{display:block;padding:7px 0;font-size:16px;color:#E7DFD0}
+.m1-pie{display:grid;gap:12px;padding:18px 26px 22px}
+.m1-buscar{display:flex;align-items:center;gap:10px;padding:0 16px;height:46px;border:1px solid rgb(222 216 199 / .35);border-radius:999px}
+.m1-buscar svg,.m2-buscar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;opacity:.8}
+.m1-buscar input,.m2-buscar input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:15px;color:inherit;outline:none}
+.m1-buscar input::placeholder{color:rgb(241 236 224 / .65)}
+.m1-sello{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#E7DFD0}
+
+/* 2 · Hoja que sube */
+.m2-fondo{position:absolute;inset:0;background:rgb(20 16 14 / .5);opacity:0;transition:opacity .35s}
+.tel[data-abierto] .m2.actual .m2-fondo{opacity:1}
+.m2-hoja{position:absolute;left:0;right:0;bottom:0;max-height:86%;overflow:hidden;background:#fff;border-radius:22px 22px 0 0;transform:translateY(100%);transition:transform .5s var(--e);box-shadow:0 -20px 50px -20px rgba(0,0,0,.4)}
+.tel[data-abierto] .m2.actual .m2-hoja{transform:none}
+.m2-cerrar{position:absolute;z-index:2;top:6px;right:16px;color:var(--muted)}
+.m2-asa{display:block;width:40px;height:4px;border-radius:2px;background:#D6CFC2;margin:10px auto 4px}
+.m2-pista{display:flex;transition:transform .4s var(--e)}
+.m2-pista.en-sub{transform:translateX(-100%)}
+.m2-panel{flex:0 0 100%;padding:12px 18px 22px;display:grid;gap:14px;align-content:start}
+.m2-subpanel{display:none}
+.m2-pista.en-sub .m2-subpanel.ver{display:grid}
+.m2-buscar{display:flex;align-items:center;gap:10px;padding:0 16px;height:46px;border-radius:999px;background:var(--tint);color:var(--ink)}
+.m2-rejilla{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.m2-t{display:grid;gap:4px;align-content:start;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;text-align:left;cursor:pointer}
+.m2-t .ico{width:24px;height:24px;fill:none;stroke:var(--wine);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:6px}
+.m2-t b{font-family:var(--serif);font-weight:500;font-size:19px;line-height:1.1}
+.m2-t span{font-size:12.5px;color:var(--muted);line-height:1.3}
+.m2-t.act{border-color:var(--wine)}
+.m2-t.conv{background:var(--wine);border-color:var(--wine);color:#fff}
+.m2-t.conv .ico{stroke:var(--gold)}.m2-t.conv span{color:#E7DFD0}
+.m2-atras{display:flex;align-items:center;gap:6px;padding:6px 0;border:0;background:none;font-family:var(--serif)!important;font-size:24px;cursor:pointer}
+.m2-atras svg{width:22px;height:22px;fill:none;stroke:var(--wine);stroke-width:2;stroke-linecap:round}
+.m2-sub{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.m2-sub a{display:flex;justify-content:space-between;padding:14px 2px;border-bottom:1px solid var(--line);font-size:16px;font-weight:600}
+
+/* 3 · Índice de revista */
+.m3{background:#F6F2E9;color:var(--ink);display:flex;flex-direction:column;clip-path:inset(0 0 100% 0);transition:clip-path .55s var(--e),visibility 0s .55s}
+.tel[data-abierto] .m3.actual{clip-path:inset(0 0 0 0);transition:clip-path .6s var(--e)}
+.m3 .la-a{color:var(--wine)}
+.m3-eye{padding:4px 26px 6px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--olive);border-bottom:2px solid var(--ink);margin-inline:26px;padding-inline:0}
+.m3-nav{flex:1;overflow:auto;padding:4px 26px 0}
+.m3-nav ol{list-style:none;margin:0;padding:0}
+.m3-nav > ol > li{padding-block:12px 10px;border-bottom:1px solid #DCD4C3}
+.m3-l{display:flex;align-items:baseline;gap:12px}
+.m3-n{font-family:var(--serif);font-size:15px;color:var(--wine);min-width:26px;font-variant-numeric:lining-nums}
+.m3-t{font-family:var(--serif);font-size:27px;line-height:1.15}
+.m3-l.act .m3-t{color:var(--wine);font-style:italic}
+.m3-p{flex:1;border-bottom:1.5px dotted #B8AE9A;transform:translateY(-6px)}
+.m3-d{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--olive)}
+.m3-sub{list-style:none;margin:6px 0 0 38px;padding:0;display:grid;gap:1px}
+.m3-sub a{display:flex;gap:10px;padding:4px 0;font-size:15px;color:#3D3832}
+.m3-sub .m3-n{font-family:var(--ui);font-size:12px;min-width:24px;color:#8A7F6C}
+.m3-pie{display:grid;gap:12px;padding:16px 26px 22px;border-top:2px solid var(--ink);margin-inline:26px;padding-inline:0}
+.m3-folio{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);text-align:center}
+.m3-acc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* 4 · Panel con la foto */
+.m4-fondo{position:absolute;inset:0;background:rgb(20 16 14 / .5);opacity:0;transition:opacity .35s}
+.tel[data-abierto] .m4.actual .m4-fondo{opacity:1}
+.m4-panel{position:absolute;top:0;right:0;bottom:0;width:88%;display:flex;flex-direction:column;background:#1C1714;color:#F1ECE0;transform:translateX(100%);transition:transform .5s var(--e);box-shadow:-20px 0 50px -20px rgba(0,0,0,.5)}
+.tel[data-abierto] .m4.actual .m4-panel{transform:none}
+.m4-foto{position:relative;height:150px;flex:none;overflow:hidden;display:grid;align-items:end;padding:16px 18px}
+.m4-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:80% 66%}
+.m4-velo{position:absolute;inset:0;background:linear-gradient(180deg,rgb(28 23 20 / .35),rgb(28 23 20 / .1) 40%,#1C1714)}
+.m4-foto .logo{position:relative;width:230px;height:auto;color:#fff}
+.m4-foto .cerrar{position:absolute;top:8px;right:14px;color:#fff}
+.m4-nav{flex:1;overflow:auto;padding:6px 20px 0}
+.m4-nav ul{list-style:none;margin:0;padding:0}
+.m4-nav li{border-bottom:1px solid rgb(222 216 199 / .14)}
+.m4-l{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 0;border:0;background:none;font-size:17px;font-weight:600;text-align:left;cursor:pointer;color:#fff}
+.m4-l.act{color:var(--gold)}
+.m4-l i{width:10px;height:10px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-3px);transition:transform .3s var(--e)}
+.m4-l[aria-expanded="true"] i{transform:rotate(225deg) translateY(-2px)}
+.m4-sub{list-style:none;margin:0;padding:0 0 0 12px;max-height:0;overflow:hidden;transition:max-height .4s var(--e)}
+.m4-l[aria-expanded="true"] + .m4-sub{max-height:320px;padding-bottom:10px}
+.m4-sub a{display:block;padding:7px 0;font-size:15px;color:#D9D0C0;border-left:1px solid rgb(222 216 199 / .25);padding-left:12px}
+.m4-conv{margin:14px 20px 0;padding:14px;border-radius:12px;background:var(--wine);display:grid;gap:6px}
+.m4-eye{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#E7DFD0}
+.m4-eye i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.m4-tit{font-family:var(--serif);font-size:19px;line-height:1.2;color:#fff}
+.m4-tit em{color:#EEDFAA}
+.m4-fechas{font-size:13px;color:#E7DFD0;margin-bottom:4px}
+.m4-pie{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 20px 18px}
+.m4-buscar{display:flex;align-items:center;gap:8px;font-weight:600}
+.m4-buscar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+@media (prefers-reduced-motion: reduce){.tel *{transition-duration:.01ms!important;transition-delay:0ms!important}}
+</style>
+<header class="intro wrap">
+  <p class="eyebrow">Praxis del Sur · Móvil</p>
+  <h1>Cuatro menús para el móvil</h1>
+  <p class="lead">Elige uno arriba y toca la hamburguesa del teléfono para abrirlo (se abre solo al cambiar). Dentro funciona: «Publicaciones» y «Acerca de» se despliegan, y la ✕ lo cierra.</p>
+</header>
+<div class="controles wrap">
+  <div class="seg" role="group" aria-label="Menú">
+    <button type="button" data-op="1" aria-pressed="true">1 · Portada vino</button>
+    <button type="button" data-op="2" aria-pressed="false">2 · Hoja que sube</button>
+    <button type="button" data-op="3" aria-pressed="false">3 · Índice de revista</button>
+    <button type="button" data-op="4" aria-pressed="false">4 · Panel con la foto</button>
+  </div>
+</div>
+<div class="wrap zona">
+  <div class="marco" id="marco"><div class="tel" id="tel">
+    <div class="pag">
+      <img src="fotos/malecon-1200.webp" alt=""><div class="velo"></div>
+      <div class="cab"><svg class="la-a" viewBox="0 0 26.15 30.49" fill="currentColor" aria-hidden="true"><path d="M25.99,24.11c-.16-.1-.38,0-.49.05-.35.16-.51.42-.71.68-.13.16-.71.89-1.55,1.14-.33.1-.62.1-.69.1-.61,0-1.14-.24-1.59-.71-.61-.65-.66-1.62-.67-1.88-.17-3.88,1.61-15.63-2.36-20.49C16.33,1.04,13.61-.02,11.29,0c-2.2.02-3.99,1-4.76,1.43-1.81,1-2.85,2.21-3.62,3.09-.48.55-3.75,4.34-2.71,6.03.24.38.72.83,1.34.88,2.12.19,2.55-4.36,6.49-6.33.54-.27,2.81-1.43,4.92-.48,1.47.66,2.2,2.03,2.31,2.26.42.83.5,1.57.63,2.98.1,1.03.1,1.89.07,2.48-1.74.71-3.23,1.37-4.41,1.9-2.91,1.32-6.04,2.86-8.15,4.95-.11.11-.2.2-.27.28-2.12,2.23-2.4,3.8-2.47,4.29-.06.45-.27,2.09.67,3.71,1.26,2.18,3.64,2.7,4.39,2.87.33.07,5.07,1.04,7.45-2.21,1.45-1.97,2.05-5.53.05-7.11-2-1.59-5.74-.48-6.61,1.44-.02.05-.55,1.26.09,2.22.55.82,1.76,1.19,2.61.8.75-.35,1.11-1.23,1-1.33-.08-.07-.37.29-.98.39-.22.04-.67.11-1-.14-.38-.29-.42-.86-.35-1.22.16-.83,1.06-1.22,1.32-1.34.07-.03,1.58-.66,2.61.2.44.37.59.85.66,1.08.37,1.25-.2,2.71-1.13,3.59-1.17,1.1-2.65,1.09-3.12,1.08-.25,0-2.94-.06-4.01-2.06-.46-.86-.41-1.7-.39-2.05.13-1.86,1.45-3.13,2.58-4.18.39-.37,1.45-1.3,4.25-2.77,1.24-.65,3-1.5,5.21-2.32,0,.96-.02,1.72-.03,2.18-.03.93-.18,3.88-.25,6.34-.03.96-.02,1.33.04,1.84.14,1.16.27,2.31,1.1,3.29,1.23,1.46,3.16,1.54,3.6,1.55.41.02,1.79.02,3.16-.86.85-.55,1.29-1.18,1.73-1.8,0,0,.82-1.17.85-2.28,0-.34-.07-.47-.16-.52Z"/></svg><button type="button" class="ham" id="ham" aria-label="Abrir el menú" aria-expanded="false"></button></div>
+      <div class="nombre"><svg class="logo" viewBox="0 0 381.11 48.88" fill="currentColor" aria-label="Praxis del Sur" role="img"><path d="M.21,2.94c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-1.49-1.06-2.97-1.31-3.77-1.47-1.85-.37-3.35-.21-4.06-.09-1.78.28-3.07.48-3.83,1.5-.34.45-.45.9-.61,4.31-.07,1.6-.11,2.4-.11,2.89,0,2.65.08,14.22.23,30.02.04.34.17.94.63,1.49.07.09.33.39.92.71.88.49,1.8.64,3.4.91,0,0,.23.04.96.27.53.17.75.27.84.49.06.13.08.31.02.45-.22.5-1.51.41-1.87.38-1.47-.1-3.93-.11-7.51-.06-3,0-5.09,0-5.97.05,0,0-.38.02-.9-.06-.46-.07-1.35-.2-1.45-.63-.05-.2.09-.39.18-.5.37-.49.98-.59,1.43-.69.54-.12,2.49-.57,3.04-1.73.14-.29.16-.57.16-.78,0-7.02,0-14.04-.01-21.06.04-2.29.11-8.47-.25-13.83-.05-.67-.14-1.81-.93-2.84C4.97,3.94,1.42,4.12.18,4.24c-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path d="M41.24,47.28s-.01-.15.15-.32c.36-.38,1-.44,1.23-.46.4-.04,1.69-.17,2.64-.68,0,0,.49-.26.98-.77,1.14-1.19,1.04-3.07,1.07-7.16.03-2.83.04-4.24.06-4.69,0,0,.05-1.53-.15-4.69-.08-1.27-.17-1.87-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-1.19.98-2,2.13-2.39,3.16-.33.86-.57,1.84-.78,4.58-.09,1.23-.18,2.88-.18,4.86-.06,1.6-.09,2.79-.11,3.42-.07,2.26-.08,2.65.18,3.21.7,1.5,2.37,2.11,3.16,2.38.08.03.14.04.21.06,1.03.31,1.8.38,2.21.44.92.12,2.77.5,2.78.96,0,.22-.44.4-.79.54-.45.18-.68.17-2.4.28-.47.03-.86.06-1.44.07-.33,0-.57,0-.66,0-1.07-.02-2.62-.01-5.73,0-1.07,0-2.14-.03-3.21,0,0,0,0,0,0,0-.66.02-3.32.09-4.52-.37-.16-.06-.38-.16-.4-.33Z"/><path d="M358.4,47.25s-.01-.15.15-.32c.36-.38,1-.44,1.23-.46.4-.04,1.69-.17,2.64-.68,0,0,.49-.26.98-.77,1.14-1.19,1.04-3.07,1.07-7.16.03-2.83.04-4.24.06-4.69,0,0,.05-1.53-.15-4.69-.08-1.27-.17-1.87-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-1.19.98-2,2.13-2.39,3.16-.33.86-.57,1.84-.78,4.58-.09,1.23-.18,2.88-.18,4.86-.06,1.6-.09,2.79-.11,3.42-.07,2.26-.08,2.65.18,3.21.7,1.5,2.37,2.11,3.16,2.38.08.03.14.04.21.06,1.03.31,1.8.38,2.21.44.92.12,2.77.5,2.78.96,0,.22-.44.4-.79.54-.45.18-.68.17-2.4.28-.47.03-.86.06-1.44.07-.33,0-.57,0-.66,0-1.07-.02-2.62-.01-5.73,0-1.07,0-2.14-.03-3.21,0,0,0,0,0,0,0-.66.02-3.32.09-4.52-.37-.16-.06-.38-.16-.4-.33Z"/><path d="M93.24,20.82c-.05-.32-.07-.6-.07-.82v-.48c.39-.1.81-.15,1.27-.15h1.34c2.08.07,3.39.11,3.92.11,1.67,0,3.36-.02,5.08-.07,1.06-.02,1.72-.04,1.96-.04h.87c.17.34.25.59.25.76,0,.12-.05.29-.14.51l-.54.07c-1.76.17-2.86.39-3.32.66-.19.12-.29.28-.29.48,0,.39.29.97.87,1.73,2.82,3.68,4.73,6.04,5.74,7.11,2.29-3.05,3.66-5,4.1-5.87s.66-1.54.66-2.03c0-.56-.22-1.03-.65-1.41-.44-.38-1.5-.69-3.19-.93-.19-.29-.29-.53-.29-.73l.11-.36.94-.04c.24,0,.67.01,1.27.04,1.04.07,2.08.11,3.12.11.53,0,1.45-.02,2.76-.05s2.3-.05,2.98-.05h1.67c.31.15.47.34.47.58,0,.12-.02.28-.07.47-.39.1-.86.19-1.42.29-1.31.2-2.58.67-3.81,1.43-.92.56-1.83,1.45-2.72,2.67l-5.13,6.95,5.24,6.6c2.41,3.26,3.89,5.19,4.43,5.77.55.58,1.13,1.05,1.77,1.41s1.55.7,2.77,1.01c.02.29.04.54.04.76,0,.17-.05.4-.15.69-.44,0-2.65-.06-6.62-.18-.24,0-1.41.02-3.49.07-.66.02-1.29.04-1.89.04-.56,0-1.25-.02-2.07-.07l.11-1.09c.36-.07.77-.16,1.2-.25,1.24-.24,2.13-.57,2.66-.98.32-.27.47-.56.47-.87,0-.53-1.63-2.77-4.9-6.7l-2.12-2.55c-1.03,1.02-2.16,2.46-3.4,4.32-.71,1.09-1.28,1.9-1.72,2.43-.82.96-1.23,1.76-1.23,2.41,0,.22.15.44.44.67.29.23,1.14.5,2.54.81.94.19,1.61.35,2,.47.07.32.11.57.11.74,0,.15-.02.39-.07.71-1.86-.1-3.68-.15-5.45-.15-2.23,0-3.84.03-4.85.09-1,.06-1.63.09-1.87.09-.29,0-.75-.02-1.38-.07-.1-.34-.15-.59-.15-.76l.07-.47c.34-.17.76-.28,1.27-.33,1.62-.17,3.06-.77,4.32-1.81,1.26-1.04,4.04-4.5,8.36-10.37l-4.83-5.83-5.12-6.17c-.15-.15-.33-.29-.54-.44-.39-.22-.91-.39-1.56-.51-.99-.19-1.69-.34-2.11-.44Z"/><path d="M130.96,22.86l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12c-.05,2.93-.11,5.86-.16,8.78-.01,1.13.08,2.04.18,2.68.11.73.19.91.3,1.07.42.6,1.04.5,2.21,1.02.23.1,1.71.76,1.62,1.2-.06.33-1.03.42-1.9.5-.81.07-1.4.04-1.97.03-.92-.03-1.83-.01-2.75-.02-2.64-.03-3.12.06-5.52.02-.86-.01-1.56-.04-2-.06-.06,0-.14,0-.23-.03-.26-.07-.48-.3-.51-.5-.04-.33.44-.66.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM133.91,4.61c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path d="M147.86,38.25c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.88,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path d="M249.96,29.16l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.34,27.9h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path d="M253.83,4.32v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54-.18.18-.47.16-.58.16-.55-.03-1.88-.03-3.68-.04h-4.62c-1.97.01-3.94.02-5.9.04-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path d="M314.58,4.16c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path d="M321.73,20.5h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.06,2.46-.13,4.5-.19,5.98-.15,3.6-.22,5.39-.32,6.68-.07.9-.12,1.96-.22,4.08-.12,2.59-.13,3.5.53,4.11.73.67,2.11.84,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/><path d="M91.94,42.5c-.16-.1-.38,0-.49.05-.35.16-.51.42-.71.68-.13.16-.71.89-1.55,1.14-.33.1-.62.1-.69.1-.61,0-1.14-.24-1.59-.71-.61-.65-.66-1.62-.67-1.88-.17-3.88,1.61-15.63-2.36-20.49-1.6-1.96-4.31-3.02-6.64-3-2.2.02-3.99,1-4.76,1.43-1.81,1-2.85,2.21-3.62,3.09-.48.55-3.75,4.34-2.71,6.03.24.38.72.83,1.34.88,2.12.19,2.55-4.36,6.49-6.33.54-.27,2.81-1.43,4.92-.48,1.47.66,2.2,2.03,2.31,2.26.42.83.5,1.57.63,2.98.1,1.03.1,1.89.07,2.48-1.74.71-3.23,1.37-4.41,1.9-2.91,1.32-6.04,2.86-8.15,4.95-.11.11-.2.2-.27.28-2.12,2.23-2.4,3.8-2.47,4.29-.06.45-.27,2.09.67,3.71,1.26,2.18,3.64,2.7,4.39,2.87.33.07,5.07,1.04,7.45-2.21,1.45-1.97,2.05-5.53.05-7.11-2-1.59-5.74-.48-6.61,1.44-.02.05-.55,1.26.09,2.22.55.82,1.76,1.19,2.61.8.75-.35,1.11-1.23,1-1.33-.08-.07-.37.29-.98.39-.22.04-.67.11-1-.14-.38-.29-.42-.86-.35-1.22.16-.83,1.06-1.22,1.32-1.34.07-.03,1.58-.66,2.61.2.44.37.59.85.66,1.08.37,1.25-.2,2.71-1.13,3.59-1.17,1.1-2.65,1.09-3.12,1.08-.25,0-2.94-.06-4.01-2.06-.46-.86-.41-1.7-.39-2.05.13-1.86,1.45-3.13,2.58-4.18.39-.37,1.45-1.3,4.25-2.77,1.24-.65,3-1.5,5.21-2.32,0,.96-.02,1.72-.03,2.18-.03.93-.18,3.88-.25,6.34-.03.96-.02,1.33.04,1.84.14,1.16.27,2.31,1.1,3.29,1.23,1.46,3.16,1.54,3.6,1.55.41.02,1.79.02,3.16-.86.85-.55,1.29-1.18,1.73-1.8,0,0,.82-1.17.85-2.28,0-.34-.07-.47-.16-.52Z"/></svg><p class="firma"><svg class="sello" viewBox="0 0 100 100" aria-hidden="true"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>Una revista del CIPS</p><p class="conv">Ciencias sociales en y desde <em>contextos de crisis</em></p></div>
+      <div class="pie"><div class="b2"><span class="btn oro">Enviar contribución</span><span class="btn lin">Leer la convocatoria</span></div></div>
+    </div>
+    <div class="menu m1" data-menu="1">
+  <div class="m-top"><svg class="la-a" viewBox="0 0 26.15 30.49" fill="currentColor" aria-hidden="true"><path d="M25.99,24.11c-.16-.1-.38,0-.49.05-.35.16-.51.42-.71.68-.13.16-.71.89-1.55,1.14-.33.1-.62.1-.69.1-.61,0-1.14-.24-1.59-.71-.61-.65-.66-1.62-.67-1.88-.17-3.88,1.61-15.63-2.36-20.49C16.33,1.04,13.61-.02,11.29,0c-2.2.02-3.99,1-4.76,1.43-1.81,1-2.85,2.21-3.62,3.09-.48.55-3.75,4.34-2.71,6.03.24.38.72.83,1.34.88,2.12.19,2.55-4.36,6.49-6.33.54-.27,2.81-1.43,4.92-.48,1.47.66,2.2,2.03,2.31,2.26.42.83.5,1.57.63,2.98.1,1.03.1,1.89.07,2.48-1.74.71-3.23,1.37-4.41,1.9-2.91,1.32-6.04,2.86-8.15,4.95-.11.11-.2.2-.27.28-2.12,2.23-2.4,3.8-2.47,4.29-.06.45-.27,2.09.67,3.71,1.26,2.18,3.64,2.7,4.39,2.87.33.07,5.07,1.04,7.45-2.21,1.45-1.97,2.05-5.53.05-7.11-2-1.59-5.74-.48-6.61,1.44-.02.05-.55,1.26.09,2.22.55.82,1.76,1.19,2.61.8.75-.35,1.11-1.23,1-1.33-.08-.07-.37.29-.98.39-.22.04-.67.11-1-.14-.38-.29-.42-.86-.35-1.22.16-.83,1.06-1.22,1.32-1.34.07-.03,1.58-.66,2.61.2.44.37.59.85.66,1.08.37,1.25-.2,2.71-1.13,3.59-1.17,1.1-2.65,1.09-3.12,1.08-.25,0-2.94-.06-4.01-2.06-.46-.86-.41-1.7-.39-2.05.13-1.86,1.45-3.13,2.58-4.18.39-.37,1.45-1.3,4.25-2.77,1.24-.65,3-1.5,5.21-2.32,0,.96-.02,1.72-.03,2.18-.03.93-.18,3.88-.25,6.34-.03.96-.02,1.33.04,1.84.14,1.16.27,2.31,1.1,3.29,1.23,1.46,3.16,1.54,3.6,1.55.41.02,1.79.02,3.16-.86.85-.55,1.29-1.18,1.73-1.8,0,0,.82-1.17.85-2.28,0-.34-.07-.47-.16-.52Z"/></svg><button type="button" class="cerrar" data-cerrar aria-label="Cerrar el menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <nav class="m1-nav" aria-label="Menú"><ol>
+    <li style="--i:0"><a href="#" class="m1-l act">Inicio</a></li><li style="--i:1"><a href="#" class="m1-l">Convocatoria<span class="m1-tag">Abierta</span></a></li><li style="--i:2"><button type="button" class="m1-l" data-acordeon aria-expanded="false">Publicaciones<i aria-hidden="true"></i></button><ul class="m1-sub"><li><a href="#">Número actual</a></li><li><a href="#">Archivo</a></li></ul></li><li style="--i:3"><button type="button" class="m1-l" data-acordeon aria-expanded="false">Acerca de<i aria-hidden="true"></i></button><ul class="m1-sub"><li><a href="#">La revista</a></li><li><a href="#">Envíos</a></li><li><a href="#">Equipo editorial</a></li><li><a href="#">Políticas</a></li><li><a href="#">Flujo editorial</a></li><li><a href="#">Para revisores</a></li><li><a href="#">Contacto</a></li></ul></li>
+  </ol></nav>
+  <div class="m1-pie" style="--i:5">
+    <label class="m1-buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><input type="search" placeholder="Buscar en la revista"></label>
+    <a href="#" class="btn oro ancho">Entrar</a>
+    <p class="m1-sello"><svg class="sello" viewBox="0 0 100 100" aria-hidden="true"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>Una revista del CIPS</p>
+  </div>
+</div><div class="menu m2" data-menu="2">
+  <div class="m2-fondo" data-cerrar></div>
+  <div class="m2-hoja" role="dialog" aria-label="Menú">
+    <span class="m2-asa" aria-hidden="true"></span><button type="button" class="cerrar m2-cerrar" data-cerrar aria-label="Cerrar el menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="m2-pista">
+      <div class="m2-panel">
+        <label class="m2-buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><input type="search" placeholder="Buscar artículos, autores…"></label>
+        <div class="m2-rejilla">
+          <a href="#" class="m2-t act" style="--i:0"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><b>Inicio</b><span>La portada</span></a><a href="#" class="m2-t conv" style="--i:1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><b>Convocatoria</b><span>Abierta: 1 ene – 30 mar 2027</span></a><button type="button" data-sub="2" class="m2-t" style="--i:2"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5M8 13h8M8 16h6"/></svg><b>Publicaciones</b><span>Número actual y archivo</span></button><button type="button" data-sub="3" class="m2-t" style="--i:3"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/></svg><b>Acerca de</b><span>La revista y su equipo</span></button>
+        </div>
+        <a href="#" class="btn vino ancho">Entrar</a>
+      </div>
+      <div class="m2-panel m2-subpanel" data-panel="2"><button type="button" class="m2-atras" data-atras><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Publicaciones</button><ul class="m2-sub"><li><a href="#">Número actual</a></li><li><a href="#">Archivo</a></li></ul></div><div class="m2-panel m2-subpanel" data-panel="3"><button type="button" class="m2-atras" data-atras><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Acerca de</button><ul class="m2-sub"><li><a href="#">La revista</a></li><li><a href="#">Envíos</a></li><li><a href="#">Equipo editorial</a></li><li><a href="#">Políticas</a></li><li><a href="#">Flujo editorial</a></li><li><a href="#">Para revisores</a></li><li><a href="#">Contacto</a></li></ul></div>
+    </div>
+  </div>
+</div><div class="menu m3" data-menu="3">
+  <div class="m-top"><svg class="la-a" viewBox="0 0 26.15 30.49" fill="currentColor" aria-hidden="true"><path d="M25.99,24.11c-.16-.1-.38,0-.49.05-.35.16-.51.42-.71.68-.13.16-.71.89-1.55,1.14-.33.1-.62.1-.69.1-.61,0-1.14-.24-1.59-.71-.61-.65-.66-1.62-.67-1.88-.17-3.88,1.61-15.63-2.36-20.49C16.33,1.04,13.61-.02,11.29,0c-2.2.02-3.99,1-4.76,1.43-1.81,1-2.85,2.21-3.62,3.09-.48.55-3.75,4.34-2.71,6.03.24.38.72.83,1.34.88,2.12.19,2.55-4.36,6.49-6.33.54-.27,2.81-1.43,4.92-.48,1.47.66,2.2,2.03,2.31,2.26.42.83.5,1.57.63,2.98.1,1.03.1,1.89.07,2.48-1.74.71-3.23,1.37-4.41,1.9-2.91,1.32-6.04,2.86-8.15,4.95-.11.11-.2.2-.27.28-2.12,2.23-2.4,3.8-2.47,4.29-.06.45-.27,2.09.67,3.71,1.26,2.18,3.64,2.7,4.39,2.87.33.07,5.07,1.04,7.45-2.21,1.45-1.97,2.05-5.53.05-7.11-2-1.59-5.74-.48-6.61,1.44-.02.05-.55,1.26.09,2.22.55.82,1.76,1.19,2.61.8.75-.35,1.11-1.23,1-1.33-.08-.07-.37.29-.98.39-.22.04-.67.11-1-.14-.38-.29-.42-.86-.35-1.22.16-.83,1.06-1.22,1.32-1.34.07-.03,1.58-.66,2.61.2.44.37.59.85.66,1.08.37,1.25-.2,2.71-1.13,3.59-1.17,1.1-2.65,1.09-3.12,1.08-.25,0-2.94-.06-4.01-2.06-.46-.86-.41-1.7-.39-2.05.13-1.86,1.45-3.13,2.58-4.18.39-.37,1.45-1.3,4.25-2.77,1.24-.65,3-1.5,5.21-2.32,0,.96-.02,1.72-.03,2.18-.03.93-.18,3.88-.25,6.34-.03.96-.02,1.33.04,1.84.14,1.16.27,2.31,1.1,3.29,1.23,1.46,3.16,1.54,3.6,1.55.41.02,1.79.02,3.16-.86.85-.55,1.29-1.18,1.73-1.8,0,0,.82-1.17.85-2.28,0-.34-.07-.47-.16-.52Z"/></svg><button type="button" class="cerrar" data-cerrar aria-label="Cerrar el menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <p class="m3-eye" style="--i:0">Índice</p>
+  <nav class="m3-nav" aria-label="Menú"><ol>
+    <li style="--i:1"><a href="#" class="m3-l act"><span class="m3-n">01</span><span class="m3-t">Inicio</span><span class="m3-p" aria-hidden="true"></span><span class="m3-d"></span></a></li><li style="--i:2"><a href="#" class="m3-l"><span class="m3-n">02</span><span class="m3-t">Convocatoria</span><span class="m3-p" aria-hidden="true"></span><span class="m3-d">abierta</span></a></li><li style="--i:3"><a href="#" class="m3-l"><span class="m3-n">03</span><span class="m3-t">Publicaciones</span><span class="m3-p" aria-hidden="true"></span><span class="m3-d">2</span></a><ul class="m3-sub"><li><a href="#"><span class="m3-n">3.1</span>Número actual</a></li><li><a href="#"><span class="m3-n">3.2</span>Archivo</a></li></ul></li><li style="--i:4"><a href="#" class="m3-l"><span class="m3-n">04</span><span class="m3-t">Acerca de</span><span class="m3-p" aria-hidden="true"></span><span class="m3-d">7</span></a><ul class="m3-sub"><li><a href="#"><span class="m3-n">4.1</span>La revista</a></li><li><a href="#"><span class="m3-n">4.2</span>Envíos</a></li><li><a href="#"><span class="m3-n">4.3</span>Equipo editorial</a></li><li><a href="#"><span class="m3-n">4.4</span>Políticas</a></li><li><a href="#"><span class="m3-n">4.5</span>Flujo editorial</a></li><li><a href="#"><span class="m3-n">4.6</span>Para revisores</a></li><li><a href="#"><span class="m3-n">4.7</span>Contacto</a></li></ul></li>
+  </ol></nav>
+  <div class="m3-pie" style="--i:6">
+    <p class="m3-folio">e-ISSN 0000-0000 · Vol. 1 (2027)</p>
+    <div class="m3-acc"><a href="#" class="btn lin-vino"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>Buscar</a><a href="#" class="btn vino">Entrar</a></div>
+  </div>
+</div><div class="menu m4" data-menu="4">
+  <div class="m4-fondo" data-cerrar></div>
+  <div class="m4-panel">
+    <div class="m4-foto"><img src="fotos/malecon-1200.webp" alt=""><div class="m4-velo"></div><svg class="logo" viewBox="0 0 381.11 48.88" fill="currentColor" aria-label="Praxis del Sur" role="img"><path d="M.21,2.94c.42-.07.69-.11.81-.11.8,0,2.11.05,3.94.14.96.02,1.62.04,1.97.04.52,0,1.6-.05,3.27-.14l5.98-.35c1.57-.14,3.4-.21,5.48-.21,3.68,0,6.61.52,8.79,1.56s3.86,2.67,5.04,4.9c1.18,2.22,1.78,4.44,1.78,6.64,0,3.67-1.29,6.85-3.87,9.51-2.58,2.67-6.05,4-10.41,4-1.22,0-2.24-.12-3.06-.37-.82-.25-1.76-.72-2.81-1.42-.45-.3-.72-.62-.81-.95.09-.16.22-.28.39-.35.33,0,.67.07,1.02.21.8.28,1.8.42,3.02.42,1.85,0,3.6-.46,5.26-1.37,1.65-.91,2.9-2.21,3.74-3.9s1.27-3.46,1.27-5.34-.44-3.6-1.33-5.32c-.89-1.72-2.06-3.09-3.51-4.12-1.49-1.06-2.97-1.31-3.77-1.47-1.85-.37-3.35-.21-4.06-.09-1.78.28-3.07.48-3.83,1.5-.34.45-.45.9-.61,4.31-.07,1.6-.11,2.4-.11,2.89,0,2.65.08,14.22.23,30.02.04.34.17.94.63,1.49.07.09.33.39.92.71.88.49,1.8.64,3.4.91,0,0,.23.04.96.27.53.17.75.27.84.49.06.13.08.31.02.45-.22.5-1.51.41-1.87.38-1.47-.1-3.93-.11-7.51-.06-3,0-5.09,0-5.97.05,0,0-.38.02-.9-.06-.46-.07-1.35-.2-1.45-.63-.05-.2.09-.39.18-.5.37-.49.98-.59,1.43-.69.54-.12,2.49-.57,3.04-1.73.14-.29.16-.57.16-.78,0-7.02,0-14.04-.01-21.06.04-2.29.11-8.47-.25-13.83-.05-.67-.14-1.81-.93-2.84C4.97,3.94,1.42,4.12.18,4.24c-.12-.26-.18-.47-.18-.63,0-.19.07-.41.21-.67Z"/><path d="M41.24,47.28s-.01-.15.15-.32c.36-.38,1-.44,1.23-.46.4-.04,1.69-.17,2.64-.68,0,0,.49-.26.98-.77,1.14-1.19,1.04-3.07,1.07-7.16.03-2.83.04-4.24.06-4.69,0,0,.05-1.53-.15-4.69-.08-1.27-.17-1.87-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-1.19.98-2,2.13-2.39,3.16-.33.86-.57,1.84-.78,4.58-.09,1.23-.18,2.88-.18,4.86-.06,1.6-.09,2.79-.11,3.42-.07,2.26-.08,2.65.18,3.21.7,1.5,2.37,2.11,3.16,2.38.08.03.14.04.21.06,1.03.31,1.8.38,2.21.44.92.12,2.77.5,2.78.96,0,.22-.44.4-.79.54-.45.18-.68.17-2.4.28-.47.03-.86.06-1.44.07-.33,0-.57,0-.66,0-1.07-.02-2.62-.01-5.73,0-1.07,0-2.14-.03-3.21,0,0,0,0,0,0,0-.66.02-3.32.09-4.52-.37-.16-.06-.38-.16-.4-.33Z"/><path d="M358.4,47.25s-.01-.15.15-.32c.36-.38,1-.44,1.23-.46.4-.04,1.69-.17,2.64-.68,0,0,.49-.26.98-.77,1.14-1.19,1.04-3.07,1.07-7.16.03-2.83.04-4.24.06-4.69,0,0,.05-1.53-.15-4.69-.08-1.27-.17-1.87-.63-2.33-.33-.33-1.17-.59-2.53-.77-.8-.12-1.43-.27-1.9-.46l.14-1.07c2.46-1.01,4.11-1.88,4.96-2.61,1.17-1.06,2.17-2.44,2.99-4.16l1.2.04c.14,1.17.21,3.77.21,7.8l.04,1.27c.58-.96,1.1-1.75,1.5-2.33.76-1.1,1.16-1.66,1.8-2.32.72-.74,1.39-1.23,1.79-1.5,1.07-.73,2.2-1.48,3.66-1.48,1.03,0,1.88.35,2.53,1.04.66.69.98,1.54.98,2.55,0,.8-.23,1.42-.7,1.86-.63.59-1.36.88-2.18.88-.38,0-1.11-.2-2.21-.6-1.1-.4-1.83-.6-2.18-.6-.66,0-1.11.11-1.37.32-1.19.98-2,2.13-2.39,3.16-.33.86-.57,1.84-.78,4.58-.09,1.23-.18,2.88-.18,4.86-.06,1.6-.09,2.79-.11,3.42-.07,2.26-.08,2.65.18,3.21.7,1.5,2.37,2.11,3.16,2.38.08.03.14.04.21.06,1.03.31,1.8.38,2.21.44.92.12,2.77.5,2.78.96,0,.22-.44.4-.79.54-.45.18-.68.17-2.4.28-.47.03-.86.06-1.44.07-.33,0-.57,0-.66,0-1.07-.02-2.62-.01-5.73,0-1.07,0-2.14-.03-3.21,0,0,0,0,0,0,0-.66.02-3.32.09-4.52-.37-.16-.06-.38-.16-.4-.33Z"/><path d="M93.24,20.82c-.05-.32-.07-.6-.07-.82v-.48c.39-.1.81-.15,1.27-.15h1.34c2.08.07,3.39.11,3.92.11,1.67,0,3.36-.02,5.08-.07,1.06-.02,1.72-.04,1.96-.04h.87c.17.34.25.59.25.76,0,.12-.05.29-.14.51l-.54.07c-1.76.17-2.86.39-3.32.66-.19.12-.29.28-.29.48,0,.39.29.97.87,1.73,2.82,3.68,4.73,6.04,5.74,7.11,2.29-3.05,3.66-5,4.1-5.87s.66-1.54.66-2.03c0-.56-.22-1.03-.65-1.41-.44-.38-1.5-.69-3.19-.93-.19-.29-.29-.53-.29-.73l.11-.36.94-.04c.24,0,.67.01,1.27.04,1.04.07,2.08.11,3.12.11.53,0,1.45-.02,2.76-.05s2.3-.05,2.98-.05h1.67c.31.15.47.34.47.58,0,.12-.02.28-.07.47-.39.1-.86.19-1.42.29-1.31.2-2.58.67-3.81,1.43-.92.56-1.83,1.45-2.72,2.67l-5.13,6.95,5.24,6.6c2.41,3.26,3.89,5.19,4.43,5.77.55.58,1.13,1.05,1.77,1.41s1.55.7,2.77,1.01c.02.29.04.54.04.76,0,.17-.05.4-.15.69-.44,0-2.65-.06-6.62-.18-.24,0-1.41.02-3.49.07-.66.02-1.29.04-1.89.04-.56,0-1.25-.02-2.07-.07l.11-1.09c.36-.07.77-.16,1.2-.25,1.24-.24,2.13-.57,2.66-.98.32-.27.47-.56.47-.87,0-.53-1.63-2.77-4.9-6.7l-2.12-2.55c-1.03,1.02-2.16,2.46-3.4,4.32-.71,1.09-1.28,1.9-1.72,2.43-.82.96-1.23,1.76-1.23,2.41,0,.22.15.44.44.67.29.23,1.14.5,2.54.81.94.19,1.61.35,2,.47.07.32.11.57.11.74,0,.15-.02.39-.07.71-1.86-.1-3.68-.15-5.45-.15-2.23,0-3.84.03-4.85.09-1,.06-1.63.09-1.87.09-.29,0-.75-.02-1.38-.07-.1-.34-.15-.59-.15-.76l.07-.47c.34-.17.76-.28,1.27-.33,1.62-.17,3.06-.77,4.32-1.81,1.26-1.04,4.04-4.5,8.36-10.37l-4.83-5.83-5.12-6.17c-.15-.15-.33-.29-.54-.44-.39-.22-.91-.39-1.56-.51-.99-.19-1.69-.34-2.11-.44Z"/><path d="M130.96,22.86l.04-1.04c1.52-.45,2.34-.71,2.46-.78.84-.38,1.73-.95,2.65-1.73.93-.78,1.71-1.65,2.34-2.61.28-.05.5-.07.67-.07l.42.04c.09,1.12.14,1.95.14,2.46,0,.12-.02.65-.07,1.58v1.86l.04,10.12c-.05,2.93-.11,5.86-.16,8.78-.01,1.13.08,2.04.18,2.68.11.73.19.91.3,1.07.42.6,1.04.5,2.21,1.02.23.1,1.71.76,1.62,1.2-.06.33-1.03.42-1.9.5-.81.07-1.4.04-1.97.03-.92-.03-1.83-.01-2.75-.02-2.64-.03-3.12.06-5.52.02-.86-.01-1.56-.04-2-.06-.06,0-.14,0-.23-.03-.26-.07-.48-.3-.51-.5-.04-.33.44-.66.67-.77.09-.05,1.29-.32,3.59-.81.75-.14,1.24-.37,1.48-.7.4-.49.6-1.28.6-2.35.05-1.8.07-6.74.07-14.81,0-1.61-.07-2.62-.21-3.02-.12-.28-.43-.6-.93-.96-.5-.36-1.58-.73-3.22-1.11ZM133.91,4.61c0-.77.3-1.44.9-2s1.32-.84,2.16-.84,1.63.32,2.29.95c.66.63.98,1.31.98,2.04s-.33,1.41-.98,2.06c-.66.65-1.42.97-2.29.97s-1.59-.29-2.18-.88c-.59-.59-.88-1.35-.88-2.29Z"/><path d="M147.86,38.25c.87,2.23,1.52,3.67,1.97,4.32.89,1.34,1.96,2.37,3.2,3.11,1.24.74,2.59,1.11,4.04,1.11,1.34,0,2.66-.57,3.97-1.72.94-.87,1.41-1.88,1.41-3.02,0-1.52-.55-2.93-1.65-4.22-1.1-1.27-3.19-2.48-6.28-3.64-3.08-1.16-5.15-2.4-6.21-3.71-1.05-1.31-1.58-2.81-1.58-4.5,0-1.59.43-3,1.3-4.22.87-1.22,2.06-2.14,3.59-2.76,1.52-.62,2.93-.93,4.22-.93,1.66,0,3.16.13,4.48.39,1.32.26,2.47.66,3.43,1.2.19,1.2.34,2.95.46,5.27l.07,1.12c-.3.02-.56.04-.77.04h-.49c-.7-1.95-1.78-3.49-3.22-4.62-1.44-1.14-2.87-1.71-4.27-1.71s-2.54.43-3.41,1.28c-.87.86-1.3,1.97-1.3,3.36,0,1.05.35,1.99,1.05,2.81.7.82,2.35,1.76,4.94,2.81,2.59,1.05,4.48,2.03,5.66,2.93,1.18.9,2.06,2,2.62,3.29s.84,2.52.84,3.69c0,1.62-.53,3.13-1.6,4.54-1.07,1.41-2.4,2.4-4.01,2.97-1.61.57-3.04.86-4.31.86-2.98,0-5.72-.55-8.23-1.65-.23-.19-.36-.54-.39-1.05,0-.21-.02-.55-.07-1.02-.38-3.16-.56-5.04-.56-5.62,0-.28.06-.47.18-.56.12-.09.42-.14.91-.14Z"/><path d="M211.85,21.87l.04-1.02-.04-4.11.04-7.77c0-2.16-.23-3.53-.7-4.11-.47-.59-1.84-1.18-4.11-1.79-.16-.05-.42-.12-.77-.21v-.39c0-.23.02-.49.07-.77,3.19-.33,5.93-.88,8.23-1.65l1.79-.04c.09,1.59.14,3.38.14,5.34l-.14,13.54.25,15.26-.11,8.12c0,1.66.12,2.6.35,2.81.47.47,1.5.72,3.09.74.33,0,.77.02,1.34.07v.63c0,.16-.01.34-.04.53-.73.16-1.48.32-2.25.46l-5.1.98c-.75.14-1.35.21-1.79.21v-3.38c-.4.12-1.02.35-1.86.7-3.66,1.55-7.02,2.32-10.09,2.32-1.85,0-3.74-.6-5.66-1.81s-3.4-2.89-4.43-5.04c-1.03-2.16-1.55-4.36-1.55-6.61,0-2.02.34-3.94,1.02-5.78.68-1.84,1.57-3.37,2.67-4.59.7-.8,1.7-1.59,2.99-2.37,1.29-.79,2.36-1.28,3.2-1.49,2.09-.54,3.48-.81,4.18-.81,3.16,0,5.77.47,7.8,1.41.63.3,1.11.52,1.44.63ZM211.88,43.59c.09-1.57.14-4.8.14-9.7,0-4.15-.19-6.77-.58-7.86-.39-1.09-1.35-2.12-2.89-3.09-1.54-.97-3.27-1.46-5.18-1.46-2.69,0-4.96,1.04-6.83,3.13-1.87,2.09-2.8,5.17-2.8,9.25,0,3.59,1.01,6.45,3.03,8.58,2.02,2.13,4.53,3.2,7.55,3.2,1.73,0,3.3-.23,4.73-.7,1.42-.47,2.37-.91,2.84-1.34Z"/><path d="M249.96,29.16l-14.1.1h-2.67c-.53,0-1.07,0-1.63.03-.51.02-1,.05-1.47.09-.07.22-.16.55-.25.96-.83,3.88.61,7.19,1.09,8.18.55,1.14,1.53,3.23,3.87,4.75,1.68,1.09,3.77,1.67,6.28,1.74,1.34-.07,2.4-.23,3.2-.49.8-.26,1.92-.86,3.38-1.79l2.53-2.07c.14.46.24,1.03.2,1.66,0,.09-.02.18-.03.27-1.05,1.34-2.39,2.51-4.01,3.52-1.62,1.01-3.26,1.75-4.92,2.21-.8.21-2.11.32-3.94.32-1.66,0-3.3-.34-4.92-1.02-2.39-1.03-4.27-2.69-5.64-4.97s-2.06-5.06-2.06-8.31c0-1.03.19-2.36.58-3.97s1.08-3.34,2.09-5.17c.68-1.24,1.51-2.26,2.5-3.06,1.41-1.12,2.64-1.91,3.69-2.36,1.52-.63,3.29-.95,5.31-.95,2.18,0,3.96.4,5.34,1.2,1.88,1.05,3.28,2.41,4.2,4.08.93,1.66,1.39,3.19,1.39,4.57v.49ZM230.34,27.9h1.65c5.46-.15,9.49-.4,10.69-.56.5-.07,1.18-.21,1.77-.73.17-.15.43-.38.58-.75.56-1.34-1.02-3.08-1.3-3.38-.62-.68-1.26-1.07-1.57-1.24-1.68-.92-3.31-.79-3.95-.73-1.52.14-2.59.72-3.1,1-1.25.69-2,1.51-2.4,1.96-1.42,1.58-2.07,3.29-2.38,4.43Z"/><path d="M253.83,4.32v-.77c.66-.21,1.38-.43,2.18-.67,1.18-.37,2.92-.95,5.23-1.72h1.66v1.94c0,19.26-.06,30.74-.18,34.44-.07,2.18-.11,3.34-.11,3.48,0,2.63.11,4.09.32,4.4.28.42,1.14.72,2.58.88s2.29.33,2.55.49c.19.09.28.26.28.49,0,.26-.05.44-.16.54-.18.18-.47.16-.58.16-.55-.03-1.88-.03-3.68-.04h-4.62c-1.97.01-3.94.02-5.9.04-.38.02-.66-.05-.84-.22-.14-.12-.21-.29-.21-.5,0-.24.08-.41.23-.52s1-.29,2.53-.55c1.54-.26,2.41-.47,2.64-.65s.37-.57.44-1.18c.09-.84.14-3.22.14-7.14l-.04-8.09.11-8.37-.04-8.37.11-4.11c0-.82-.13-1.41-.39-1.78-.26-.36-.81-.72-1.65-1.07-1.27-.52-2.13-.89-2.6-1.12Z"/><path d="M314.58,4.16c.13.6.23,1.23.31,1.91.28,2.52.03,4.73-.34,6.46-.21.09-.39.14-.53.14l-.32-.07c-.75-3.28-2.02-5.67-3.81-7.17-1.79-1.5-3.98-2.25-6.56-2.25s-4.86.75-6.57,2.25c-1.71,1.5-2.57,3.25-2.57,5.24,0,1.52.6,2.92,1.79,4.18s4.25,3.16,9.18,5.68c3.75,1.94,6.43,3.52,8.05,4.75,1.62,1.23,2.84,2.66,3.66,4.28.82,1.62,1.23,3.42,1.23,5.42,0,2.51-.65,4.87-1.95,7.07-1.3,2.21-3.05,3.87-5.26,4.98-2.2,1.11-5.12,1.67-8.75,1.67-3.16,0-6.2-.5-9.11-1.51-1.71-.61-2.75-1.1-3.13-1.48-.38-.37-.56-.77-.56-1.2,0-.26.02-.59.07-.98.33-2.77.5-5.04.53-6.82.05-1.1.13-1.75.25-1.93.09-.16.27-.25.53-.25.21,0,.38.08.51.23.13.15.22.44.26.86.26,2.88,1.59,5.46,4.01,7.73,2.39,2.27,5.1,3.41,8.12,3.41,1.85,0,3.56-.39,5.12-1.16s2.78-1.89,3.66-3.36c.88-1.46,1.32-2.89,1.32-4.27,0-1.9-.67-3.63-2-5.2-1.34-1.57-4.02-3.4-8.05-5.5-4.03-2.1-6.66-3.63-7.88-4.59-1.97-1.57-3.45-3.23-4.43-4.99-.73-1.36-1.09-2.94-1.09-4.75,0-3.26,1.29-6.02,3.87-8.28,2.58-2.26,6.04-3.39,10.37-3.39,2.39,0,4.45.27,6.19.81,1.27.42,2.57,1.11,3.9,2.07Z"/><path d="M321.73,20.5h4.69c2.41,0,3.9.02,4.48.07.03,2.21.02,4.09,0,5.55-.02,1.94-.06,3.52-.11,4.72-.07,1.83-.11,2.87-.11,3.13,0,4.13.13,6.7.41,7.73.27,1.03.9,1.86,1.9,2.48,1,.62,2.2.93,3.61.93,1.71,0,3.35-.36,4.92-1.07,1.56-.71,2.9-1.59,4-2.62.12-.89.18-1.88.18-2.95,0-3.49.04-5.85.11-7.07.02-.73.04-1.36.04-1.9,0-3.8-.19-5.94-.56-6.43s-1.8-.87-4.29-1.12c-.82-.09-1.42-.18-1.79-.25-.19-.3-.28-.54-.28-.7l.11-.39c.61-.07,1.21-.11,1.79-.11l5.59.07c1.99-.05,3.05-.07,3.16-.07.26,0,.5.01.74.04l.07,2.57c-.06,2.46-.13,4.5-.19,5.98-.15,3.6-.22,5.39-.32,6.68-.07.9-.12,1.96-.22,4.08-.12,2.59-.13,3.5.53,4.11.73.67,2.11.84,2.29.84.39,0,.79.03,1.2.05.6.04,1.18.09,1.72.16.02.3.04.53.04.67v.39c-3.14.68-5.68,1.36-7.63,2.04-.77.26-1.43.44-1.97.56-.07-.48-.13-.99-.18-1.51-.12-1.38-.11-2.66-.04-3.8-.3.21-.66.47-1.05.77-1.85,1.43-3.81,2.64-5.87,3.62-1.38.68-2.72,1.02-4.01,1.02-2.46,0-4.46-.91-6.01-2.74-2.08-2.46-2.27-6.31-2.36-9.35-.1-3.5-.11-7.55.07-12.06l.04-.98c0-.13-.03-.32-.14-.54-.14-.27-.34-.42-.42-.48-.62-.46-1.74-.47-2.9-.69-.27-.05-.7-.14-1.21-.3v-1.12Z"/><path d="M91.94,42.5c-.16-.1-.38,0-.49.05-.35.16-.51.42-.71.68-.13.16-.71.89-1.55,1.14-.33.1-.62.1-.69.1-.61,0-1.14-.24-1.59-.71-.61-.65-.66-1.62-.67-1.88-.17-3.88,1.61-15.63-2.36-20.49-1.6-1.96-4.31-3.02-6.64-3-2.2.02-3.99,1-4.76,1.43-1.81,1-2.85,2.21-3.62,3.09-.48.55-3.75,4.34-2.71,6.03.24.38.72.83,1.34.88,2.12.19,2.55-4.36,6.49-6.33.54-.27,2.81-1.43,4.92-.48,1.47.66,2.2,2.03,2.31,2.26.42.83.5,1.57.63,2.98.1,1.03.1,1.89.07,2.48-1.74.71-3.23,1.37-4.41,1.9-2.91,1.32-6.04,2.86-8.15,4.95-.11.11-.2.2-.27.28-2.12,2.23-2.4,3.8-2.47,4.29-.06.45-.27,2.09.67,3.71,1.26,2.18,3.64,2.7,4.39,2.87.33.07,5.07,1.04,7.45-2.21,1.45-1.97,2.05-5.53.05-7.11-2-1.59-5.74-.48-6.61,1.44-.02.05-.55,1.26.09,2.22.55.82,1.76,1.19,2.61.8.75-.35,1.11-1.23,1-1.33-.08-.07-.37.29-.98.39-.22.04-.67.11-1-.14-.38-.29-.42-.86-.35-1.22.16-.83,1.06-1.22,1.32-1.34.07-.03,1.58-.66,2.61.2.44.37.59.85.66,1.08.37,1.25-.2,2.71-1.13,3.59-1.17,1.1-2.65,1.09-3.12,1.08-.25,0-2.94-.06-4.01-2.06-.46-.86-.41-1.7-.39-2.05.13-1.86,1.45-3.13,2.58-4.18.39-.37,1.45-1.3,4.25-2.77,1.24-.65,3-1.5,5.21-2.32,0,.96-.02,1.72-.03,2.18-.03.93-.18,3.88-.25,6.34-.03.96-.02,1.33.04,1.84.14,1.16.27,2.31,1.1,3.29,1.23,1.46,3.16,1.54,3.6,1.55.41.02,1.79.02,3.16-.86.85-.55,1.29-1.18,1.73-1.8,0,0,.82-1.17.85-2.28,0-.34-.07-.47-.16-.52Z"/></svg><button type="button" class="cerrar" data-cerrar aria-label="Cerrar el menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav class="m4-nav" aria-label="Menú"><ul>
+      <li style="--i:0"><a href="#" class="m4-l act">Inicio</a></li><li style="--i:1"><a href="#" class="m4-l">Convocatoria</a></li><li style="--i:2"><button type="button" class="m4-l" data-acordeon aria-expanded="false">Publicaciones<i aria-hidden="true"></i></button><ul class="m4-sub"><li><a href="#">Número actual</a></li><li><a href="#">Archivo</a></li></ul></li><li style="--i:3"><button type="button" class="m4-l" data-acordeon aria-expanded="false">Acerca de<i aria-hidden="true"></i></button><ul class="m4-sub"><li><a href="#">La revista</a></li><li><a href="#">Envíos</a></li><li><a href="#">Equipo editorial</a></li><li><a href="#">Políticas</a></li><li><a href="#">Flujo editorial</a></li><li><a href="#">Para revisores</a></li><li><a href="#">Contacto</a></li></ul></li>
+    </ul></nav>
+    <div class="m4-conv" style="--i:4"><p class="m4-eye"><i></i>Convocatoria abierta · Vol. 1 (2027)</p><p class="m4-tit">Ciencias sociales en y desde <em>contextos de crisis</em></p><p class="m4-fechas">Recepción: 1 ene – 30 mar 2027</p><a href="#" class="btn oro ancho">Enviar contribución</a></div>
+    <div class="m4-pie" style="--i:5"><a href="#" class="m4-buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>Buscar</a><a href="#" class="btn lin-claro">Entrar</a></div>
+  </div>
+</div>
+  </div></div>
+  <section class="ficha" id="ficha" aria-live="polite"></section>
+</div>
+<script>
+(function(){
+  var F = {"1":["1 · Portada vino","Al tocar la hamburguesa, el vino de la revista se abre en círculo desde el botón y cubre la pantalla. Los apartados, en letra grande de revista (la misma serif del nombre), entran uno tras otro. «Publicaciones» y «Acerca de» se despliegan dentro con un +. Abajo, buscar, «Entrar» en dorado y el sello del CIPS.","Es el más vistoso y el que más dice «revista». Con letra grande todo se toca con facilidad; si un día hay más apartados, cabe bajando."],"2":["2 · Hoja que sube","Un panel blanco sube desde abajo, al alcance del pulgar, con el buscador arriba y los cuatro apartados en tarjetas con icono y una línea que dice qué hay dentro. La convocatoria va en vino para que destaque. «Publicaciones» y «Acerca de» abren su lista dentro de la misma hoja, con una flecha para volver.","El más cómodo con una mano y el más «aplicación». Menos editorial que los otros."],"3":["3 · Índice de revista","El menú es el índice de una revista impresa: fondo de papel, apartados numerados (01, 02…) con línea de puntos, y los subapartados como 3.1, 3.2… siempre a la vista. Abajo, la línea de datos (e-ISSN, volumen) y los botones de buscar y entrar. Se despliega de arriba abajo como una hoja.","El más original y el que más conecta con el mundo editorial. Muestra todo de una vez, sin desplegables; si crece mucho, baja."],"4":["4 · Panel con la foto","Un panel oscuro entra desde la derecha con una franja de la foto del Malecón y el logo arriba. Debajo, los apartados con desplegables y una tarjeta de la convocatoria con su fecha y el botón «Enviar contribución», para tenerla siempre a mano. Abajo, buscar y entrar.","El más ligado a la portada y el que mejor empuja a enviar. Es el más cargado de los cuatro."]}, REC = '1';
+  var tel = document.getElementById('tel'), marco = document.getElementById('marco'), ham = document.getElementById('ham'), ficha = document.getElementById('ficha');
+  var op = '1';
+  function encajar(){
+    var disp = Math.min(document.querySelector('.zona').clientWidth, 390), alto = Math.max(420, window.innerHeight * 0.86);
+    var s = Math.min(1, disp / 390, alto / 760);
+    tel.style.transform = 'scale(' + s + ')'; marco.style.width = 390 * s + 'px'; marco.style.height = 760 * s + 'px';
+  }
+  function abrir(){ tel.setAttribute('data-abierto', ''); ham.setAttribute('aria-expanded', 'true'); }
+  function cerrar(){ tel.removeAttribute('data-abierto'); ham.setAttribute('aria-expanded', 'false');
+    tel.querySelectorAll('[data-acordeon]').forEach(function(b){ b.setAttribute('aria-expanded', 'false'); });
+    var p = tel.querySelector('.m2-pista'); if (p) p.classList.remove('en-sub'); }
+  function mostrar(o){
+    op = o; cerrar();
+    tel.querySelectorAll('.menu').forEach(function(m){ m.classList.toggle('actual', m.getAttribute('data-menu') === o); });
+    var x = F[o];
+    ficha.innerHTML = (o === REC ? '<span class="rec">Mi recomendación</span>' : '') + '<h2>' + x[0] + '</h2><p>' + x[1] + '</p><p class="vig"><b>A tener en cuenta</b>' + x[2] + '</p><p class="pista">Toca la hamburguesa del teléfono para abrirlo y cerrarlo.</p>';
+    setTimeout(abrir, 450);
+  }
+  ham.addEventListener('click', function(){ tel.hasAttribute('data-abierto') ? cerrar() : abrir(); });
+  tel.addEventListener('click', function(e){
+    if (e.target.closest('a[href="#"]')) e.preventDefault();
+    if (e.target.closest('[data-cerrar]')) { cerrar(); return; }
+    var ac = e.target.closest('[data-acordeon]');
+    if (ac) { var ab = ac.getAttribute('aria-expanded') === 'true';
+      ac.closest('ol,ul').querySelectorAll('[data-acordeon]').forEach(function(b){ b.setAttribute('aria-expanded', 'false'); });
+      ac.setAttribute('aria-expanded', ab ? 'false' : 'true'); return; }
+    var sb = e.target.closest('[data-sub]');
+    if (sb) { var pista = tel.querySelector('.m2-pista');
+      pista.querySelectorAll('.m2-subpanel').forEach(function(p){ p.classList.toggle('ver', p.getAttribute('data-panel') === sb.getAttribute('data-sub')); });
+      requestAnimationFrame(function(){ pista.classList.add('en-sub'); }); return; }
+    if (e.target.closest('[data-atras]')) { tel.querySelector('.m2-pista').classList.remove('en-sub'); }
+  });
+  document.querySelectorAll('button[data-op]').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('button[data-op]').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      mostrar(b.getAttribute('data-op'));
+    });
+  });
+  window.addEventListener('resize', encajar);
+  encajar(); mostrar('1');
+})();
+</script>

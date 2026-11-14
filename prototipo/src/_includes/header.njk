@@ -13,12 +13,14 @@
     </div>
     <nav class="pkp_site_nav_menu" aria-label="Navegación del sitio" id="siteNavMenu">
       <a id="siteNav"></a>
+      {#- Solo en el menú del móvil y la tableta: rótulo y línea de datos, como el índice de una revista impresa -#}
+      <p class="ps-menu-indice" aria-hidden="true">Índice</p>
       <div class="pkp_navigation_primary_row">
         <div class="pkp_navigation_primary_wrapper">
           <ul id="navigationPrimary" class="pkp_navigation_primary pkp_nav_list">
           {%- for item in nav %}
-            <li class="{% if item.children %}has_submenu{% endif %}{% if item | navActivo(here) %} is_current{% endif %}">
-              <a href="{{ item.url }}"{% if item.url == here %} aria-current="page"{% endif %}>{{ item.label }}</a>
+            <li class="{% if item.children %}has_submenu{% endif %}{% if item | navActivo(here) %} is_current{% endif %}" style="--i: {{ loop.index }}">
+              <a href="{{ item.url }}"{% if item.url == here %} aria-current="page"{% endif %}><span class="ps-menu-t">{{ item.label }}</span>{% if item.children %}<span class="ps-menu-nota" aria-hidden="true">{{ item.children.length }}</span>{% endif %}</a>
               {%- if item.children %}
               <ul>
                 {%- for c in item.children %}
@@ -29,7 +31,7 @@
             </li>
           {%- endfor %}
           </ul>
-          <div class="pkp_navigation_search_wrapper">
+          <div class="pkp_navigation_search_wrapper" style="--i: 6">
             <a href="buscar.html" class="pkp_search pkp_search_desktop">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span>Buscar</span>
@@ -37,7 +39,8 @@
           </div>
         </div>
       </div>
-      <div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
+      <p class="ps-menu-folio" aria-hidden="true" style="--i: 5">e-ISSN {{ revista.issn or revista.issnEjemplo }} · {{ convocatoria.volumen }}</p>
+      <div class="pkp_navigation_user_wrapper" id="navigationUserWrapper" style="--i: 6">
         <ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
           {#- Un solo botón: «Entrar» (dentro se entra o se crea una cuenta). «Enviar contribución» va en la portada. -#}
           <li class="ps-nav-cta"><a class="ps-btn ps-btn--wine ps-btn--small" href="acceso.html"{% if here == "acceso.html" %} aria-current="page"{% endif %}>Entrar</a></li>

@@ -7,6 +7,6 @@
     <div class="ps-cover-top"><span>Vol. {{ numero.volumen }} · Núm. {{ numero.numero }}</span><span>{{ numero.anio }}</span></div>
     <div class="ps-cover-name">{% logo "praxis-del-sur" %}</div>
     <div class="ps-cover-tema">{{ numero.titulo }}</div>
-    <div class="ps-cover-sello"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>{{ revista.firmaVisible }}</div>
+    <div class="ps-cover-sello">{% selloCips %}{{ revista.firmaVisible }}</div>
   </div>
 </div>

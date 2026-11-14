@@ -22,6 +22,9 @@
   --ps-serif: "EB Garamond", Garamond, "Times New Roman", serif;
   --ps-sans: "Frutiger", "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
 
+  /* Esquinas de los botones: redondas, en pastilla (se probaron rectas el 13 nov 2026 y volvió a estas). */
+  --ps-boton-radio: 999px;
+
   --ps-step--1: 0.875rem;
   --ps-step-0: 1.0625rem;
   --ps-step-1: 1.25rem;

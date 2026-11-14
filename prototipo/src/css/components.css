@@ -24,7 +24,7 @@
 /* ---------- Botones ---------- */
 .ps-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 46px; padding: 11px 24px; border: 1.5px solid transparent; border-radius: 999px;
+  min-height: 46px; padding: 11px 24px; border: 1.5px solid transparent; border-radius: var(--ps-boton-radio);
   font-family: var(--ps-sans); font-size: 1rem; font-weight: 600; line-height: 1.2; text-decoration: none;
   cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -86,7 +86,7 @@
   .ps-head--sobre:not(.is-solid) .ps-nav-cta .ps-btn { background: var(--ps-gold); color: var(--ps-ink); }
 }
 .cmp_skip_to_content a:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.cmp_skip_to_content a:focus { position: absolute; left: 12px; top: 12px; z-index: 60; padding: 10px 18px; border-radius: 999px; background: var(--ps-wine); color: var(--ps-paper); font-weight: 600; }
+.cmp_skip_to_content a:focus { position: absolute; left: 12px; top: 12px; z-index: 60; padding: 10px 18px; border-radius: var(--ps-boton-radio); background: var(--ps-wine); color: var(--ps-paper); font-weight: 600; }
 .pkp_head_wrapper {
   max-width: var(--ps-max); margin-inline: auto; padding-left: var(--ps-gutter); padding-right: var(--ps-gutter);
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
@@ -162,22 +162,57 @@
   .pkp_site_name_wrapper { width: 100%; justify-content: space-between; min-height: var(--ps-head-h); transition: min-height var(--ps-head-dur) var(--ps-head-ease); }
   .pkp_structure_head.is-compact .pkp_site_name_wrapper { min-height: var(--ps-head-h-compact); }
   .pkp_site_nav_toggle { display: inline-flex; order: 2; }
-  .pkp_site_nav_menu { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding-bottom: 18px; }
-  .pkp_site_nav_menu.is_open { display: flex; max-height: calc(100dvh - var(--ps-head-h)); overflow-y: auto; }
-  .pkp_navigation_primary_wrapper { flex-direction: column; align-items: stretch; }
-  .pkp_navigation_primary { flex-direction: column; border-top: 1px solid var(--ps-line); }
-  .pkp_navigation_primary > li > a { padding: 14px 4px; border-bottom: 1px solid var(--ps-line); border-radius: 0; }
-  .pkp_navigation_primary > li.is_current > a { box-shadow: inset 3px 0 0 var(--ps-wine); padding-left: 14px; }
-  .pkp_navigation_primary .has_submenu > a::after { display: none; }
-  .pkp_navigation_primary li ul { display: block; position: static; box-shadow: none; border: 0; padding: 4px 0 8px 16px; min-width: 0; }
-  .pkp_search { padding: 14px 4px; }
+  /* Menú del móvil y la tableta: el índice de una revista impresa (papel, apartados numerados con línea de puntos y subapartados
+     3.1, 3.2… a la vista), que se abre en círculo desde la hamburguesa (base.njk pone --menu-x y --menu-y). La «a» y la ✕ quedan encima. */
+  .pkp_site_name_wrapper { position: relative; z-index: 2; }
+  .pkp_site_nav_menu {
+    position: fixed; inset: 0; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(max-content, 1fr) auto auto;
+    grid-template-areas: "indice indice" "lista lista" "folio folio" "buscar entrar";
+    gap: 0 10px; align-content: start; overflow-y: auto; overscroll-behavior: contain;
+    padding: calc(var(--ps-head-h) + 4px) max(26px, var(--ps-gutter)) max(22px, env(safe-area-inset-bottom, 0px));
+    background: #F6F2E9; color: var(--ps-ink);
+    visibility: hidden; clip-path: circle(0 at var(--menu-x, calc(100% - 36px)) var(--menu-y, 36px));
+    transition: clip-path 0.5s var(--ps-head-ease), visibility 0s 0.5s;
+  }
+  .pkp_site_nav_menu.is_open { visibility: visible; clip-path: circle(150% at var(--menu-x, calc(100% - 36px)) var(--menu-y, 36px)); transition: clip-path 0.65s var(--ps-head-ease); }
+  .pkp_navigation_primary_row, .pkp_navigation_primary_wrapper, .pkp_navigation_user_wrapper { display: contents; }
+  .ps-menu-indice { display: block; grid-area: indice; padding-bottom: 8px; border-bottom: 2px solid var(--ps-ink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ps-olive); }
+  .pkp_navigation_primary { grid-area: lista; flex-direction: column; counter-reset: ps-menu; align-self: start; }
+  .pkp_navigation_primary > li { counter-increment: ps-menu; padding-block: 12px 10px; border-bottom: 1px solid #DCD4C3; }
+  .pkp_navigation_primary > li > a { display: flex; align-items: baseline; gap: 12px; padding: 0; border-radius: 0; box-shadow: none !important; color: var(--ps-ink); font-family: var(--ps-serif); font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2rem); font-weight: 400; line-height: 1.15; }
+  .pkp_navigation_primary > li > a::before { content: counter(ps-menu, decimal-leading-zero); min-width: 28px; font-size: 0.95rem; color: var(--ps-wine); font-variant-numeric: lining-nums; }
+  .pkp_site_nav_menu .pkp_navigation_primary > li > a::after { content: ""; display: block; flex: 1; width: auto; height: 0; border: 0; border-bottom: 1.5px dotted #B8AE9A; transform: translateY(-6px); order: 2; }
+  .pkp_navigation_primary > li > a .ps-menu-t { order: 1; }
+  .ps-menu-nota { order: 3; font-family: var(--ps-sans); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--ps-olive); }
+  .pkp_navigation_primary > li.is_current > a { color: var(--ps-wine); padding-left: 0; }
+  .pkp_navigation_primary > li.is_current > a .ps-menu-t { font-style: italic; }
+  .pkp_navigation_primary li ul { display: grid; gap: 1px; position: static; box-shadow: none; border: 0; padding: 6px 0 2px 40px; min-width: 0; background: none; counter-reset: ps-sub; }
+  .pkp_navigation_primary li ul li { counter-increment: ps-sub; }
+  .pkp_navigation_primary li ul a { display: flex; gap: 10px; padding: 5px 0; font-size: 1rem; color: #3D3832; background: none; }
+  .pkp_navigation_primary li ul a::before { content: counter(ps-menu) "." counter(ps-sub); min-width: 26px; font-size: 0.8rem; color: #8A7F6C; }
+  .pkp_navigation_primary li ul a[aria-current] { color: var(--ps-wine); font-weight: 600; background: none; }
+  .ps-menu-folio { display: block; grid-area: folio; margin-top: 22px; padding-top: 14px; border-top: 2px solid var(--ps-ink); text-align: center; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive); }
+  .pkp_navigation_search_wrapper { grid-area: buscar; margin-top: 12px; }
+  .pkp_search { display: flex; justify-content: center; gap: 8px; min-height: 46px; padding: 10px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); color: var(--ps-wine); }
   .pkp_search span { position: static; width: auto; height: auto; clip-path: none; }
-  .pkp_navigation_user { flex-wrap: wrap; padding-top: 12px; gap: 8px; }
-  .pkp_navigation_user .profile a { padding: 8px 4px; }
-  /* en el menú del móvil, «Entrar» a todo el ancho */
-  .ps-nav-cta { margin-left: 0; width: 100%; }
+  .pkp_navigation_user { grid-area: entrar; margin-top: 12px; padding: 0; }
+  .ps-nav-cta { margin: 0; width: 100%; }
   .ps-nav-cta .ps-btn { width: 100%; min-height: 46px; }
+  /* cascada: cada apartado entra un poco después del anterior */
+  .pkp_site_nav_menu [style*="--i"] { opacity: 0; transform: translateY(10px); transition: opacity 0.4s var(--ps-head-ease), transform 0.4s var(--ps-head-ease); }
+  .pkp_site_nav_menu.is_open [style*="--i"] { opacity: 1; transform: none; transition-delay: calc(140ms + var(--i) * 55ms); }
+  .ps-menu-indice { opacity: 0; transition: opacity 0.4s var(--ps-head-ease); }
+  .pkp_site_nav_menu.is_open .ps-menu-indice { opacity: 1; transition-delay: 120ms; }
+  /* con el menú abierto: la barra, del color del papel y sin sombra; la «a» en vino; la página de atrás no se mueve */
+  .pkp_structure_head.ps-menu-abierto::before { opacity: 1 !important; transform: none !important; background: #F6F2E9; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .pkp_structure_head.ps-menu-abierto .ps-logo-a, .pkp_structure_head.ps-menu-abierto .pkp_site_nav_toggle { color: var(--ps-wine) !important; }
+  html.ps-menu-abierto { overflow: hidden; }
 }
+@media (max-width: 1080px) and (prefers-reduced-motion: reduce) {
+  .pkp_site_nav_menu, .pkp_site_nav_menu.is_open, .pkp_site_nav_menu [style*="--i"] { transition: none !important; }
+}
+/* fuera del menú del móvil, el rótulo, la línea de datos y el número de subapartados no se ven */
+@media (min-width: 1081px) { .ps-menu-indice, .ps-menu-folio, .ps-menu-nota { display: none; } }
 @media (max-width: 760px) { .ps-logo-a-svg { height: 24px; } }
 
 /* ---------- Portada: héroe ---------- */
@@ -222,8 +257,8 @@
 /* Línea de datos de revista: ISSN, volumen, ciudad y licencia */
 .ps-hero-folio { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-beige); }
 .ps-hero-folio i { font-style: normal; color: var(--ps-gold); }
-/* Sello del CIPS (su isotipo) delante de «Revista del CIPS» */
-.ps-hero-sello { display: block; width: 1.5em; height: 1.5em; flex: none; fill: var(--ps-gold); }
+/* Sello del CIPS (su vector oficial) delante de «Una revista del CIPS», en su vino */
+.ps-hero-sello { display: block; width: 1.5em; height: 1.5em; flex: none; fill: #652325; }
 .ps-hero-pie {
   grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px 36px;
 }
@@ -560,7 +595,7 @@ a:has(> .ps-cover), a.cover { text-decoration: none; }
 .obj_article_summary .meta { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 1rem; color: var(--ps-muted); }
 .obj_article_summary .pages { font-variant-numeric: tabular-nums; }
 .galleys_links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.obj_galley_link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 4px 14px; border: 1.5px solid var(--ps-wine); border-radius: 999px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; color: var(--ps-wine); text-decoration: none; }
+.obj_galley_link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 4px 14px; border: 1.5px solid var(--ps-wine); border-radius: var(--ps-boton-radio); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; color: var(--ps-wine); text-decoration: none; }
 .obj_galley_link:hover { background: var(--ps-wine); color: var(--ps-paper); }
 
 /* ---------- Número (objects/issue_toc.tpl) ---------- */

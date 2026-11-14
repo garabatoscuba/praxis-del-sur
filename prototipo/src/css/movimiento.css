@@ -147,9 +147,6 @@ html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { dis
   .pkp_navigation_primary .has_submenu:hover > ul,
   .pkp_navigation_primary .has_submenu:focus-within > ul { animation: ps-asoma 0.26s var(--ps-mov-e); }
 }
-@media (max-width: 1080px) {
-  .pkp_site_nav_menu.is_open { animation: ps-asoma 0.32s var(--ps-mov-e); }
-}
 @keyframes ps-asoma { from { opacity: 0; transform: translateY(-6px); } }
 
 /* ---------- 4. Respuesta al ratón ---------- */
@@ -190,3 +187,49 @@ html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { dis
 /* «Copiar cita»: la cita se ilumina un instante al copiarse. */
 .ps-cita { transition: background-color 0.9s var(--ps-mov-e); }
 .ps-cita.is-copiada { background: color-mix(in srgb, var(--ps-gold) 30%, var(--ps-beige-light)); transition-duration: 0.12s; }
+
+/* ---------- 6. Pantalla de carga de la portada (_includes/carga.njk) ----------
+   «5 · Horizonte + sello», con la salida «Se funde» (identidad/carga.html, 13 nov 2026). Solo existe con html.ps-cargando, que pone
+   el script de carga.njk (nunca con «reducir movimiento» ni sin script). La línea va a la altura del horizonte de la foto:
+   las mismas cuentas que .ps-hero--foto (--ps-horiz en components.css; --ps-horiz-m en movil.css). */
+.ps-carga { display: none; }
+html.ps-cargando { overflow: hidden; }
+html.ps-cargando.ps-carga-abre { overflow: visible; }
+html.ps-cargando .ps-carga {
+  --h: calc(100vh * 0.72 - 0.072 * max(100vh, 71.7vw));
+  display: block; position: fixed; inset: 0; z-index: 3000;
+}
+@media (max-width: 760px) {
+  html.ps-cargando .ps-carga { --h: calc((100svh - max(100svh, 760px)) / 2 + 0.648 * (max(100svh, 760px) + (100svh - 132px) / 0.745) / 2); }
+}
+html.ps-cargando .ps-carga.abre { pointer-events: none; }
+html.ps-cargando .ps-carga.fin { display: none; }
+/* las dos mitades se solapan 2 px: no queda rendija por la que se vea la foto */
+.ps-carga-arriba, .ps-carga-abajo { position: absolute; left: 0; right: 0; background: #14100E; transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); will-change: transform; }
+.ps-carga-arriba { top: 0; height: calc(var(--h) + 1px); }
+.ps-carga-abajo { top: calc(var(--h) - 1px); bottom: 0; }
+.ps-carga.abre .ps-carga-arriba { transform: translateY(-101%); }
+.ps-carga.abre .ps-carga-abajo { transform: translateY(101%); }
+/* la barra de carga: crece desde el centro (el script la anima; .va-css, si el navegador no puede) */
+.ps-carga-linea { position: absolute; left: 0; right: 0; top: var(--h); height: 1.5px; margin-top: -0.75px; background: var(--ps-gold); transform: scaleX(0); will-change: transform; }
+.ps-carga.va-css .ps-carga-linea { transform: scaleX(1); transition: transform 3s cubic-bezier(0.42, 0, 0.32, 1) 0.2s; }
+.ps-carga.abre .ps-carga-linea { opacity: 0; transition: opacity 0.5s ease 0.1s; }
+/* el sello y «Una revista del CIPS», encima de la línea */
+.ps-carga-firma { position: absolute; left: 0; right: 0; bottom: calc(100% - var(--h) + 34px); display: grid; justify-items: center; gap: 18px; padding-inline: 16px; }
+.ps-carga-sello { width: clamp(54px, 5.6vw, 78px); height: auto; fill: #652325; overflow: visible; }
+.ps-carga-t { font-family: var(--ps-sans); font-size: clamp(14px, 1.6vw, 22px); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; white-space: nowrap; color: #F1ECE0; }
+/* se arma: la pieza grande gira hasta su sitio y el cuadrado cae en su hueco; luego aparece el texto */
+.ps-carga-sello .s2 { transform-origin: 50% 50%; transform: scale(0.6) rotate(-90deg); opacity: 0; transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s, opacity 0.4s ease 0.15s; }
+.ps-carga-sello .s1 { transform: translate(-40px, -50px); opacity: 0; transition: transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) 0.65s, opacity 0.3s ease 0.65s; }
+.ps-carga-t { opacity: 0; transition: opacity 0.6s ease 1s; }
+.ps-carga.va .ps-carga-sello .s1, .ps-carga.va .ps-carga-sello .s2 { transform: none; opacity: 1; }
+.ps-carga.va .ps-carga-t { opacity: 1; }
+/* se funde: se desvanece y se desenfoca un poco mientras se abre la pantalla */
+.ps-carga.abre .ps-carga-firma { opacity: 0; transform: scale(0.94); filter: blur(3px); transition: opacity 0.55s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.55s ease; }
+/* detrás, la portada espera: la foto, un poco más cerca, y la banda de abajo, sin su contenido; al abrirse, la foto se aleja
+   despacio y las fechas y los botones suben (lo de arriba entra con movimiento.njk, que espera a la carga) */
+html.ps-cargando .ps-hero--foto { overflow: clip; }
+html.ps-cargando .ps-hero-foto { transform: scale(1.07); }
+html.ps-cargando .ps-hero-pie > * { opacity: 0; transform: translateY(12px); }
+html.ps-cargando.ps-carga-lista .ps-hero-foto { transform: none; transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+html.ps-cargando.ps-carga-lista .ps-hero-pie > * { opacity: 1; transform: none; transition: opacity 0.7s var(--ps-mov-e) 0.3s, transform 0.7s var(--ps-mov-e) 0.3s; }

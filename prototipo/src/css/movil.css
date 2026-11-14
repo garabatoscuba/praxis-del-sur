@@ -97,7 +97,7 @@
   [data-movil-ejes="mazo"] .ps-eje[data-k-oculta] { opacity: 0; }
   [data-movil-ejes="mazo"] .ps-mazo-nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 6px; }
   .ps-mazo-nav button {
-    display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--ps-line-strong); border-radius: 999px;
+    display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--ps-line-strong); border-radius: var(--ps-boton-radio);
     background: var(--ps-paper); color: var(--ps-ink); cursor: pointer; transition: border-color 0.25s, color 0.25s;
   }
   .ps-mazo-nav button::before { content: ""; width: 9px; height: 9px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateX(2px) rotate(45deg); }
@@ -124,10 +124,10 @@
 
   /* ---------- Modalidades: pestañas y descripciones ---------- */
   [data-movil-mod="pestanas"] .ps-mod-tabs {
-    display: inline-flex; gap: 2px; margin-bottom: 18px; padding: 3px; border: 1px solid var(--ps-line); border-radius: 999px; background: var(--ps-beige-light);
+    display: inline-flex; gap: 2px; margin-bottom: 18px; padding: 3px; border: 1px solid var(--ps-line); border-radius: var(--ps-boton-radio); background: var(--ps-beige-light);
   }
   .ps-mod-tabs button {
-    padding: 8px 16px; border: 0; border-radius: 999px; background: transparent; font: inherit; font-size: 0.9375rem; font-weight: 600;
+    padding: 8px 16px; border: 0; border-radius: var(--ps-boton-radio); background: transparent; font: inherit; font-size: 0.9375rem; font-weight: 600;
     color: var(--ps-muted); cursor: pointer; transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
   }
   .ps-mod-tabs button small { margin-left: 4px; font-size: 0.8125rem; font-weight: 700; color: var(--ps-olive); }

@@ -40,6 +40,12 @@ export default function (eleventyConfig) {
     return `<svg class="${clase}" viewBox="${vb}" fill="currentColor" ${a11y} focusable="false">${trazos}</svg>`;
   });
 
+  // Sello del CIPS: el vector oficial (cips/src/components/home/icons.tsx). .s1 es el cuadrado y .s2 el cuerpo (la pantalla de
+  // carga los junta por separado). El color lo pone el CSS: en la portada y en la carga, su vino #652325.
+  eleventyConfig.addShortcode('selloCips', (clase = '') => `<svg class="${clase}" viewBox="0 0 149.99 148" aria-hidden="true" focusable="false">`
+    + '<path class="s1" d="M0,0h47v45H0V0Z"/>'
+    + '<path class="s2" d="M.04,65.09c15.65-.03,31.3-.06,46.95-.09v37h56v-57h-37V0h83.99v147.76c-50,.08-100,.16-149.99.24.01-27.64.03-55.27.04-82.91Z"/></svg>');
+
   const fmt = (iso, opts) => new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', ...opts }).format(new Date(`${iso}T00:00:00Z`));
   eleventyConfig.addFilter('fecha', (iso) => (iso ? fmt(iso, { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
   eleventyConfig.addFilter('fechaCorta', (iso) => (iso ? fmt(iso, { day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '') : ''));
