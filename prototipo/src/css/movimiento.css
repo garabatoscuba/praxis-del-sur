@@ -134,16 +134,17 @@ html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { dis
 .ps-link-arrow::after { transition: transform 0.45s var(--ps-mov-e); }
 .ps-link-arrow:hover::after { transform: translateX(calc(2px + 5px * var(--ps-mov-h))); }
 
-/* Menú principal (ordenador): raya que se abre desde el centro; dorada sobre el bloque vino. */
+/* Menú principal (ordenador): al pasar el ratón, una raya que se abre desde el centro, dorada en la barra blanca y blanca sobre la
+   foto; la de la página actual va en el otro color (components.css) y tapa esta. */
 @media (min-width: 1081px) {
   .pkp_structure_head .pkp_navigation_primary > li > a {
-    background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat;
+    background-image: linear-gradient(var(--ps-gold), var(--ps-gold)); background-repeat: no-repeat;
     background-position: 50% 100%; background-size: 0% 2px;
     transition: color var(--ps-head-dur) var(--ps-head-ease), box-shadow var(--ps-head-dur) var(--ps-head-ease), background-size 0.4s var(--ps-mov-e);
   }
   .pkp_structure_head .pkp_navigation_primary > li > a:hover,
   .pkp_structure_head .pkp_navigation_primary > li:focus-within > a { background-size: 100% 2px; }
-  .ps-head--sobre:not(.is-solid) .pkp_navigation_primary > li > a { background-image: linear-gradient(var(--ps-gold), var(--ps-gold)); }
+  .ps-head--sobre:not(.is-solid) .pkp_navigation_primary > li > a { background-image: linear-gradient(var(--ps-paper), var(--ps-paper)); }
   .pkp_navigation_primary .has_submenu:hover > ul,
   .pkp_navigation_primary .has_submenu:focus-within > ul { animation: ps-asoma 0.26s var(--ps-mov-e); }
 }

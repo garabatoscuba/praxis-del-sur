@@ -141,6 +141,9 @@ button.ps-btn--line::after { content: none; }
   color: var(--ps-ink); font-weight: 600; font-size: 1rem; text-decoration: none;
 }
 .pkp_navigation_primary > li > a:hover { color: var(--ps-wine); }
+/* La página en la que estás lleva su raya en un color y la que señalas con el ratón, en otro (pedido por la usuaria, 13 nov 2026):
+   en la barra blanca, la actual en vino y la de pasar el ratón en dorado; sobre la foto de la portada, la actual en dorado y la de
+   pasar el ratón en blanco (movimiento.css). */
 .pkp_navigation_primary > li.is_current > a { box-shadow: inset 0 -2px 0 var(--ps-wine); color: var(--ps-wine); }
 .pkp_navigation_primary .has_submenu > a::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
 .pkp_navigation_primary li ul {
