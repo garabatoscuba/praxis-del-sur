@@ -94,6 +94,31 @@
   ul.addEventListener('pointercancel', soltar);
   ul.addEventListener('click', function (e) { if (movido) { e.preventDefault(); e.stopPropagation(); movido = false; } }, true);
 
+  // ---------- Ejes en pila: cuando se completa, sube entera ----------
+  // Cada tarjeta se queda pegada arriba (sticky) hasta que el final de la lista la empuja. Como son de alturas distintas, se
+  // soltaban cada una en un momento y se cruzaban al subir. Aquí, a cada una se le da un margen de abajo (y a la siguiente el
+  // mismo, en negativo, para que no se mueva nada) que la hace soltarse justo cuando la última llega a su sitio en la pila:
+  // desde ese momento suben todas juntas.
+  function ponerPila() {
+    cartas.forEach(function (c) { c.style.marginBottom = ''; c.style.marginTop = ''; });
+    if (modo('ejes') !== 'pila') return;
+    var L = cartas.length - 1;
+    var fines = cartas.map(function (c) { return parseFloat(getComputedStyle(c).top) + c.offsetHeight; });
+    var sep = parseFloat(getComputedStyle(cartas[0]).marginBottom) || 0;
+    // el margen de abajo de cada una la hace soltarse cuando el final de la lista llega a fines[L]; el de arriba de la siguiente
+    // lo compensa, para que entre las dos siga habiendo la misma separación (sep)
+    for (var i = 0; i < L; i++) {
+      var m = fines[L] - fines[i];
+      cartas[i].style.marginBottom = m + 'px';
+      cartas[i + 1].style.marginTop = (sep - m) + 'px';
+    }
+  }
+  var pilaPend = false;
+  function pilaLuego() { if (!pilaPend) { pilaPend = true; requestAnimationFrame(function () { pilaPend = false; ponerPila(); }); } }
+  if (window.ResizeObserver) { var ro = new ResizeObserver(pilaLuego); cartas.forEach(function (c) { ro.observe(c); }); }
+  window.addEventListener('resize', pilaLuego);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pilaLuego);
+
   // ---------- Ejes en lista: el título abre y cierra su descripción ----------
   function alternar(el) { var a = el.classList.toggle('is-abierto'); el.setAttribute('aria-expanded', a ? 'true' : 'false'); }
   ul.addEventListener('click', function (e) {
@@ -136,7 +161,7 @@
     }
   });
 
-  function todo() { ponerMazo(); accesible(); }
+  function todo() { ponerMazo(); ponerPila(); accesible(); }
   if (mq.addEventListener) mq.addEventListener('change', todo);
   window.__psMovil = {
     config: function (c) { aplicarCfg(c); activa = 0; todo(); }
