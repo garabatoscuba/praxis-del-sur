@@ -30,7 +30,9 @@
 }
 .ps-btn--small { min-height: 38px; padding: 7px 18px; font-size: 0.75rem; }
 .ps-btn--wine { background: var(--ps-wine); color: var(--ps-paper); }
-.ps-btn--wine:hover { background: var(--ps-wine-dark); }
+/* Al pasar el ratón, todos los botones llenos hacen lo de «Enviar contribución»: se aclaran un poco y se levantan con una sombra
+   suave (movimiento.css). Pedido por la usuaria, 13 nov 2026. */
+.ps-btn--wine:hover { background: var(--ps-wine-light); }
 .ps-btn--gold { background: var(--ps-gold); color: var(--ps-ink); }
 .ps-btn--gold:hover { background: var(--ps-gold-light); }
 /* Tipo «Editorial» (afinar/botones.html, 13 nov 2026): solo el principal es botón; el secundario (--ghost sobre oscuro,
@@ -93,6 +95,7 @@ button.ps-btn--line::after { content: none; }
   .ps-head--sobre:not(.is-solid) .pkp_search { color: var(--ps-paper); }
   .ps-head--sobre:not(.is-solid) .pkp_navigation_user .profile a { color: var(--ps-beige); }
   .ps-head--sobre:not(.is-solid) .ps-nav-cta .ps-btn { background: var(--ps-gold); color: var(--ps-ink); }
+  .ps-head--sobre:not(.is-solid) .ps-nav-cta .ps-btn:hover { background: var(--ps-gold-light); }
 }
 .cmp_skip_to_content a:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .cmp_skip_to_content a:focus { position: absolute; left: 12px; top: 12px; z-index: 60; padding: 10px 18px; border-radius: var(--ps-boton-radio); background: var(--ps-wine); color: var(--ps-paper); font-weight: 600; }
@@ -723,7 +726,7 @@ ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
 .entry_details > .item:first-child { border-top: 0; padding-top: 0; }
 .entry_details .galleys_links { flex-direction: column; }
 .entry_details .obj_galley_link { width: 100%; min-height: 48px; font-size: 0.8125rem; background: var(--ps-wine); color: var(--ps-paper); }
-.entry_details .obj_galley_link:hover { background: var(--ps-wine-dark); }
+.entry_details .obj_galley_link:not(.html):hover { background: var(--ps-wine-light); }
 .entry_details .obj_galley_link.html { background: transparent; color: var(--ps-wine); }
 .entry_details .obj_galley_link.html:hover { background: var(--ps-wine); color: var(--ps-paper); }
 .entry_details .sub_item + .sub_item { margin-top: 18px; }

@@ -152,13 +152,13 @@ html[data-cal-fase]:not([data-cal-fase="abierta"]) .ps-hero .ps-dot::after { dis
 
 /* ---------- 4. Respuesta al ratón ---------- */
 .ps-btn { transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.4s var(--ps-mov-e), transform 0.15s var(--ps-mov-e); }
-.obj_galley_link, .ps-otros a, .ps-toc a, .ps-kw, .ps-cc { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+.obj_galley_link, .ps-otros a, .ps-toc a, .ps-kw, .ps-cc { transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.4s var(--ps-mov-e); }
 .ps-eje { transition: translate 0.45s var(--ps-mov-e), box-shadow 0.45s var(--ps-mov-e); }
 .ps-cover { transition: translate 0.6s var(--ps-mov-e), box-shadow 0.6s var(--ps-mov-e); }
 .ps-mov .ps-eje:hover::before { background: var(--ps-wine); }
 .ps-mov .ps-eje--tema:hover::before { background: var(--ps-gold-light); }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .ps-btn--gold:hover, .ps-btn--wine:hover { box-shadow: 0 12px 24px -16px rgb(31 27 24 / calc(0.9 * var(--ps-mov-h))); }
+  .ps-btn--gold:hover, .ps-btn--wine:hover, .entry_details .obj_galley_link:not(.html):hover { box-shadow: 0 12px 24px -16px rgb(31 27 24 / calc(0.9 * var(--ps-mov-h))); }
   .ps-btn:active { transform: scale(0.98); }
   .ps-eje:hover { translate: 0 calc(-4px * var(--ps-mov-h)); box-shadow: 0 24px 40px -30px rgb(31 27 24 / calc(0.75 * var(--ps-mov-h))); }
   a:hover > .ps-cover, a:hover .ps-cover { translate: 0 calc(-6px * var(--ps-mov-h)); box-shadow: 0 40px 70px -34px rgb(31 10 12 / calc(0.4 + 0.4 * var(--ps-mov-h))); }

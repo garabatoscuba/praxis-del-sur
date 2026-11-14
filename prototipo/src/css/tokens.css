@@ -11,6 +11,7 @@
   /* Derivados */
   --ps-wine-dark: #4F1B1D;   /* vino más oscuro, para estados activos */
   --ps-gold-light: #CDBD8A;  /* dorado aclarado, para pasar el cursor sobre botones dorados */
+  --ps-wine-light: #7E2E30;  /* vino aclarado, para pasar el cursor sobre botones vino (blanco encima: contraste 9:1) */
   --ps-beige-light: #F3F0E8; /* beige muy claro para fondos de sección */
   --ps-ink: #1F1B18;         /* negro cálido para texto */
   --ps-muted: #5C574E;       /* texto secundario: 7,2:1 sobre blanco */

@@ -23,6 +23,7 @@ writeFileSync('_afinar/articulo.html', conPrevio(readFileSync('_artifact/articul
 writeFileSync('_afinar/envios.html', conPrevio(readFileSync('_artifact/envios.html', 'utf8')));
 writeFileSync('_afinar/acceso.html', conPrevio(readFileSync('_artifact/acceso.html', 'utf8')));
 writeFileSync('_afinar/botones.html', readFileSync('afinar/botones.html', 'utf8'));
+writeFileSync('_afinar/hover.html', readFileSync('afinar/hover.html', 'utf8'));
 writeFileSync('_afinar/index.html', readFileSync('afinar/movimiento.html', 'utf8'));
 writeFileSync('_afinar/calendario.html', readFileSync('afinar/calendario.html', 'utf8'));
 writeFileSync('_afinar/movil.html', readFileSync('afinar/movil.html', 'utf8'));
