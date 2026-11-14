@@ -1,4 +1,5 @@
 ---
+fichas: true
 pagination:
   data: articulos
   size: 1
@@ -38,7 +39,7 @@ eleventyComputed:
             <ul class="authors">
               {%- for au in a.autores %}
               <li>
-                <span class="name">{{ au | nombreCompleto }}</span>
+                <span class="name"><button type="button" class="ps-autor-btn" data-ficha="{{ au | fichaId }}" aria-haspopup="dialog">{{ au | nombreCompleto }}</button></span>
                 <span class="affiliation">{{ au.afiliacion }}</span>
                 <span class="orcid"><a href="#" aria-label="ORCID de {{ au | nombreCompleto }} (ejemplo)"><span class="ps-orcid-badge" aria-hidden="true">iD</span>{{ au.orcid }}</a></span>
                 {%- if au.credit %}<span class="ps-credit"><span class="pkp_screen_reader">Contribución: </span>{{ au.credit | join(" · ") }}</span>{% endif %}

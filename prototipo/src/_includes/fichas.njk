@@ -1,0 +1,66 @@
+{#- Fichas de autoría como tarjetas que se abren encima de la página (no son páginas aparte). Una por persona, armada desde sus
+    artículos (autores en eleventy.config.js). Al tocar un nombre (botón data-ficha) se abre su tarjeta; dentro, los coautores abren
+    la suya. OJS 3.5 no trae esta ficha de serie: en la revista real irá en el tema hijo, con los datos de cada contribución
+    (nombre, afiliación, ORCID, biografía y URL). -#}
+{%- for autor in autores %}
+<dialog class="ps-ficha" id="{{ autor | fichaId }}" aria-labelledby="{{ autor | fichaId }}-nombre">
+  <div class="ps-ficha-in">
+    <button type="button" class="ps-ficha-cerrar" data-cerrar aria-label="Cerrar la ficha"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <header class="ps-ficha-head">
+      <div class="ps-ficha-inicial" aria-hidden="true">{{ autor.nombre | first }}{{ autor.apellidos | first }}</div>
+      <div class="ps-ficha-id">
+        <p class="ps-ficha-eye">Autoría</p>
+        <h2 id="{{ autor | fichaId }}-nombre" class="ps-ficha-nombre">{{ autor.nombre }} {{ autor.apellidos }}</h2>
+        <p class="ps-ficha-afil">{{ autor.afiliacion }}</p>
+      </div>
+    </header>
+    {%- if autor.bio %}<p class="ps-ficha-bio">{{ autor.bio }}</p>{% endif %}
+    <ul class="ps-ficha-enlaces" aria-label="Perfiles y enlaces">
+      <li><a href="#" class="is-orcid"><span class="ps-orcid-badge" aria-hidden="true">iD</span>ORCID <span class="ps-ficha-num">{{ autor.orcid }}</span></a></li>
+      {%- for e in autor.enlaces %}
+      <li><a href="{{ e.url }}">{{ e.tipo }}<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 16L16 8M9 8h7v7"/></svg></a></li>
+      {%- endfor %}
+    </ul>
+    <section class="ps-ficha-arts" aria-labelledby="{{ autor | fichaId }}-arts">
+      <h3 id="{{ autor | fichaId }}-arts">En Praxis del Sur</h3>
+      <ul>
+        {%- for x in autor.articulos %}
+        {%- set secX = secciones | bySlug(x.seccion) %}
+        <li>
+          <p class="ps-ficha-meta">{{ secX.nombre }} · {{ x.publicado | fechaCorta }}</p>
+          <a class="ps-ficha-art" href="articulo-{{ x.slug }}.html">{{ x.titulo }}</a>
+          {%- if x.credit %}<p class="ps-ficha-rol"><b>Contribución:</b> {{ x.credit | join(" · ") }}</p>{% endif %}
+          {%- if x.coautores.length %}<p class="ps-ficha-rol"><b>Con</b> {% for c in x.coautores %}<button type="button" class="ps-autor-btn" data-ficha="{{ c | fichaId }}" aria-haspopup="dialog">{{ c | nombreCompleto }}</button>{% if not loop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+    </section>
+    {%- if autor.temas.length %}
+    <p class="ps-ficha-temas">{% for k in autor.temas %}<span class="ps-kw">{{ k }}</span>{% endfor %}</p>
+    {%- endif %}
+    <p class="ps-ficha-nota">Ficha de ejemplo: persona, datos y enlaces ficticios.</p>
+  </div>
+</dialog>
+{%- endfor %}
+<script>
+(function () {
+  if (!window.HTMLDialogElement) return;
+  var abierta = null;
+  function abrir(id) {
+    var d = document.getElementById(id); if (!d) return;
+    if (abierta && abierta !== d) abierta.close();
+    if (!d.open) d.showModal();
+    d.querySelector('.ps-ficha-in').scrollTop = 0;
+    abierta = d;
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ficha]');
+    if (b) { e.preventDefault(); abrir(b.getAttribute('data-ficha')); return; }
+    var c = e.target.closest('[data-cerrar]');
+    if (c) { c.closest('dialog').close(); return; }
+    // clic fuera de la tarjeta (en el fondo oscuro): se cierra
+    if (e.target.classList && e.target.classList.contains('ps-ficha')) e.target.close();
+  });
+  document.querySelectorAll('.ps-ficha').forEach(function (d) { d.addEventListener('close', function () { if (abierta === d) abierta = null; }); });
+})();
+</script>

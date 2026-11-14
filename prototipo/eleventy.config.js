@@ -61,6 +61,22 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('bySlug', (arr, slug) => (arr || []).find((x) => x.slug === slug));
   eleventyConfig.addFilter('where', (arr, key, value) => (arr || []).filter((x) => x[key] === value));
   eleventyConfig.addFilter('navActivo', (item, here) => item.url === here || (item.children || []).some((c) => c.url === here));
+  // Autoras y autores: una ficha por persona (tarjeta en _includes/fichas.njk), armada desde los artículos de ejemplo.
+  const slugAutor = (au) => `${au.nombre} ${au.apellidos}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  eleventyConfig.addFilter('fichaId', (au) => `ficha-${slugAutor(au)}`);
+  eleventyConfig.addGlobalData('autores', () => {
+    const arts = JSON.parse(readFileSync(new URL('src/_data/articulos.json', import.meta.url), 'utf8'));
+    const porSlug = new Map();
+    for (const a of arts) for (const au of a.autores) {
+      const slug = slugAutor(au);
+      if (!porSlug.has(slug)) porSlug.set(slug, { ...au, slug, articulos: [], ejes: [], temas: [] });
+      const p = porSlug.get(slug);
+      p.articulos.push({ slug: a.slug, titulo: a.titulo, seccion: a.seccion, publicado: a.publicado, credit: au.credit, coautores: a.autores.filter((x) => slugAutor(x) !== slug) });
+      if (a.eje && !p.ejes.includes(a.eje)) p.ejes.push(a.eje);
+      for (const k of a.palabras || []) if (!p.temas.includes(k)) p.temas.push(k);
+    }
+    return [...porSlug.values()].sort((x, y) => x.apellidos.localeCompare(y.apellidos, 'es'));
+  });
   eleventyConfig.addFilter('nombreCompleto', (a) => `${a.nombre} ${a.apellidos}`);
   eleventyConfig.addFilter('buscar', (arr, q) => (arr || []).filter((a) => `${a.titulo} ${a.resumen}`.toLowerCase().includes(q.toLowerCase())));
 

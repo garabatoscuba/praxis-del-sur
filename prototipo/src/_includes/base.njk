@@ -123,6 +123,7 @@ window.PS_CABECERA = { umbral: {{ cabecera.umbral }} };
   });
 })();
 </script>
+{% if fichas %}{% include "fichas.njk" %}{% endif %}
 {% include "movimiento.njk" %}
 {%- if not isEntry %}
 </body>

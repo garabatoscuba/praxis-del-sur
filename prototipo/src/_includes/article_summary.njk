@@ -9,7 +9,7 @@
     <a id="article-{{ a.id }}" href="articulo-{{ a.slug }}.html">{{ a.titulo }}</a>
   </{{ hArticulo or "h3" }}>
   <div class="meta">
-    <div class="authors">{% for au in a.autores %}{{ au | nombreCompleto }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+    <div class="authors">{% for au in a.autores %}<button type="button" class="ps-autor-btn" data-ficha="{{ au | fichaId }}" aria-haspopup="dialog">{{ au | nombreCompleto }}</button>{% if not loop.last %}, {% endif %}{% endfor %}</div>
     <div class="pages">{{ a.id }}</div>
     {%- if mostrarFecha %}<div class="published">{{ a.publicado | fechaCorta }}</div>{% endif %}
   </div>

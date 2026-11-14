@@ -13,6 +13,22 @@
     root.setAttribute('data-movil-compacto', pag.getAttribute('data-movil-compacto'));
   }
   aplicarCfg(window.PS_MOVIL);
+
+  // ---------- Lo esencial de la portada, de uno en uno (solo en el móvil y si no se pide reducir el movimiento) ----------
+  (function () {
+    var lista = document.querySelector('.ps-esenciales');
+    if (!lista || !mq.matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var items = Array.prototype.slice.call(lista.children), i = 0, reloj = null, visible = true;
+    lista.classList.add('is-pasando');
+    items[0].classList.add('is-actual');
+    function siguiente() { items[i].classList.remove('is-actual'); i = (i + 1) % items.length; items[i].classList.add('is-actual'); }
+    function mover() { if (!reloj && visible && !document.hidden) reloj = setInterval(siguiente, 2600); }
+    function parar() { clearInterval(reloj); reloj = null; }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; visible ? mover() : parar(); }).observe(lista);
+    document.addEventListener('visibilitychange', function () { document.hidden ? parar() : mover(); });
+    mover();
+  })();
   function modo(k) { return mq.matches ? pag.getAttribute(ATR[k]) : ''; }
 
   // ---------- Ejes en mazo: la de arriba se pasa deslizando o con las flechas ----------

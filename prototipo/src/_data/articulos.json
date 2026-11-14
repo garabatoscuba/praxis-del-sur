@@ -7,18 +7,79 @@
     "titulo": "Trabajo informal y redes de cuidado en barrios de La Habana",
     "titulo_en": "Informal work and care networks in Havana neighbourhoods",
     "autores": [
-      { "nombre": "Lucía", "apellidos": "Moreno Vidal", "afiliacion": "Universidad de La Habana, Cuba", "orcid": "0000-0000-0000-0001", "credit": ["Conceptualización", "Investigación", "Redacción del borrador original"] },
-      { "nombre": "Tomás", "apellidos": "Ferrer Lima", "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba", "orcid": "0000-0000-0000-0002", "credit": ["Metodología", "Análisis formal", "Revisión y edición"] }
+      {
+        "nombre": "Lucía",
+        "apellidos": "Moreno Vidal",
+        "afiliacion": "Universidad de La Habana, Cuba",
+        "orcid": "0000-0000-0000-0001",
+        "credit": [
+          "Conceptualización",
+          "Investigación",
+          "Redacción del borrador original"
+        ],
+        "bio": "Socióloga y profesora de la Universidad de La Habana. Investiga trabajo informal, cuidados y desigualdades urbanas.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          },
+          {
+            "tipo": "LinkedIn",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "nombre": "Tomás",
+        "apellidos": "Ferrer Lima",
+        "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba",
+        "orcid": "0000-0000-0000-0002",
+        "credit": [
+          "Metodología",
+          "Análisis formal",
+          "Revisión y edición"
+        ],
+        "bio": "Investigador del CIPS. Trabaja métodos mixtos y análisis de políticas sociales.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "El artículo examina cómo se articulan el trabajo informal y las redes de cuidado en tres barrios de La Habana. A partir de 36 entrevistas en profundidad y observación participante entre 2025 y 2026, se identifican tres arreglos de cuidado: familiar extendido, vecinal y mercantilizado. Los resultados muestran que la informalidad laboral no solo responde a la necesidad de ingresos, sino que se organiza en torno a las responsabilidades de cuidado, que recaen sobre todo en mujeres de mediana edad. Se discuten las implicaciones para las políticas de cuidado en contextos de crisis.",
     "resumen_en": "This article examines how informal work and care networks intertwine in three Havana neighbourhoods. Drawing on 36 in-depth interviews and participant observation conducted in 2025 and 2026, it identifies three care arrangements: extended-family, neighbourhood-based and commodified. Findings show that informal work is organised around care responsibilities, which fall mainly on middle-aged women. Implications for care policies in contexts of crisis are discussed.",
-    "palabras": ["trabajo informal", "cuidados", "desigualdades", "política social", "Cuba"],
-    "keywords": ["informal work", "care", "inequality", "social policy", "Cuba"],
+    "palabras": [
+      "trabajo informal",
+      "cuidados",
+      "desigualdades",
+      "política social",
+      "Cuba"
+    ],
+    "keywords": [
+      "informal work",
+      "care",
+      "inequality",
+      "social policy",
+      "Cuba"
+    ],
     "recibido": "2027-01-28",
     "aceptado": "2027-07-12",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e001",
-    "galeradas": ["PDF", "HTML"],
+    "galeradas": [
+      "PDF",
+      "HTML"
+    ],
     "financiamiento": "Proyecto institucional del CIPS (dato de ejemplo).",
     "conflictos": "Las personas autoras declaran no tener conflictos de interés.",
     "referencias": [
@@ -34,17 +95,54 @@
     "titulo": "Participación juvenil en proyectos comunitarios de Santiago de Cuba: una lectura psicosocial",
     "titulo_en": "Youth participation in community projects in Santiago de Cuba: a psychosocial reading",
     "autores": [
-      { "nombre": "Daniela", "apellidos": "Sosa Rivero", "afiliacion": "Universidad de Oriente, Cuba", "orcid": "0000-0000-0000-0003", "credit": ["Conceptualización", "Investigación", "Redacción"] }
+      {
+        "nombre": "Daniela",
+        "apellidos": "Sosa Rivero",
+        "afiliacion": "Universidad de Oriente, Cuba",
+        "orcid": "0000-0000-0000-0003",
+        "credit": [
+          "Conceptualización",
+          "Investigación",
+          "Redacción"
+        ],
+        "bio": "Psicóloga social en la Universidad de Oriente. Estudia juventudes y participación comunitaria en el oriente cubano.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "Academia.edu",
+            "url": "#"
+          },
+          {
+            "tipo": "Bluesky",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "Se analiza el sentido que jóvenes de 18 a 29 años atribuyen a su participación en cinco proyectos comunitarios de Santiago de Cuba. Con un diseño cualitativo basado en grupos focales y mapas de redes, el estudio muestra que la participación se sostiene en vínculos afectivos y en la posibilidad de influir en decisiones cercanas, más que en la convocatoria institucional. Se proponen pautas para fortalecer el protagonismo juvenil en la gestión comunitaria.",
     "resumen_en": "This study analyses the meaning that young people aged 18 to 29 give to their participation in five community projects in Santiago de Cuba. Using focus groups and network maps, it shows that participation rests on affective bonds and on the chance to influence nearby decisions rather than on institutional calls. Guidelines to strengthen youth agency in community management are proposed.",
-    "palabras": ["juventudes", "participación", "psicología comunitaria", "empoderamiento"],
-    "keywords": ["youth", "participation", "community psychology", "empowerment"],
+    "palabras": [
+      "juventudes",
+      "participación",
+      "psicología comunitaria",
+      "empoderamiento"
+    ],
+    "keywords": [
+      "youth",
+      "participation",
+      "community psychology",
+      "empowerment"
+    ],
     "recibido": "2027-02-10",
     "aceptado": "2027-07-20",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e002",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "La autora declara no tener conflictos de interés."
   },
@@ -56,18 +154,81 @@
     "titulo": "Mujeres negras y movilidad laboral en el sector no estatal cubano",
     "titulo_en": "Black women and labour mobility in Cuba's non-state sector",
     "autores": [
-      { "nombre": "Ana Beatriz", "apellidos": "Cárdenas Olivera", "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba", "orcid": "0000-0000-0000-0004", "credit": ["Conceptualización", "Investigación", "Redacción del borrador original"] },
-      { "nombre": "Rocío", "apellidos": "Lima Peña", "afiliacion": "Universidad Central «Marta Abreu» de Las Villas, Cuba", "orcid": "0000-0000-0000-0005", "credit": ["Análisis formal", "Revisión y edición"] }
+      {
+        "nombre": "Ana Beatriz",
+        "apellidos": "Cárdenas Olivera",
+        "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba",
+        "orcid": "0000-0000-0000-0004",
+        "credit": [
+          "Conceptualización",
+          "Investigación",
+          "Redacción del borrador original"
+        ],
+        "bio": "Investigadora del CIPS. Se dedica a los estudios de género, racialidad y trabajo.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          },
+          {
+            "tipo": "Sitio web",
+            "url": "#"
+          },
+          {
+            "tipo": "X",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "nombre": "Rocío",
+        "apellidos": "Lima Peña",
+        "afiliacion": "Universidad Central «Marta Abreu» de Las Villas, Cuba",
+        "orcid": "0000-0000-0000-0005",
+        "credit": [
+          "Análisis formal",
+          "Revisión y edición"
+        ],
+        "bio": "Profesora de la Universidad Central «Marta Abreu» de Las Villas. Investiga movilidad laboral y desigualdades de género.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "LinkedIn",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "Desde un enfoque interseccional, el artículo estudia las trayectorias laborales de 24 mujeres negras que pasaron del empleo estatal al sector no estatal entre 2021 y 2026. Las trayectorias muestran que el color de la piel y el género condicionan el acceso a capital inicial, a redes y a puestos de mayor ingreso. Se discute cómo las desigualdades raciales persisten y se reconfiguran en los nuevos espacios económicos.",
     "resumen_en": "Using an intersectional approach, the article studies the work trajectories of 24 Black women who moved from state employment to the non-state sector between 2021 and 2026. Skin colour and gender shape access to start-up capital, networks and better-paid positions. The article discusses how racial inequalities persist and are reconfigured in new economic spaces.",
-    "palabras": ["interseccionalidad", "racialidad", "género", "trabajo", "sector no estatal"],
-    "keywords": ["intersectionality", "race", "gender", "work", "non-state sector"],
+    "palabras": [
+      "interseccionalidad",
+      "racialidad",
+      "género",
+      "trabajo",
+      "sector no estatal"
+    ],
+    "keywords": [
+      "intersectionality",
+      "race",
+      "gender",
+      "work",
+      "non-state sector"
+    ],
     "recibido": "2027-03-02",
     "aceptado": "2027-07-25",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e003",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "Las autoras declaran no tener conflictos de interés."
   },
@@ -79,17 +240,53 @@
     "titulo": "Pensar la crisis desde el Sur: notas para una sociología situada",
     "titulo_en": "Thinking crisis from the South: notes for a situated sociology",
     "autores": [
-      { "nombre": "Manuel", "apellidos": "Ortega Ruiz", "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba", "orcid": "0000-0000-0000-0006", "credit": ["Conceptualización", "Redacción"] }
+      {
+        "nombre": "Manuel",
+        "apellidos": "Ortega Ruiz",
+        "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba",
+        "orcid": "0000-0000-0000-0006",
+        "credit": [
+          "Conceptualización",
+          "Redacción"
+        ],
+        "bio": "Sociólogo e investigador del CIPS. Escribe sobre teoría social, epistemologías del Sur y sociología de la crisis.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "Academia.edu",
+            "url": "#"
+          },
+          {
+            "tipo": "Sitio web",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "El ensayo discute qué significa producir conocimiento social en y desde contextos de crisis. Sostiene que la crisis no es solo un objeto de estudio, sino una condición que transforma las preguntas, los métodos y la relación entre quien investiga y las comunidades. A partir del pensamiento crítico latinoamericano, propone tres principios para una sociología situada: reflexividad sobre las condiciones de producción, diálogo de saberes y compromiso con la transformación.",
     "resumen_en": "This essay discusses what it means to produce social knowledge in and from contexts of crisis. It argues that crisis is not only an object of study but a condition that transforms questions, methods and the relationship between researchers and communities. Drawing on Latin American critical thought, it proposes three principles for a situated sociology: reflexivity about the conditions of production, dialogue between forms of knowledge, and commitment to transformation.",
-    "palabras": ["crisis", "sociología situada", "epistemologías del Sur", "pensamiento crítico"],
-    "keywords": ["crisis", "situated sociology", "epistemologies of the South", "critical thought"],
+    "palabras": [
+      "crisis",
+      "sociología situada",
+      "epistemologías del Sur",
+      "pensamiento crítico"
+    ],
+    "keywords": [
+      "crisis",
+      "situated sociology",
+      "epistemologies of the South",
+      "critical thought"
+    ],
     "recibido": "2027-02-20",
     "aceptado": "2027-06-30",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e004",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "El autor declara no tener conflictos de interés.",
     "referencias": [
@@ -106,18 +303,77 @@
     "titulo": "Percepciones sociales del cambio climático en el Caribe insular: revisión sistemática (2010-2025)",
     "titulo_en": "Social perceptions of climate change in the insular Caribbean: a systematic review (2010-2025)",
     "autores": [
-      { "nombre": "Carlos", "apellidos": "Méndez Arias", "afiliacion": "Universidad de La Habana, Cuba", "orcid": "0000-0000-0000-0007", "credit": ["Metodología", "Investigación", "Curación de datos"] },
-      { "nombre": "Yanet", "apellidos": "Pérez Lugo", "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba", "orcid": "0000-0000-0000-0008", "credit": ["Análisis formal", "Redacción"] }
+      {
+        "nombre": "Carlos",
+        "apellidos": "Méndez Arias",
+        "afiliacion": "Universidad de La Habana, Cuba",
+        "orcid": "0000-0000-0000-0007",
+        "credit": [
+          "Metodología",
+          "Investigación",
+          "Curación de datos"
+        ],
+        "bio": "Geógrafo y profesor de la Universidad de La Habana. Estudia percepciones sociales del riesgo y el cambio climático.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          },
+          {
+            "tipo": "LinkedIn",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "nombre": "Yanet",
+        "apellidos": "Pérez Lugo",
+        "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba",
+        "orcid": "0000-0000-0000-0008",
+        "credit": [
+          "Análisis formal",
+          "Redacción"
+        ],
+        "bio": "Investigadora del CIPS. Trabaja revisiones sistemáticas y medio ambiente en el Caribe.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "Se revisaron 58 estudios empíricos publicados entre 2010 y 2025 sobre percepciones sociales del cambio climático en el Caribe insular, siguiendo la guía PRISMA. La literatura se concentra en comunidades costeras y en la percepción del riesgo, con escasa atención a las desigualdades de género y de raza. Se identifican vacíos metodológicos y se propone una agenda de investigación desde la justicia climática.",
     "resumen_en": "Following the PRISMA guidelines, we reviewed 58 empirical studies published between 2010 and 2025 on social perceptions of climate change in the insular Caribbean. The literature focuses on coastal communities and risk perception, with little attention to gender and racial inequalities. Methodological gaps are identified and a research agenda based on climate justice is proposed.",
-    "palabras": ["cambio climático", "percepción del riesgo", "Caribe", "justicia climática", "revisión sistemática"],
-    "keywords": ["climate change", "risk perception", "Caribbean", "climate justice", "systematic review"],
+    "palabras": [
+      "cambio climático",
+      "percepción del riesgo",
+      "Caribe",
+      "justicia climática",
+      "revisión sistemática"
+    ],
+    "keywords": [
+      "climate change",
+      "risk perception",
+      "Caribbean",
+      "climate justice",
+      "systematic review"
+    ],
     "recibido": "2027-01-15",
     "aceptado": "2027-07-05",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e005",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "Las personas autoras declaran no tener conflictos de interés."
   },
@@ -129,17 +385,54 @@
     "titulo": "Investigación acción participativa en contextos de escasez: dilemas éticos y metodológicos",
     "titulo_en": "Participatory action research in contexts of scarcity: ethical and methodological dilemmas",
     "autores": [
-      { "nombre": "Irene", "apellidos": "Valdés Soto", "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba", "orcid": "0000-0000-0000-0009", "credit": ["Conceptualización", "Investigación", "Redacción"] }
+      {
+        "nombre": "Irene",
+        "apellidos": "Valdés Soto",
+        "afiliacion": "Centro de Investigaciones Psicológicas y Sociológicas, Cuba",
+        "orcid": "0000-0000-0000-0009",
+        "credit": [
+          "Conceptualización",
+          "Investigación",
+          "Redacción"
+        ],
+        "bio": "Investigadora del CIPS. Se especializa en investigación acción participativa y ética de la investigación social.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "Academia.edu",
+            "url": "#"
+          },
+          {
+            "tipo": "Bluesky",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "A partir de dos experiencias de investigación acción participativa desarrolladas entre 2024 y 2026, el texto examina los dilemas que surgen cuando la escasez material condiciona la participación: expectativas de beneficios, desgaste de las personas participantes y límites de la devolución de resultados. Propone criterios para un consentimiento continuo y una devolución útil para las comunidades.",
     "resumen_en": "Drawing on two participatory action research experiences carried out between 2024 and 2026, the text examines the dilemmas that arise when material scarcity shapes participation: expectations of benefits, participant fatigue and the limits of returning results. It proposes criteria for ongoing consent and for returning results in ways that are useful to communities.",
-    "palabras": ["investigación acción participativa", "ética de la investigación", "escasez", "consentimiento"],
-    "keywords": ["participatory action research", "research ethics", "scarcity", "consent"],
+    "palabras": [
+      "investigación acción participativa",
+      "ética de la investigación",
+      "escasez",
+      "consentimiento"
+    ],
+    "keywords": [
+      "participatory action research",
+      "research ethics",
+      "scarcity",
+      "consent"
+    ],
     "recibido": "2027-03-10",
     "aceptado": "2027-07-28",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e006",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "La autora declara no tener conflictos de interés."
   },
@@ -151,18 +444,74 @@
     "titulo": "Mapeo comunitario del agua en un barrio de Matanzas: sistematización de una experiencia",
     "titulo_en": "Community water mapping in a Matanzas neighbourhood: systematising an experience",
     "autores": [
-      { "nombre": "Osvaldo", "apellidos": "Núñez Ferrer", "afiliacion": "Universidad de Matanzas, Cuba", "orcid": "0000-0000-0000-0010", "credit": ["Investigación", "Redacción"] },
-      { "nombre": "Mabel", "apellidos": "Duarte Sierra", "afiliacion": "Universidad de Matanzas, Cuba", "orcid": "0000-0000-0000-0011", "credit": ["Investigación", "Visualización"] }
+      {
+        "nombre": "Osvaldo",
+        "apellidos": "Núñez Ferrer",
+        "afiliacion": "Universidad de Matanzas, Cuba",
+        "orcid": "0000-0000-0000-0010",
+        "credit": [
+          "Investigación",
+          "Redacción"
+        ],
+        "bio": "Profesor de la Universidad de Matanzas. Coordina proyectos comunitarios sobre agua y territorio.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "LinkedIn",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "nombre": "Mabel",
+        "apellidos": "Duarte Sierra",
+        "afiliacion": "Universidad de Matanzas, Cuba",
+        "orcid": "0000-0000-0000-0011",
+        "credit": [
+          "Investigación",
+          "Visualización"
+        ],
+        "bio": "Profesora de la Universidad de Matanzas. Trabaja metodologías participativas y educación ambiental.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "ResearchGate",
+            "url": "#"
+          },
+          {
+            "tipo": "Sitio web",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "Se sistematiza la experiencia de un grupo de vecinas y vecinos que, junto a un equipo universitario, elaboró un mapa del acceso al agua en su barrio. El texto describe las etapas del proceso, las herramientas usadas y los acuerdos alcanzados con las instituciones locales, y reflexiona sobre el valor del conocimiento comunitario en la gestión de un recurso escaso.",
     "resumen_en": "This text systematises the experience of a group of residents who, together with a university team, mapped access to water in their neighbourhood. It describes the stages of the process, the tools used and the agreements reached with local institutions, and reflects on the value of community knowledge in managing a scarce resource.",
-    "palabras": ["mapeo comunitario", "agua", "participación", "gestión local"],
-    "keywords": ["community mapping", "water", "participation", "local management"],
+    "palabras": [
+      "mapeo comunitario",
+      "agua",
+      "participación",
+      "gestión local"
+    ],
+    "keywords": [
+      "community mapping",
+      "water",
+      "participation",
+      "local management"
+    ],
     "recibido": "2027-04-01",
     "aceptado": "2027-06-15",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e007",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "Las personas autoras declaran no tener conflictos de interés."
   },
@@ -175,17 +524,46 @@
     "titulo_en": "Maps for a necessary debate on inequality in Cuba",
     "resenaDe": "Reseña del libro ficticio <i>Mapas de la desigualdad: estudios sobre Cuba, 2020-2025</i> (Editorial de ejemplo, 2026).",
     "autores": [
-      { "nombre": "Pedro", "apellidos": "Alonso Hidalgo", "afiliacion": "Universidad de La Habana, Cuba", "orcid": "0000-0000-0000-0012", "credit": ["Redacción"] }
+      {
+        "nombre": "Pedro",
+        "apellidos": "Alonso Hidalgo",
+        "afiliacion": "Universidad de La Habana, Cuba",
+        "orcid": "0000-0000-0000-0012",
+        "credit": [
+          "Redacción"
+        ],
+        "bio": "Profesor de la Universidad de La Habana. Investiga estructura social y desigualdades en Cuba.",
+        "enlaces": [
+          {
+            "tipo": "Google Académico",
+            "url": "#"
+          },
+          {
+            "tipo": "X",
+            "url": "#"
+          }
+        ]
+      }
     ],
     "resumen": "La reseña valora un volumen colectivo que reúne once estudios sobre desigualdades de ingreso, territorio, género y color de la piel en Cuba entre 2020 y 2025. Destaca su apuesta por combinar datos cuantitativos y relatos de vida, y señala como límite la escasa atención a las juventudes rurales.",
     "resumen_en": "This review assesses an edited volume of eleven studies on income, territorial, gender and racial inequalities in Cuba between 2020 and 2025. It highlights the combination of quantitative data and life stories, and points to the limited attention paid to rural youth.",
-    "palabras": ["desigualdades", "Cuba", "reseña"],
-    "keywords": ["inequality", "Cuba", "book review"],
+    "palabras": [
+      "desigualdades",
+      "Cuba",
+      "reseña"
+    ],
+    "keywords": [
+      "inequality",
+      "Cuba",
+      "book review"
+    ],
     "recibido": "2027-05-04",
     "aceptado": "2027-06-20",
     "publicado": "2027-10-10",
     "doi": "10.xxxxx/praxis.2027.e008",
-    "galeradas": ["PDF"],
+    "galeradas": [
+      "PDF"
+    ],
     "financiamiento": "Sin financiamiento específico.",
     "conflictos": "El autor declara no tener conflictos de interés."
   }

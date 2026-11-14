@@ -1,7 +1,7 @@
 [
   { "label": "Inicio", "url": "index.html" },
   { "label": "Convocatoria", "url": "convocatoria.html" },
-  { "label": "Números", "url": "numero.html", "children": [
+  { "label": "Publicaciones", "url": "numero.html", "children": [
     { "label": "Número actual", "url": "numero.html" },
     { "label": "Archivo", "url": "archivo.html" }
   ] },

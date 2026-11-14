@@ -28,7 +28,7 @@
 
   // Bloques que aparecen al entrar en pantalla. Se repiten al bajar y al subir.
   var SEL = [
-    '.ps-deco', '.ps-hero-nombre', '.ps-hero-firma', '.ps-hero-lema', '.ps-esenciales > li', '.ps-hero .ps-eyebrow', '.ps-hero-title', '.ps-hero-lead', '.ps-hero-meta', '.ps-hero .ps-actions',
+    '.ps-deco', '.ps-hero-nombre', '.ps-hero-firma', '.ps-esenciales > li', '.ps-hero .ps-eyebrow', '.ps-hero-title', '.ps-hero-lead', '.ps-hero-meta', '.ps-hero .ps-actions',
     '.ps-hero-fechas > div', '.ps-hero-cover',
     '.ps-sec-head > *', '.ps-manifiesto-frase', '.ps-rumbo', '.ps-eje', '.ps-mod-col > h3', '.ps-mod-list > li', '.ps-calendario > li',
     '.ps-avisos > h2', '.obj_announcement_summary', '.ps-ejes-lista > li', '.ps-banner',
@@ -42,6 +42,8 @@
   var todos = Array.prototype.slice.call(document.querySelectorAll(SEL)).filter(function (el) {
     // la línea de la convocatoria de la portada con foto va pegada al borde de abajo de la pantalla, adonde no llega la aparición:
     // sin animación, siempre a la vista
+    // en el móvil, lo esencial pasa de uno en uno (movil.njk): sin aparición propia
+    if (el.matches('.ps-esenciales > li') && window.matchMedia('(max-width: 760px)').matches) return false;
     return !el.closest('.pkp_structure_head, .ps-simulacro, .ps-hero-pie') && !el.classList.contains('pkp_screen_reader');
   });
   // Si un bloque contiene otros que también aparecen, se animan los de dentro (en cascada) y no el de fuera.

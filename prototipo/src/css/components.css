@@ -216,7 +216,6 @@
 .ps-hero-nombre { margin: 0; line-height: 0; }
 .ps-hero-logo { display: block; width: clamp(330px, 50vw, 780px); max-width: 100%; height: auto; color: var(--ps-paper); }
 .ps-hero-firma { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ps-beige); }
-.ps-hero-lema { margin-top: 10px; text-wrap: balance; font-family: var(--ps-serif); font-style: italic; font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.4375rem); line-height: 1.35; color: #F3EFE6; }
 .ps-esenciales { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .ps-esenciales li { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 600; color: var(--ps-paper); }
 .ps-esenciales svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--ps-gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -226,7 +225,7 @@
 /* Sello del CIPS (su isotipo) delante de «Revista del CIPS» */
 .ps-hero-sello { display: block; width: 1.5em; height: 1.5em; flex: none; fill: var(--ps-gold); }
 .ps-hero-pie {
-  grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 18px 36px;
+  grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px 36px;
 }
 .ps-hero-conv { display: grid; gap: 10px; justify-items: start; }
 .ps-hero-conv .ps-eyebrow { font-size: 0.75rem; letter-spacing: 0.13em; }
@@ -239,64 +238,62 @@
 .ps-hero.ps-hero--foto .ps-actions { margin: 0; flex-wrap: nowrap; gap: 10px; }
 .ps-hero--foto .ps-actions .ps-btn { min-height: 44px; padding: 9px 20px; font-size: 0.9375rem; white-space: nowrap; }
 .ps-hero--foto .ps-btn--ghost { background: rgb(20 16 14 / 0.12); border-color: rgb(255 255 255 / 0.7); }
-.ps-hero--foto :is(.ps-hero-firma, .ps-hero-lema, .ps-esenciales li, .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: 0 1px 14px rgb(0 0 0 / 0.28); }
+.ps-hero--foto :is(.ps-hero-firma, .ps-esenciales li, .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: 0 1px 14px rgb(0 0 0 / 0.28); }
 /* Escala de letra elegida (opción 4 de afinar/letras.html, 13 nov 2026): crece con la pantalla para que en un monitor grande
-   no se quede en tamaños de pie de foto. Arriba, «Revista del CIPS» encima del nombre y el lema como segundo nivel; abajo, título,
-   fechas y botones en una línea, sobre una banda negra al 62 % (el título en dos líneas, de 22 a 30 px).
-   Cabecera de revista (opción 3 de afinar/cabecera.html): todo centrado, la línea de datos entre dos filetes y, al final,
-   «Revista del CIPS» con el sello del CIPS (la usuaria lo pidió abajo y el bloque más arriba). Desde 761 px; el móvil, en movil.css. */
+   no se quede en tamaños de pie de foto. Arriba, el nombre y, como segundo nivel, la convocatoria (antetítulo y título); abajo,
+   en una banda negra al 62 % y fina, las fechas y los botones.
+   Cabecera de revista: todo centrado, en este orden (pedido por la usuaria): el nombre, «Una revista del CIPS» con el sello,
+   lo esencial, la línea de datos entre dos filetes y la convocatoria. Desde 761 px; el móvil, en movil.css. */
 @media (min-width: 761px) {
   /* el bloque, un poco por encima del centro del cielo (más aire abajo que arriba) */
-  .ps-hero-cielo { justify-items: center; text-align: center; padding-bottom: clamp(20px, 9vh, 110px); }
-  /* «Revista del CIPS» con el sello, al final del bloque, debajo de la línea de datos */
+  .ps-hero-cielo { justify-items: center; text-align: center; padding-bottom: clamp(16px, 5vh, 70px); }
+  /* «Una revista del CIPS» con el sello, justo debajo del nombre */
   .ps-hero-marca { display: contents; }
-  .ps-hero-firma { order: 1; gap: 10px; margin: 22px 0 0; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); color: #F1ECE0; text-shadow: 0 1px 10px rgb(0 0 0 / 0.45); }
-  .ps-hero-lema { margin-top: 14px; font-size: clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem); }
-  .ps-esenciales { justify-content: center; margin-top: 26px; gap: 10px 26px; }
+  .ps-hero-firma { gap: 10px; margin: 24px 0 0; font-size: clamp(0.8125rem, 0.55rem + 0.35vw, 1rem); color: #F1ECE0; text-shadow: 0 1px 10px rgb(0 0 0 / 0.45); }
+  .ps-hero-conv { justify-items: center; margin-top: clamp(22px, 2.4vw, 34px); }
+  .ps-esenciales { justify-content: center; margin-top: 24px; gap: 10px 26px; }
   .ps-esenciales li { gap: 10px; font-size: clamp(0.9375rem, 0.5rem + 0.52vw, 1.1875rem); }
   .ps-esenciales svg { width: 1.45em; height: 1.45em; }
   /* La convocatoria en una banda negra al 62 % de borde a borde, hasta el final de la portada (afinar/fondo.html, 13 nov 2026) */
   .ps-hero.ps-hero--foto .ps-hero-cont { padding-bottom: 0; }
-  .ps-hero-pie { position: relative; isolation: isolate; gap: 18px 28px; padding-block: clamp(26px, 2.5vw, 38px) clamp(22px, 2.4vw, 36px); }
+  .ps-hero-pie { position: relative; isolation: isolate; gap: 14px 28px; padding-block: clamp(24px, 2.4vw, 38px); }
   .ps-hero-pie::before {
     content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: calc(50% - 50vw); right: calc(50% - 50vw);
     background: rgb(16 13 11 / 0.62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   }
-  .ps-hero--foto :is(.ps-hero-conv .ps-eyebrow, .ps-hero-title, .ps-hero-fechas dd) { text-shadow: none; }
+  .ps-hero--foto .ps-hero-fechas dd { text-shadow: none; }
   .ps-hero-folio {
     justify-content: center; margin-top: 22px; padding: 9px 20px; color: #EFEAE0;
     border-top: 1px solid rgb(222 216 199 / 0.45); border-bottom: 1px solid rgb(222 216 199 / 0.45);
     font-size: clamp(0.8125rem, 0.5rem + 0.4vw, 1rem);
   }
   .ps-hero-conv .ps-eyebrow { font-size: clamp(0.8125rem, 0.6rem + 0.25vw, 0.9375rem); white-space: nowrap; }
-  .ps-hero--foto .ps-hero-title { font-size: clamp(1.375rem, 0.75rem + 1.05vw, 1.875rem); text-wrap: balance; }
+  /* el título de la convocatoria, segundo nivel bajo el nombre (el tamaño que tenía el lema); fechas y botones, del tamaño de lo esencial */
+  .ps-hero--foto .ps-hero-title { font-size: clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem); line-height: 1.15; text-wrap: balance; }
   .ps-hero-fechas { column-gap: 22px; }
   .ps-hero-fechas dt { font-size: 0.75rem; }
-  .ps-hero-fechas dd { font-size: clamp(1.1875rem, 0.8rem + 0.5vw, 1.3125rem); }
-  .ps-hero--foto .ps-actions .ps-btn { min-height: 50px; padding: 12px 22px; font-size: clamp(1rem, 0.85rem + 0.2vw, 1.125rem); }
+  .ps-hero-fechas dd { font-size: clamp(0.9375rem, 0.5rem + 0.52vw, 1.1875rem); }
+  /* la letra de los botones, como la de «Entrar» en la barra (15 px) */
+  .ps-hero--foto .ps-actions .ps-btn { min-height: 46px; padding: 10px 20px; font-size: 0.9375rem; }
 }
-/* el lema, en una sola línea donde cabe */
-@media (min-width: 1101px) { .ps-hero-lema { white-space: nowrap; } }
-/* Tabletas y portátiles pequeños: la misma línea de abajo (título | fechas | botones), más compacta. La usuaria no quiere que
-   esa estructura se rompa: las fechas van una debajo de la otra y, en las pantallas más estrechas, también los botones. */
+/* el título de la convocatoria, en una sola línea donde cabe */
+@media (min-width: 1101px) { .ps-hero--foto .ps-hero-title { white-space: nowrap; } }
+/* Tabletas y portátiles pequeños: la banda de abajo (fechas | botones) sigue en una línea, más compacta */
 @media (min-width: 761px) and (max-width: 1100px) {
-  .ps-hero-pie { gap: 16px 22px; }
-  .ps-hero-fechas { flex-direction: column; gap: 8px; }
+  .ps-hero-pie { gap: 14px 22px; }
   .ps-hero--foto .ps-actions .ps-btn { padding-inline: 16px; }
-}
-@media (min-width: 761px) and (max-width: 900px) {
-  .ps-hero.ps-hero--foto .ps-actions { flex-direction: column; align-items: stretch; }
 }
 /* Pantallas bajas (portátiles de 1366 × 657, por ejemplo): menos aire en la cabecera, para que la línea de datos no llegue
    al horizonte ni a las dos personas del muro */
 @media (min-width: 761px) and (max-height: 760px) {
-  .ps-hero-logo { width: min(clamp(330px, 50vw, 780px), 98vh); }
-  .ps-hero-firma { margin-top: 14px; }
-  .ps-hero-cielo { padding-bottom: 28px; }
-  .ps-hero-pie { padding-block: 20px 18px; }
-  .ps-hero-lema { margin-top: 8px; }
-  .ps-esenciales { margin-top: 16px; }
-  .ps-hero-folio { margin-top: 14px; padding-block: 6px; }
+  .ps-hero-logo { width: min(clamp(330px, 50vw, 780px), 88vh); }
+  .ps-hero-firma { margin-top: 12px; }
+  .ps-hero-cielo { padding-bottom: 20px; }
+  .ps-hero-pie { padding-block: 20px; }
+  .ps-hero-conv { margin-top: 14px; gap: 6px; }
+  .ps-hero--foto .ps-hero-title { font-size: min(clamp(1.75rem, 0.9rem + 1.3vw, 2.375rem), 4.6vh); }
+  .ps-esenciales { margin-top: 12px; }
+  .ps-hero-folio { margin-top: 10px; padding-block: 5px; }
 }
 .ps-brujula svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .ps-hero-grid--numero .ps-hero-title { font-size: var(--ps-step-4); }
@@ -619,6 +616,51 @@ ul.authors .name { display: block; font-family: var(--ps-serif); font-size: 1.35
 ul.authors .affiliation { display: block; color: var(--ps-muted); }
 ul.authors .orcid a { display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 0.875rem; color: var(--ps-muted); text-decoration: none; font-variant-numeric: tabular-nums; }
 ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
+/* nombres que abren la ficha de autoría (botones con aspecto de texto) */
+.ps-autor-btn { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: inherit;
+  background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 0.25s, color 0.2s; }
+.ps-autor-btn:hover, .ps-autor-btn:focus-visible { color: var(--ps-wine); background-size: 100% 1px; }
+
+/* ---------- Ficha de autoría: tarjeta que se abre encima (fichas.njk) ---------- */
+.ps-ficha { width: min(560px, calc(100% - 24px)); max-height: min(86vh, 760px); max-height: min(86svh, 760px); margin: auto; padding: 0; border: 0; border-radius: 12px; background: var(--ps-paper); color: var(--ps-ink); box-shadow: 0 30px 80px -24px rgb(31 18 16 / 0.55); overflow: hidden; }
+.ps-ficha::backdrop { background: rgb(31 24 20 / 0.55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.ps-ficha[open] { display: flex; animation: ps-ficha-entra 0.28s var(--ps-head-ease) both; }
+@keyframes ps-ficha-entra { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
+.ps-ficha-in { position: relative; overflow-y: auto; overscroll-behavior: contain; width: 100%; padding: clamp(22px, 4vw, 34px); display: grid; gap: 18px; align-content: start; }
+.ps-ficha-cerrar { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ps-muted); cursor: pointer; }
+.ps-ficha-cerrar:hover { background: var(--ps-beige-light); color: var(--ps-ink); }
+.ps-ficha-cerrar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.ps-ficha-head { display: flex; align-items: center; gap: 18px; padding-right: 36px; }
+.ps-ficha-inicial { flex: none; display: grid; place-items: center; width: 72px; aspect-ratio: 1; border-radius: 50%; background: var(--ps-wine); color: var(--ps-paper); font-family: var(--ps-serif); font-size: 1.75rem; letter-spacing: 0.02em; }
+.ps-ficha-id { display: grid; gap: 4px; min-width: 0; }
+.ps-ficha-eye { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive); }
+.ps-ficha-nombre { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem); font-weight: 500; line-height: 1.12; }
+.ps-ficha-afil { font-size: 0.9375rem; line-height: 1.4; color: var(--ps-muted); }
+.ps-ficha-bio { line-height: 1.55; color: var(--ps-ink); }
+.ps-ficha-enlaces { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ps-ficha-enlaces a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; border: 1px solid var(--ps-line-strong); border-radius: 999px; font-size: 0.875rem; font-weight: 600; color: var(--ps-ink); text-decoration: none; transition: border-color 0.2s, color 0.2s, background-color 0.2s; }
+.ps-ficha-enlaces a:hover { border-color: var(--ps-wine); color: var(--ps-wine); }
+.ps-ficha-enlaces svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ps-ficha-num { font-weight: 400; color: var(--ps-muted); font-variant-numeric: tabular-nums; }
+.ps-ficha-arts h3 { margin-bottom: 4px; font-family: var(--ps-sans); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ps-olive); }
+.ps-ficha-arts ul { list-style: none; margin: 0; padding: 0; }
+.ps-ficha-arts li { display: grid; gap: 4px; padding-block: 14px; border-top: 1px solid var(--ps-line); }
+.ps-ficha-meta { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; color: var(--ps-muted); }
+.ps-ficha-art { font-family: var(--ps-serif); font-size: 1.2rem; line-height: 1.25; color: var(--ps-ink); text-decoration: none; }
+.ps-ficha-art:hover { color: var(--ps-wine); text-decoration: underline; }
+.ps-ficha-rol { font-size: 0.875rem; color: var(--ps-muted); }
+.ps-ficha-rol b { color: var(--ps-ink); }
+.ps-ficha-rol .ps-autor-btn { color: var(--ps-wine); background-size: 100% 1px; }
+.ps-ficha-temas { display: flex; flex-wrap: wrap; gap: 6px; }
+.ps-ficha-temas .ps-kw { font-size: 0.8125rem; }
+.ps-ficha-nota { font-size: 0.8125rem; font-style: italic; color: var(--ps-muted); }
+@media (max-width: 520px) {
+  /* en el móvil, la tarjeta sube desde abajo */
+  .ps-ficha { width: 100%; max-width: none; margin: auto 0 0; max-height: 88svh; border-radius: 16px 16px 0 0; }
+  .ps-ficha-inicial { width: 60px; font-size: 1.45rem; }
+  @keyframes ps-ficha-entra { from { transform: translateY(40px); opacity: 0; } }
+}
+@media (prefers-reduced-motion: reduce) { .ps-ficha[open] { animation: none; } }
 .ps-orcid-badge { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--ps-olive); color: var(--ps-paper); font-size: 0.625rem; font-weight: 700; }
 .ps-credit { display: block; margin-top: 4px; font-size: 0.875rem; color: var(--ps-olive); }
 .item.abstract p { font-family: var(--ps-serif); font-size: 1.28rem; line-height: 1.55; max-width: 66ch; }
@@ -735,7 +777,8 @@ ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
 .ps-search-form + .ps-form-nota { margin-top: 10px; }
 
 /* ---------- Pie (components/footer.tpl) ---------- */
-.pkp_structure_footer_wrapper { background: var(--ps-olive); color: var(--ps-beige); }
+/* el pie, en el vino del manual del CIPS (la usuaria lo pidió terracota en vez del verde oliva) */
+.pkp_structure_footer_wrapper { background: var(--ps-wine); color: var(--ps-beige); }
 .pkp_structure_footer { max-width: var(--ps-max); margin-inline: auto; padding: clamp(48px, 7vw, 80px) var(--ps-gutter) 28px; }
 .pkp_footer_content { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); }
 /* Datos: una fila a todo el ancho, con un filete encima; cada dato en su columna */

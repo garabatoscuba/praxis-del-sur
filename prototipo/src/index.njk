@@ -31,7 +31,6 @@ cabeceraSobreHeroe: true
           <h1 id="hero-nombre" class="ps-hero-nombre"><span class="pkp_screen_reader">{{ revista.nombre }}</span>{% logo "praxis-del-sur", "ps-hero-logo" %}</h1>
           {#- El sello del CIPS: su isotipo (trazado desde el logo del sitio del CIPS), en dorado. -#}
           <p class="ps-hero-firma"><svg class="ps-hero-sello" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M0 0H31.7V30.7H0Z"/><path d="M44 0H100V100H0V44H31.7V68.3H68.3V30.7H44Z"/></svg>{{ revista.firmaVisible }}</p>
-          <p class="ps-hero-lema">{{ revista.lema }}</p>
         </div>
         <ul class="ps-esenciales">
           {%- for e in revista.esenciales %}
@@ -42,12 +41,13 @@ cabeceraSobreHeroe: true
         <p class="ps-hero-folio">
           <span>e-ISSN {{ revista.issn or revista.issnEjemplo }}</span><i aria-hidden="true">·</i><span>{{ c.volumen }}</span><i aria-hidden="true">·</i><span>{{ revista.ciudad }}</span><i aria-hidden="true">·</i><span>{{ revista.licencia.corta }}</span>
         </p>
-      </div>
-      <div class="ps-hero-pie">
+        {#- La convocatoria, al final del bloque del cielo (orden pedido por la usuaria: nombre, firma, lo esencial, datos, convocatoria) -#}
         <div class="ps-hero-conv">
           <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span><span data-cal-corto>Convocatoria abierta · {{ c.volumen }}</span></p>
           <h2 id="hero-titulo" class="ps-hero-title">{{ c.tituloHtml | safe }}</h2>
         </div>
+      </div>
+      <div class="ps-hero-pie">
         <dl class="ps-hero-fechas">
           <div><dt>Recepción</dt><dd>{{ c.apertura | diaMes }} – {{ c.cierre | fechaCorta }}</dd></div>
           <div><dt>Primer número</dt><dd>{{ c.lanzamiento | fechaCorta }}</dd></div>
