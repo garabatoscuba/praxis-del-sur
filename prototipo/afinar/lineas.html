@@ -1,0 +1,166 @@
+<title>Línea de los ejes</title>
+<meta name="description" content="Variantes más discretas para la línea que entra en las tarjetas de los ejes de Praxis del Sur, en móvil, tableta y ordenador.">
+<script>window.__psSinCarga = true; /* la portada de dentro no enseña la pantalla de carga */</script>
+<style>
+/* La herramienta: arriba, la variante y la vista; debajo, la portada de verdad en la sección de los ejes, en móvil, tableta y
+   ordenador. Cada variante es CSS que se inyecta en la portada; «Repetir» vuelve a hacer la entrada de las tarjetas. */
+:root{--bg:#F3F1EC;--surface:#FFFFFF;--fg:#1F1B18;--muted:#57524A;--line:#E0DBD0;--focus:#662426;--wine:#662426;
+  --ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1F1B17;--fg:#F1ECE3;--muted:#BEB6A8;--line:#3A342C;--focus:#E0C98A;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.45;display:flex;flex-direction:column}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--surface)}
+.barra h1{margin:0;font-size:15px;font-weight:700}
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.seg button{font:inherit;font-size:14px;font-weight:600;padding:6px 12px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.seg button .rec{font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 7px;border-radius:999px;background:var(--wine);color:#fff}
+.et{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.otra{font:inherit;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.chk{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--wine);margin:0}
+.desc{flex:1 1 100%;margin:0;color:var(--muted);font-size:14px;max-width:110ch}
+.desc b{color:var(--fg)}
+.escena{flex:1;min-height:0;overflow:auto;background:#D8D2C4;padding:16px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .escena{background:#0E0C0A}}
+:root[data-theme="dark"] .escena{background:#0E0C0A}
+.vistas{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:20px}
+.vista{margin:0;display:grid;gap:8px;justify-items:center}
+.vista figcaption{font-size:12.5px;font-weight:600;color:#3A352E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .vista figcaption{color:#BEB6A8}}
+:root[data-theme="dark"] .vista figcaption{color:#BEB6A8}
+.marco{position:relative;overflow:hidden;border-radius:12px;background:#F6F2E9;box-shadow:0 0 0 5px #1F1B18,0 24px 60px -30px rgb(0 0 0 / .6)}
+.marco.movil{border-radius:22px}
+@media (max-width:700px){html,body{height:auto}body{display:block}.escena{overflow:visible}}
+.marco iframe{position:absolute;left:0;top:0;display:block;border:0;transform-origin:0 0;background:#F6F2E9}
+</style>
+<header class="barra">
+  <h1>Línea de los ejes</h1>
+  <div class="seg" role="group" aria-label="Variante" id="tipos"></div>
+  <span class="et">Vista</span>
+  <div class="seg" role="group" aria-label="Vista">
+    <button type="button" data-v="todas" aria-pressed="true">Las tres</button>
+    <button type="button" data-v="movil" aria-pressed="false">Móvil</button>
+    <button type="button" data-v="tableta" aria-pressed="false">Tableta</button>
+    <button type="button" data-v="ordenador" aria-pressed="false">Ordenador</button>
+  </div>
+  <button type="button" class="otra" id="otra">↻ Repetir la entrada</button>
+  <label class="chk"><input type="checkbox" id="sola" checked> Repetir sola</label>
+  <p class="desc" id="desc" aria-live="polite"></p>
+</header>
+<main class="escena" id="escena"><div class="vistas" id="vistas"></div></main>
+<script>
+(function(){
+  // ---------- Las variantes ----------
+  // La línea es el ::before de cada tarjeta (.ps-eje), que movimiento.css dibuja de izquierda a derecha al entrar (data-rev="in").
+  // Cada variante cambia solo cómo entra la línea; la tarjeta sigue entrando igual (sube un poco y aparece).
+  var E = 'cubic-bezier(.22,1,.36,1)';
+  function cssDe(k) {
+    var P = 'html[data-linea="' + k + '"].ps-mov .ps-eje', OCULTA = P + '[data-rev]:not([data-rev="in"])::before', IN = P + '::before';
+    if (k === 'centro') return [
+      IN + '{transform-origin:center;transition:transform .55s ' + E + ' var(--ps-rev-delay,0ms),background-color .35s}'
+    ].join('\n');
+    if (k === 'rapida') return [
+      IN + '{transition:transform .45s ' + E + ' var(--ps-rev-delay,0ms),background-color .35s}'
+    ].join('\n');
+    if (k === 'asienta') return [
+      // la línea ya está entera pero fina (1 px) y apagada; al entrar se asienta: engorda hasta su grosor y toma su color
+      IN + '{transform-origin:50% 100%;transition:transform .6s ' + E + ' var(--ps-rev-delay,0ms),opacity .6s ease var(--ps-rev-delay,0ms),background-color .35s}',
+      OCULTA + '{transform:scaleY(.34);opacity:.35}'
+    ].join('\n');
+    if (k === 'funde') return [
+      // aparece de golpe a lo ancho pero fundiéndose, un poco después que la tarjeta
+      IN + '{transition:opacity .5s ease calc(var(--ps-rev-delay,0ms) + 120ms),background-color .35s}',
+      OCULTA + '{transform:none;opacity:0}'
+    ].join('\n');
+    if (k === 'tarjeta') return [
+      // sin animación propia: la línea es parte de la tarjeta y entra con ella
+      OCULTA + '{transform:none;opacity:1}'
+    ].join('\n');
+    return '';
+  }
+  var T = {
+    actual: { n: 'Como está', d: 'Lo de ahora: la línea se dibuja despacio (algo más de un segundo) de izquierda a derecha mientras sube la tarjeta.' },
+    centro: { n: 'Desde el centro, rápida', d: 'Se abre desde el centro hacia los lados en medio segundo, a la vez que la tarjeta; como la raya del menú de arriba al pasar el ratón. Se nota sin llamar la atención.' },
+    rapida: { n: 'De lado, rápida', d: 'Igual que ahora, de izquierda a derecha, pero en menos de medio segundo y sin esperar: acompaña a la tarjeta en vez de ir detrás.' },
+    asienta: { n: 'Se asienta', d: 'La línea ya está entera, fina y apagada, y al entrar la tarjeta engorda hasta su grosor y toma su color, como tinta que se asienta. Muy sutil.' },
+    funde: { n: 'Se funde', d: 'No se dibuja: aparece entera fundiéndose, un instante después que la tarjeta.' },
+    tarjeta: { n: 'Con la tarjeta', d: 'Sin animación propia: la línea es parte de la tarjeta y entra con ella. Lo más quieto.' }
+  };
+  var ORDEN = ['actual', 'centro', 'rapida', 'asienta', 'funde', 'tarjeta'], REC = 'centro';
+  var CSS = ORDEN.map(cssDe).join('\n') + '\n.ps-simulacro{display:none}';
+
+  var DISP = { movil: [390, 844, 'Móvil'], tableta: [820, 1180, 'Tableta vertical'], ordenador: [1440, 900, 'Ordenador'] };
+  var tipo = REC, vista = window.innerWidth <= 700 ? 'movil' : 'todas', sola = true;
+  document.querySelectorAll('button[data-v]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === vista ? 'true' : 'false'); });
+  var vistas = document.getElementById('vistas'), esc = document.getElementById('escena'), desc = document.getElementById('desc');
+  var frames = {};
+  var tipos = document.getElementById('tipos');
+  ORDEN.forEach(function (k) {
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-t', k); b.setAttribute('aria-pressed', k === tipo ? 'true' : 'false');
+    b.textContent = T[k].n; if (k === REC) { var r = document.createElement('span'); r.className = 'rec'; r.textContent = 'Recomendado'; b.appendChild(r); }
+    tipos.appendChild(b);
+  });
+
+  function aplicar(clave) {
+    try {
+      var d = frames[clave].contentDocument; if (!d || !d.documentElement) return;
+      if (!d.getElementById('ps-lineas')) { var st = d.createElement('style'); st.id = 'ps-lineas'; st.textContent = CSS; (d.body || d.documentElement).appendChild(st); }
+      d.documentElement.setAttribute('data-linea', tipo);
+    } catch (e) {}
+  }
+  // pone a la vista el principio de los ejes (en el móvil, las primeras tarjetas antes de apilarse)
+  function mirar(clave) {
+    try {
+      var d = frames[clave].contentDocument, w = frames[clave].contentWindow, ul = d.querySelector('[data-ejes]');
+      var r = ul.getBoundingClientRect(); w.scrollTo({ top: Math.max(0, r.top + w.scrollY - (clave === 'movil' ? 150 : 110)), behavior: 'instant' });
+    } catch (e) {}
+  }
+  function repetir() {
+    Object.keys(frames).forEach(function (k) {
+      try { var w = frames[k].contentWindow; if (w.__psMov && w.__psMov.repetir) w.__psMov.repetir(); } catch (e) {}
+    });
+  }
+  setInterval(function () { if (sola) repetir(); }, 3600);
+  function montar() {
+    vistas.innerHTML = ''; frames = {};
+    var claves = vista === 'todas' ? ['movil', 'tableta', 'ordenador'] : [vista];
+    var estrecho = window.innerWidth <= 700;
+    var W = esc.clientWidth - 32, H = estrecho ? Infinity : esc.clientHeight - 32 - 28;
+    var sumaAnchos = claves.reduce(function (a, k) { return a + DISP[k][0] / DISP[k][1]; }, 0);
+    var alto = Math.min(H, (W - 20 * (claves.length - 1)) / sumaAnchos);
+    if (claves.length === 1) alto = Math.min(H, DISP[claves[0]][1], W * DISP[claves[0]][1] / DISP[claves[0]][0]);
+    alto = Math.max(alto, 320);
+    claves.forEach(function (k) {
+      var p = DISP[k], s = alto / p[1];
+      var fig = document.createElement('figure'); fig.className = 'vista';
+      var m = document.createElement('div'); m.className = 'marco' + (k === 'movil' ? ' movil' : '');
+      m.style.width = Math.round(p[0] * s) + 'px'; m.style.height = Math.round(alto) + 'px';
+      var f = document.createElement('iframe'); f.title = p[2]; f.style.width = p[0] + 'px'; f.style.height = p[1] + 'px'; f.style.transform = 'scale(' + s + ')';
+      f.addEventListener('load', function () { aplicar(k); setTimeout(function () { mirar(k); setTimeout(repetir, 300); }, 400); });
+      f.src = 'portada.html';
+      m.appendChild(f); frames[k] = f;
+      var cap = document.createElement('figcaption'); cap.textContent = p[2] + ' · ' + p[0] + ' × ' + p[1] + (s < 0.995 ? ' · al ' + Math.round(s * 100) + ' %' : '');
+      fig.appendChild(m); fig.appendChild(cap); vistas.appendChild(fig);
+    });
+    contar();
+  }
+  function contar() { desc.innerHTML = '<b>' + T[tipo].n + '.</b> ' + T[tipo].d + ' La tarjeta entra igual en todas; solo cambia la línea de arriba.'; }
+  function grupo(attr, fn) {
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[' + attr + ']'); if (!b || b.tagName !== 'BUTTON') return;
+      document.querySelectorAll('button[' + attr + ']').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      fn(b.getAttribute(attr));
+    });
+  }
+  grupo('data-t', function (x) { tipo = x; Object.keys(frames).forEach(aplicar); contar(); repetir(); });
+  grupo('data-v', function (x) { vista = x; montar(); });
+  document.getElementById('otra').addEventListener('click', repetir);
+  document.getElementById('sola').addEventListener('change', function (e) { sola = e.target.checked; });
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(montar, 200); });
+  montar();
+})();
+</script>
