@@ -143,6 +143,9 @@ carga: true
     </div>
   </section>
 
+  {#- Galería: dos filas de fotos que se mueven solas (pedida por la usuaria, 14 nov 2026). -#}
+  {% include "galeria.njk" %}
+
   {#- Calendario. El script (calendario.njk) lee la fecha de hoy y marca dónde estamos; sin script queda como lista fija.
       Opciones en _data/calendario.json; textos de estado en _data/convocatoria.json. -#}
   {%- set fechas = [c.apertura, c.cierre, c.lanzamiento] -%}

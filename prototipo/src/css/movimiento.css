@@ -234,3 +234,4 @@ html.ps-cargando .ps-carga.fin { display: none; }
    desenfoque obligaba a repintarla en cada fotograma. */
 html.ps-cargando .ps-hero-pie > * { opacity: 0; transform: translateY(12px); }
 html.ps-cargando.ps-carga-lista .ps-hero-pie > * { opacity: 1; transform: none; transition: opacity 0.7s var(--ps-mov-e) 0.3s, transform 0.7s var(--ps-mov-e) 0.3s; }
+

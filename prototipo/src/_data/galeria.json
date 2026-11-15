@@ -1,0 +1,285 @@
+{
+  "nota": "Galería de la portada (después de «Modalidades y extensión», antes de las fechas), como la de la Red de Masculinidades: dos filas que se mueven solas, cada una hacia un lado. Sin título (la usuaria lo quitó, 15 nov 2026). Velocidad: 12 y 10 px por segundo (data-vel en galeria.njk). Fotos de la usuaria (35, 14 nov 2026), optimizadas en identidad/fotos/galeria/ (WebP: -s de 360 px de alto para el móvil y -m de 520 para el ordenador; las horizontales llegan a 480), en este orden: verticales y horizontales mezcladas y las parecidas separadas. La primera mitad va en la fila de arriba y el resto en la de abajo. ancho y alto: los de -m; anchoS: el de -s.",
+  "fotos": [
+    {
+      "archivo": "01-bandera-balcon",
+      "alt": "Un hombre y un niño cuelgan la bandera cubana en un balcón.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "02-pan-centro-habana",
+      "alt": "En Centro Habana, el pan va hacia ti: un vendedor de pan en una calle del barrio.",
+      "forma": "vertical",
+      "ancho": 399,
+      "alto": 520,
+      "anchoS": 276
+    },
+    {
+      "archivo": "03-tejados-capitolio",
+      "alt": "Los tejados de La Habana y el Capitolio al atardecer.",
+      "forma": "horizontal",
+      "ancho": 638,
+      "alto": 480,
+      "anchoS": 479
+    },
+    {
+      "archivo": "04-mural-marti",
+      "alt": "Un mural de un proyecto comunitario de arte con el rostro de José Martí y una puerta de colores.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "05-bote-morro",
+      "alt": "Un bote en la bahía, frente al castillo del Morro.",
+      "forma": "vertical",
+      "ancho": 444,
+      "alto": 520,
+      "anchoS": 307
+    },
+    {
+      "archivo": "06-mujer-blanco",
+      "alt": "Una mujer vestida de blanco con un tabaco.",
+      "forma": "vertical",
+      "ancho": 413,
+      "alto": 520,
+      "anchoS": 286
+    },
+    {
+      "archivo": "07-grafiti-musico",
+      "alt": "Un joven y un músico mayor pasan frente a un grafiti.",
+      "forma": "horizontal",
+      "ancho": 698,
+      "alto": 480,
+      "anchoS": 524
+    },
+    {
+      "archivo": "08-catedral",
+      "alt": "La cúpula iluminada de una iglesia de La Habana Vieja, con su lámpara de araña.",
+      "forma": "vertical",
+      "ancho": 391,
+      "alto": 520,
+      "anchoS": 270
+    },
+    {
+      "archivo": "09-calle-turquesa",
+      "alt": "Una calle de Centro Habana con un edificio turquesa.",
+      "forma": "vertical",
+      "ancho": 411,
+      "alto": 520,
+      "anchoS": 284
+    },
+    {
+      "archivo": "10-fruteras",
+      "alt": "Vendedoras en un puesto de frutas.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "11-fachadas-malecon",
+      "alt": "Las fachadas de los edificios del Malecón.",
+      "forma": "horizontal",
+      "ancho": 667,
+      "alto": 480,
+      "anchoS": 500
+    },
+    {
+      "archivo": "12-baile-prado",
+      "alt": "Una pareja baila en el Paseo del Prado.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "13-virgen-cerradura",
+      "alt": "Un cuadro de la Virgen de la Caridad visto a través de una cerradura.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "14-banco-malecon",
+      "alt": "Tres hombres sentados en el Malecón, frente al mar.",
+      "forma": "horizontal",
+      "ancho": 505,
+      "alto": 480,
+      "anchoS": 379
+    },
+    {
+      "archivo": "15-hotel-inglaterra",
+      "alt": "Un auto antiguo frente al Hotel Inglaterra.",
+      "forma": "vertical",
+      "ancho": 391,
+      "alto": 520,
+      "anchoS": 270
+    },
+    {
+      "archivo": "16-portales",
+      "alt": "Hombres conversando bajo los portales.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "17-pescador",
+      "alt": "Un pescador sentado en el Malecón.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "18-barrio-chino",
+      "alt": "La entrada del Barrio Chino de La Habana.",
+      "forma": "horizontal",
+      "ancho": 708,
+      "alto": 480,
+      "anchoS": 531
+    },
+    {
+      "archivo": "19-calle-atardecer",
+      "alt": "Una calle de La Habana Vieja al atardecer.",
+      "forma": "vertical",
+      "ancho": 415,
+      "alto": 520,
+      "anchoS": 287
+    },
+    {
+      "archivo": "20-lectora",
+      "alt": "Una señora lee el periódico sentada en un sillón.",
+      "forma": "horizontal",
+      "ancho": 762,
+      "alto": 480,
+      "anchoS": 572
+    },
+    {
+      "archivo": "21-salto-malecon",
+      "alt": "Un joven se lanza al mar desde el Malecón.",
+      "forma": "vertical",
+      "ancho": 347,
+      "alto": 520,
+      "anchoS": 240
+    },
+    {
+      "archivo": "22-capitolio-ciclistas",
+      "alt": "El Capitolio y el Gran Teatro de La Habana, con dos ciclistas.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "23-carrito",
+      "alt": "Un hombre empuja un carrito frente a un edificio, visto entre dos columnas.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "24-cruce-prado",
+      "alt": "Varias personas esperan para cruzar la calle; al fondo, el Capitolio.",
+      "forma": "horizontal",
+      "ancho": 668,
+      "alto": 480,
+      "anchoS": 501
+    },
+    {
+      "archivo": "25-museo-bandera",
+      "alt": "Un hombre trabaja junto a un muro frente a un edificio con la bandera cubana.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "26-acera",
+      "alt": "Un hombre sentado en la acera de una calle de La Habana Vieja.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "27-frutas-calle",
+      "alt": "Un puesto de frutas en una calle de Centro Habana.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "28-malecon-mural",
+      "alt": "Edificios del Malecón y un muro pintado.",
+      "forma": "horizontal",
+      "ancho": 733,
+      "alto": 480,
+      "anchoS": 550
+    },
+    {
+      "archivo": "29-calle-desde-arriba",
+      "alt": "Una calle de La Habana vista desde lo alto, en blanco y negro.",
+      "forma": "vertical",
+      "ancho": 354,
+      "alto": 520,
+      "anchoS": 245
+    },
+    {
+      "archivo": "30-esquina-mural",
+      "alt": "Una esquina de La Habana con un mural y un taxi amarillo.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "31-sombrero-bandera",
+      "alt": "Un hombre con sombrero y una bandera cubana camina por una calle.",
+      "forma": "vertical",
+      "ancho": 427,
+      "alto": 520,
+      "anchoS": 296
+    },
+    {
+      "archivo": "32-morro-malecon",
+      "alt": "El Morro al atardecer, visto desde el Malecón.",
+      "forma": "horizontal",
+      "ancho": 712,
+      "alto": 480,
+      "anchoS": 534
+    },
+    {
+      "archivo": "33-portal",
+      "alt": "Un hombre descansa a la entrada de un local.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "34-calle-vieja",
+      "alt": "Gente caminando por una calle estrecha de La Habana Vieja.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    },
+    {
+      "archivo": "35-bandera-bahia",
+      "alt": "La bandera cubana frente a la bahía.",
+      "forma": "vertical",
+      "ancho": 416,
+      "alto": 520,
+      "anchoS": 288
+    }
+  ]
+}

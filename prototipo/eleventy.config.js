@@ -21,6 +21,8 @@ export default function (eleventyConfig) {
   // Icono de la pestaña: la «a» del logo de la usuaria
   eleventyConfig.addPassthroughCopy({ '../identidad/logo/a.svg': 'img/favicon.svg' });
   eleventyConfig.addPassthroughCopy({ '../identidad/fotos/malecon-1600.webp': 'img/malecon-1600.webp', '../identidad/fotos/malecon-1200.webp': 'img/malecon-1200.webp' });
+  // Fotos de la galería de la portada (ya optimizadas en WebP, dos tamaños: ver _data/galeria.json)
+  eleventyConfig.addPassthroughCopy({ '../identidad/fotos/galeria': 'img/galeria' });
 
   const CSS = ['tokens.css', 'base.css', 'components.css', 'movimiento.css', 'movil.css'];
   eleventyConfig.addShortcode('estilos', () => {

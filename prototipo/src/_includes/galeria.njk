@@ -1,0 +1,110 @@
+{#- Galería de la portada, como la de la Red de Masculinidades (red-de-masculinidades/src/components/site/deriva.ts): dos filas de
+    fotos que se mueven solas, cada una hacia un lado. Si el ratón se queda encima un momento, las dos se van frenando hasta
+    pararse, suave, y vuelven a arrancar al irse; en el móvil se arrastran con el dedo. Solo se mueven mientras se ven. Con
+    «reducir movimiento», quietas (se pasan a mano). Fotos y textos en _data/galeria.json; estilos en components.css y movil.css.
+    En OJS irá como un bloque de la portada (contenido de la página de inicio) con js/galeria.js en el tema hijo. -#}
+{%- set g = galeria -%}
+{%- set mitad = ((g.fotos | length) / 2) | round(0, "ceil") -%}
+{%- macro foto(f) -%}
+  {%- if f.archivo -%}
+  {#- dos tamaños: -s para el móvil (180 px de alto en pantalla) y -m para el ordenador (260 px); el navegador elige -#}
+  {%- set ar = f.ancho / f.alto -%}
+  <figure class="ps-gal-foto ps-gal-foto--{{ f.forma }}"><img src="img/galeria/{{ f.archivo }}-m.webp" srcset="img/galeria/{{ f.archivo }}-s.webp {{ f.anchoS }}w, img/galeria/{{ f.archivo }}-m.webp {{ f.ancho }}w" sizes="(max-width: 760px) {{ (180 * ar) | round }}px, {{ (260 * ar) | round }}px" width="{{ f.ancho }}" height="{{ f.alto }}" alt="{{ f.alt }}" loading="lazy" decoding="async" draggable="false"></figure>
+  {%- else -%}
+  <figure class="ps-gal-foto ps-gal-foto--{{ f.forma }} ps-gal-hueco" aria-hidden="true"><span>Foto {{ f.forma }}</span></figure>
+  {%- endif -%}
+{%- endmacro %}
+{#- Sin antetítulo ni título (pedido por la usuaria, 15 nov 2026): solo las fotos. Mucho más lentas que en la Red (38 y 32 px/s): 12 y 10 px/s (pedido por la usuaria). -#}
+<section class="ps-section ps-galeria" aria-label="Galería de fotos">
+  <div class="ps-galeria-filas" data-galeria>
+    {%- for fila in [0, 1] %}
+    <div class="ps-galeria-fila" data-sentido="{{ 'izquierda' if fila == 0 else 'derecha' }}" data-vel="{{ 12 if fila == 0 else 10 }}" style="--dx: {{ '160px' if fila == 0 else '-160px' }}">
+      <div class="ps-galeria-pista">
+        <div class="ps-galeria-copia" data-copia>
+          {%- for f in g.fotos %}{% if (fila == 0 and loop.index0 < mitad) or (fila == 1 and loop.index0 >= mitad) %}{{ foto(f) }}{% endif %}{% endfor %}
+        </div>
+      </div>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+<script>
+(function () {
+  var zona = document.querySelector('[data-galeria]');
+  if (!zona) return;
+  var reducir = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducir) { zona.classList.add('is-quieta'); return; }
+  var SUAVIDAD = 0.32;      // lo que tarda en frenar o en coger velocidad (s)
+  var SIGUE_TRAS_MS = 1600; // tras arrastrarla con el dedo, espera esto antes de volver a moverse
+  var PARA_TRAS_MS = 650;   // el ratón la para solo si se queda encima este rato
+  var HOLGURA = 6;          // un arrastre más corto que esto es un toque
+  var filas = [];
+  var encima = false, parada = false, esperaParada = 0;
+
+  Array.prototype.forEach.call(zona.querySelectorAll('.ps-galeria-fila'), function (ventana) {
+    var pista = ventana.querySelector('.ps-galeria-pista'), base = pista.querySelector('[data-copia]');
+    var f = { ventana: ventana, pista: pista, base: base, vel0: +ventana.getAttribute('data-vel') || 34,
+      der: ventana.getAttribute('data-sentido') === 'derecha', periodo: 0, desplazado: 0, vel: 0, objetivo: 0,
+      antes: 0, cuadro: 0, andando: false, arrastrando: false, arrastrada: false, x0: 0, d0: 0, reanudar: 0 };
+    f.vel = f.objetivo = f.vel0;
+    filas.push(f);
+
+    function vuelta(v) { return f.periodo > 0 ? ((v % f.periodo) + f.periodo) % f.periodo : 0; }
+    // copias de la primera tanda hasta cubrir el ancho de la pantalla y una vuelta más; la vuelta mide una copia
+    function medir() {
+      var copias = pista.querySelectorAll('[data-copia]');
+      if (copias.length > 1) f.periodo = copias[1].offsetLeft - copias[0].offsetLeft;
+      else f.periodo = base.offsetWidth;
+      if (!f.periodo) return;
+      var hacen = Math.max(2, Math.ceil(ventana.clientWidth / f.periodo) + 1);
+      while (pista.children.length < hacen) {
+        var c = base.cloneNode(true); c.setAttribute('aria-hidden', 'true');
+        Array.prototype.forEach.call(c.querySelectorAll('img'), function (i) { i.alt = ''; });
+        pista.appendChild(c);
+      }
+    }
+    function paso(ahora) {
+      var dt = f.antes ? Math.min(0.05, (ahora - f.antes) / 1000) : 0;
+      f.antes = ahora;
+      f.vel += (f.objetivo - f.vel) * (1 - Math.exp(-dt / SUAVIDAD));
+      if (!f.arrastrando) f.desplazado = vuelta(f.desplazado + (f.der ? -f.vel : f.vel) * dt);
+      pista.style.transform = 'translate3d(' + (-f.desplazado).toFixed(2) + 'px,0,0)';
+      f.cuadro = requestAnimationFrame(paso);
+    }
+    // solo se mueve mientras se ve
+    new IntersectionObserver(function (e) {
+      if (e[0].isIntersecting && !f.andando) { f.andando = true; f.antes = 0; f.cuadro = requestAnimationFrame(paso); }
+      else if (!e[0].isIntersecting && f.andando) { f.andando = false; cancelAnimationFrame(f.cuadro); }
+    }).observe(ventana);
+    // el dedo la arrastra; al soltar, se queda un momento donde la dejó y sigue
+    ventana.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      f.arrastrando = true; f.arrastrada = false; f.x0 = e.clientX; f.d0 = f.desplazado;
+      clearTimeout(f.reanudar); decidir();
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!f.arrastrando) return;
+      var dx = e.clientX - f.x0; if (Math.abs(dx) > HOLGURA) f.arrastrada = true;
+      f.desplazado = vuelta(f.d0 - dx);
+    });
+    function suelta() {
+      if (!f.arrastrando) return;
+      f.arrastrando = false; f.vel = 0; f.objetivo = 0;
+      f.reanudar = setTimeout(decidir, SIGUE_TRAS_MS);
+    }
+    window.addEventListener('pointerup', suelta);
+    window.addEventListener('pointercancel', suelta);
+    ventana.addEventListener('click', function (e) { if (f.arrastrada) { e.preventDefault(); e.stopPropagation(); f.arrastrada = false; } }, true);
+    medir();
+    if (window.ResizeObserver) { var ro = new ResizeObserver(medir); ro.observe(ventana); ro.observe(base); }
+  });
+
+  // quietas mientras se arrastran o el ratón se queda encima; en marcha si no (las dos a la vez)
+  function decidir() { filas.forEach(function (f) { f.objetivo = f.arrastrando || parada ? 0 : f.vel0; }); }
+  function armar() { clearTimeout(esperaParada); esperaParada = setTimeout(function () { parada = true; decidir(); }, PARA_TRAS_MS); }
+  zona.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'mouse') return; encima = true; armar(); });
+  zona.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'mouse') return; encima = false; clearTimeout(esperaParada); parada = false; decidir(); });
+  // bajar la página con el ratón encima es ir a otro sitio, no mirarla
+  window.addEventListener('scroll', function () { if (!encima) return; if (parada) { parada = false; decidir(); } armar(); }, { passive: true });
+})();
+</script>

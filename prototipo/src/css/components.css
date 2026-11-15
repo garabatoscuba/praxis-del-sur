@@ -848,3 +848,22 @@ ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
 .ps-creditos a { font-weight: 600; }
 @media (max-width: 900px) { .pkp_footer_content { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ps-footer-brand { grid-column: 1 / -1; } .ps-footer-datos-col .ps-footer-datos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .pkp_footer_content { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Galería de la portada (_includes/galeria.njk) ----------
+   Dos filas de fotos a todo lo ancho que se mueven solas, cada una hacia un lado (como en la Red de Masculinidades). Cada foto
+   conserva su forma: todas a la misma altura y su ancho según sea vertical u horizontal. Esquinas rectas, como los botones. */
+.ps-galeria { overflow: hidden; }
+.ps-galeria .ps-sec-head { margin-bottom: clamp(24px, 3vw, 40px); }
+.ps-galeria-filas { display: grid; gap: 16px; }
+.ps-galeria-fila { overflow: hidden; touch-action: pan-y; }
+.ps-galeria-pista { display: flex; width: max-content; will-change: transform; }
+.ps-galeria-copia { display: flex; gap: 16px; padding-right: 16px; }
+.ps-gal-foto { flex: none; height: 260px; margin: 0; overflow: hidden; background: var(--ps-beige-light); }
+.ps-gal-foto img { display: block; height: 100%; width: auto; object-fit: cover; -webkit-user-drag: none; user-select: none; }
+/* huecos de prueba mientras no hay fotos: con la forma de la foto que irá */
+.ps-gal-foto--vertical.ps-gal-hueco { aspect-ratio: 3 / 4; }
+.ps-gal-foto--horizontal.ps-gal-hueco { aspect-ratio: 3 / 2; }
+.ps-gal-hueco { display: grid; place-items: center; border: 1px dashed var(--ps-line-strong); }
+.ps-gal-hueco span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ps-muted); }
+/* con «reducir movimiento»: quietas, y se pasan a mano */
+.ps-galeria-filas.is-quieta .ps-galeria-fila { overflow-x: auto; }
