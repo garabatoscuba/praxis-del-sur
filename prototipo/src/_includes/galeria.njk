@@ -14,11 +14,11 @@
   <figure class="ps-gal-foto ps-gal-foto--{{ f.forma }} ps-gal-hueco" aria-hidden="true"><span>Foto {{ f.forma }}</span></figure>
   {%- endif -%}
 {%- endmacro %}
-{#- Sin antetítulo ni título (pedido por la usuaria, 15 nov 2026): solo las fotos. Mucho más lentas que en la Red (38 y 32 px/s): 12 y 10 px/s (pedido por la usuaria). -#}
+{#- Sin antetítulo ni título (pedido por la usuaria, 15 nov 2026): solo las fotos. Mucho más lentas que en la Red (38 y 32 px/s): 16 y 13 px/s (ajustado con la usuaria). -#}
 <section class="ps-section ps-galeria" aria-label="Galería de fotos">
   <div class="ps-galeria-filas" data-galeria>
     {%- for fila in [0, 1] %}
-    <div class="ps-galeria-fila" data-sentido="{{ 'izquierda' if fila == 0 else 'derecha' }}" data-vel="{{ 12 if fila == 0 else 10 }}" style="--dx: {{ '160px' if fila == 0 else '-160px' }}">
+    <div class="ps-galeria-fila" data-sentido="{{ 'izquierda' if fila == 0 else 'derecha' }}" data-vel="{{ 16 if fila == 0 else 13 }}" style="--dx: {{ '160px' if fila == 0 else '-160px' }}">
       <div class="ps-galeria-pista">
         <div class="ps-galeria-copia" data-copia>
           {%- for f in g.fotos %}{% if (fila == 0 and loop.index0 < mitad) or (fila == 1 and loop.index0 >= mitad) %}{{ foto(f) }}{% endif %}{% endfor %}
