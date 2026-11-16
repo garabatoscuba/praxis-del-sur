@@ -1,5 +1,7 @@
 {
-  "nota": "Galería de la portada (después de «Modalidades y extensión», antes de las fechas), como la de la Red de Masculinidades: dos filas que se mueven solas, cada una hacia un lado. Sin título (la usuaria lo quitó, 15 nov 2026). Velocidad: 16 y 13 px por segundo (data-vel en galeria.njk). Fotos de la usuaria (35, 14 nov 2026), optimizadas en identidad/fotos/galeria/ (WebP: -s de 360 px de alto para el móvil y -m de 520 para el ordenador; las horizontales llegan a 480), en este orden: verticales y horizontales mezcladas y las parecidas separadas. La primera mitad va en la fila de arriba y el resto en la de abajo. ancho y alto: los de -m; anchoS: el de -s.",
+  "nota": "Galería de la portada (después de «Modalidades y extensión», antes de las fechas), como la de la Red de Masculinidades: dos filas que se mueven solas, cada una hacia un lado. Antetítulo y título: propuesta, sin aprobar (se quitaron el 15 nov 2026 y la usuaria los pidió de nuevo el 16). Velocidad: 16 y 13 px por segundo (data-vel en galeria.njk). Fotos de la usuaria (35, 14 nov 2026), optimizadas en identidad/fotos/galeria/ (WebP: -s de 360 px de alto para el móvil y -m de 520 para el ordenador; las horizontales llegan a 480), en este orden: verticales y horizontales mezcladas y las parecidas separadas. La primera mitad va en la fila de arriba y el resto en la de abajo. ancho y alto: los de -m; anchoS: el de -s.",
+  "antetitulo": "Galería",
+  "titulo": "En imágenes",
   "fotos": [
     {
       "archivo": "01-bandera-balcon",
