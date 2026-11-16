@@ -853,6 +853,9 @@ ul.authors .orcid a:hover { color: var(--ps-wine); text-decoration: underline; }
    Dos filas de fotos a todo lo ancho que se mueven solas, cada una hacia un lado (como en la Red de Masculinidades). Cada foto
    conserva su forma: todas a la misma altura y su ancho según sea vertical u horizontal. Esquinas rectas, como los botones. */
 .ps-galeria { overflow: hidden; }
+/* va justo después de «Modalidades», que también es blanca: sin relleno arriba, para que entre las dos quede el hueco de
+   siempre (el de un borde de sección) y no el doble (pedido por la usuaria, 16 nov 2026) */
+.ps-section.ps-galeria { padding-top: 0; }
 .ps-galeria .ps-sec-head { margin-bottom: clamp(24px, 3vw, 40px); }
 .ps-galeria-filas { display: grid; gap: 16px; }
 .ps-galeria-fila { overflow: hidden; touch-action: pan-y; }

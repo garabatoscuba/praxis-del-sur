@@ -81,6 +81,7 @@
   /* en columna flexible (sin márgenes que se junten): movil.njk ajusta los márgenes para que, cuando la última tarjeta llega a
      su sitio en la pila, todas se suelten a la vez y la pila entera suba junta (pedido por la usuaria, 14 nov 2026) */
   [data-movil-ejes="pila"] .ps-ejes { display: flex; flex-direction: column; }
+  html:not([data-movil-compacto="no"]) .ps-section.ps-galeria { padding-top: 0; }
   /* galería: fotos más bajas */
   .ps-gal-foto { height: 180px; }
   .ps-galeria-filas, .ps-galeria-copia { gap: 10px; }
